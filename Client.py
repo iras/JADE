@@ -4,8 +4,6 @@ Created on Jan 18, 2012
 @author: ivanoras
 '''
 
-# test line
-
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4 import QtCore
