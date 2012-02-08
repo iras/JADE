@@ -1,0 +1,1 @@
+#### JADE is a simple cross-platform dependency mapping tool written in Python and the library PyQt4

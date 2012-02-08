@@ -31,7 +31,7 @@ class Tag0 (QGraphicsItem):
         
         self.height = 5
         
-        self._text_item = QGraphicsTextItem ('text', self)
+        self._text_item = QGraphicsTextItem ('text '+str(self.node_id), self)
         self._text_item.setTextInteractionFlags (Qt.TextEditable)
         self._text_item.setPos (QPointF (20, 20))
         self._text_item.setFont (QFont ("Geneva", 10, QFont.Bold, False))
@@ -83,40 +83,44 @@ class Tag0 (QGraphicsItem):
         
         painter.drawRoundRect (QRect (0, 0, 80, 34+self.height), 20)
     
+    def remove (self): self.setVisible (False)
+    
+    # - - -  listeners  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    def addedLinkSignal (self, node_id):
+        
+        if node_id==self.node_id:
+            self.height += 5
+            self.update ()
+    
+    def deletedLinkSignal (self, node_id):
+        
+        if node_id==self.node_id:
+            self.height -= 5
+            self.update ()
+    
     def mousePressEvent (self, e):
+        
         QGraphicsItem.mousePressEvent (self, e)
         self.update ()
     
     def mouseMoveEvent (self, e):
+        
         if e.modifiers () & Qt.ShiftModifier:
             self.stuff.append (e.pos ())
             self.update ()
             return
         QGraphicsItem.mouseMoveEvent (self, e)
     
-    def hoverEnterEvent (self, e):
-        self._text_item.setToolTip (self._text_item.toPlainText ())
-    
-    def hoverLeaveEvent (self, e):
-        pass
+    def hoverEnterEvent (self, e): self._text_item.setToolTip (self._text_item.toPlainText ())
+    def hoverLeaveEvent (self, e): pass
     
     def mouseReleaseEvent (self, e):
+        
         QGraphicsItem.mouseReleaseEvent (self, e)
         self.update ()
     
+    # - - -  getters/setters  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    
     def getNodeId (self): return self.node_id
-    def getComm (self): return self.comm
-    
-    def remove (self):
-        self.setVisible (False)
-    
-    def addedLinkSignal (self, node_id):
-        if node_id==self.node_id:
-            self.height += 5
-            self.update ()
-            
-    def deletedLinkSignal (self, node_id):
-        if node_id==self.node_id:
-            self.height -= 5
-            self.update ()
-            
+    def getComm   (self): return self.comm

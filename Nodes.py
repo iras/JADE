@@ -13,15 +13,16 @@ class Node ():
         self._children = []
         self._parents  = []
         
-        if parent != None:
+        if parent!=None:
             parent.addChild (self)
-            self._parents.append (parent)
+            self.addParent (parent)
     
     def addChild  (self, child ): self._children.append (child)
     def addParent (self, parent): self._parents.append (parent)
     
     # removeChild (Node) : Boolean
     def removeChild (self, node):
+        
         tmp = False
         for i in self._children:
             if i.getId()==node.getId():
@@ -32,6 +33,7 @@ class Node ():
     
     # removeParent (Node) : Boolean
     def removeParent (self, node):
+        
         tmp = False
         for i in self._parents:
             if i.getId()==node.getId():
@@ -40,7 +42,7 @@ class Node ():
                 break
         return tmp
     
-    def destroy (self):
+    def dispose (self):
         pass
     
     def noChildren (self): return len(self._children)
@@ -48,15 +50,25 @@ class Node ():
     
     # hasChild (Node) : 2-list [Boolean, int]
     def hasChild (self, child):
-        r = [False, self._children.index (child)]
-        if r[1]!=-1: r[0]=True
-        return r
+        try:
+            tmp = self._children.index (child)
+        except ValueError:
+            tmp = -1
+        
+        list0 = [False, tmp]
+        if list0[1]!=-1: list0[0]=True
+        return list0
     
     # hasParent (Node) : 2-list [Boolean, int]
     def hasParent (self, parent):
-        r = [False, self._parents.index (parent)]
-        if r[1]!=-1: r[0]=True
-        return r
+        try:
+            tmp = self._parents.index (parent)
+        except ValueError:
+            tmp = -1
+            
+        list0 = [False, tmp]
+        if list0[1]!=-1: list0[0]=True
+        return list0
     
     def getParent (self, name0):
         tmp = None
@@ -80,4 +92,3 @@ class Node ():
         
     def getId   (self) : return self._id
     def getName (self) : return self._name
-        

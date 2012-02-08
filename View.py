@@ -3,11 +3,11 @@ Created on Jan 18, 2012
 
 @author: ivanoras
 '''
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4 import QtCore
 from PyQt4 import QtGui
-
 
 class View (QFrame):
 
@@ -49,24 +49,24 @@ class View (QFrame):
         zoomSliderLayout.addWidget (self.zoomSlider)
         zoomSliderLayout.addWidget (zoomOutIcon)
         
-        self.addNodeBtn = QPushButton()
-        self.addNodeBtn.setText("add node")
+        self.addNodeBtn = QPushButton ()
+        self.addNodeBtn.setText ("add node")
         self.addNodeBtn.setEnabled (True)
         
-        self.removeNodeBtn = QPushButton()
-        self.removeNodeBtn.setText("remove node")
+        self.removeNodeBtn = QPushButton ()
+        self.removeNodeBtn.setText ("remove node")
         self.removeNodeBtn.setEnabled (True)
         
         self.addLinkBtn = QPushButton()
-        self.addLinkBtn.setText("add link")
+        self.addLinkBtn.setText ("add link")
         self.addLinkBtn.setEnabled (True)
         
         self.removeLinkBtn = QPushButton()
-        self.removeLinkBtn.setText("remove link")
+        self.removeLinkBtn.setText ("remove link")
         self.removeLinkBtn.setEnabled (True)
         
         self.printOutBtn = QPushButton()
-        self.printOutBtn.setText("print graph")
+        self.printOutBtn.setText ("print graph")
         self.printOutBtn.setEnabled (True)
         
         self.resetButton = QToolButton ()
@@ -81,9 +81,6 @@ class View (QFrame):
         labelLayout.addWidget (self.addLinkBtn)
         labelLayout.addWidget (self.removeLinkBtn)
         labelLayout.addWidget (self.printOutBtn)
-        
-        # No openGlButton
-        # No printButton
         
         labelLayout.addWidget (self.label)
         labelLayout.addStretch ()
@@ -100,14 +97,13 @@ class View (QFrame):
         self.connect (self.graphicsView.verticalScrollBar (),   SIGNAL ("valueChanged(int)"), self.setResetButtonEnabled)
         self.connect (self.graphicsView.horizontalScrollBar (), SIGNAL ("valueChanged(int)"), self.setResetButtonEnabled)
         
-        self.connect (zoomInIcon,  SIGNAL  ("clicked()"), self.zoomIn)
+        self.connect (zoomInIcon,  SIGNAL ("clicked()"), self.zoomIn)
         self.connect (zoomOutIcon, SIGNAL ("clicked()"), self.zoomOut)
         
         self.setupMatrix ()
         
         self.printer = QPrinter (QPrinter.HighResolution)
-        
-        
+    
     def view (self): return self.graphicsView
     
     def resetView (self):
@@ -133,7 +129,7 @@ class View (QFrame):
     def printOutGraph (self):
         qqq = QPainter (self.printer)
         self.graphicsView.render(qqq)
-
+    
     def zoomIn (self)  : self.zoomSlider.setValue (self.zoomSlider.value() + 1)
     def zoomOut (self) : self.zoomSlider.setValue (self.zoomSlider.value() - 1)
 

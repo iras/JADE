@@ -3,10 +3,10 @@ Created on Feb 1, 2012
 
 @author: ivanoras
 '''
+
 import Nodes as nd
 import Links as lk
 import Comm
-
 
 class Model ():
     
@@ -18,12 +18,11 @@ class Model ():
         self._link_list = []
         
         self.id_node_counter = 0
-        self.rootnode = nd.Node (self.id_node_counter, 'root')
-        self._node_list.append  (self.rootnode)
-        
         self.id_link_counter = 0
     
     def getComm (self): return self.comm
+    
+    # - - -  node methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def addNode (self, parent=None):
         
@@ -46,22 +45,20 @@ class Model ():
             if node.getId()==node_id:
                 self.shootResizingMSignals (node.getChildren())
                 self.shootResizingMSignals (node.getParents ())
-                node.destroy ()
+                node.dispose ()
                 del self._node_list [self._node_list.index (node)]
                 tmp = True
                 break
         
         return tmp
     
+    # - - -  link methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
     def addLink (self, parent_node_id, child_node_id):
-        
-        
-        # check the link doesn't already exists
-        
         
         pnode = self.getNode (parent_node_id)
         cnode = self.getNode (child_node_id)
-        pnode.addChild (cnode)
+        pnode.addChild  (cnode)
         cnode.addParent (pnode)
         
         newId   = self.__getNewLinkId ()
@@ -82,28 +79,42 @@ class Model ():
             
             if link.getId()==link_id:
                 nodes = link.get2NodesIds ()
-                self.shootResizingMSignals (nodes)
-                link.destroy ()
+                node1 = self.getNode(nodes[0])
+                node2 = self.getNode(nodes[1])
+                self.shootResizingMSignals ([node1, node2])
+                
+                if node1.hasParent (node2)[0]:
+                    aa = node1.removeParent (node2)
+                    bb = node2.removeChild  (node1)
+                else:
+                    aa = node2.removeParent (node1)
+                    bb = node1.removeChild  (node2)
+                link.dispose ()
                 del self._link_list [self._link_list.index (link)]
                 tmp = True
                 break
         
         return tmp
     
+    # - - -  misc methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    def areNodesRelated (self, n1_id, n2_id):
+        
+        flag = False
+        
+        n1 = self.getNode (n1_id)
+        n2 = self.getNode (n2_id)
+        
+        if n1.hasParent(n2)[0] or n2.hasParent(n1)[0]: flag=True
+        
+        return flag
+        
     def shootResizingMSignals (self, ls):
         
         for item in ls:
             self.comm.emitDeleteLinkMSignal (item.getId())
     
-    def __getNewNodeId (self):
-        
-        self.id_node_counter += 1
-        return self.id_node_counter
-    
-    def __getNewLinkId (self):
-        
-        self.id_node_counter += 1
-        return self.id_node_counter
+    # - - -  getters/setters  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     
     def getNode (self, node_id):
         
@@ -114,3 +125,16 @@ class Model ():
                 break
         
         return tmp
+    
+    def getNodesList (self): return self._node_list
+    def getLinksList (self): return self._link_list
+    
+    def __getNewNodeId (self):
+        
+        self.id_node_counter += 1
+        return self.id_node_counter
+    
+    def __getNewLinkId (self):
+        
+        self.id_node_counter += 1
+        return self.id_node_counter
