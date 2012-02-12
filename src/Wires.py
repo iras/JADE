@@ -12,6 +12,7 @@ import math
 
 import Comm
 
+
 class Wire (QGraphicsLineItem):
     
     def __init__ (self, to, tf, link_id ,parent=None, scene=None):
@@ -31,25 +32,23 @@ class Wire (QGraphicsLineItem):
         self.yf = self.tf.pos().y() + 5
         
         self.color  = QColor(Qt.green).dark(120)
-        self.setZValue ((self.xo + self.yo + self.xf + self.yf) % 2)
-        self.stuff = []
         
-        self.setFlags (QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsMovable)
-        self.setAcceptsHoverEvents (True)
+        #self.setFlags (QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsMovable)
+        #self.setAcceptsHoverEvents (True)
         
         self.setZValue (-1.0)
         
         self.arrowSize = 5
         self.arrowHead = QtGui.QPolygonF()
     
-    def boundingRect(self): return QtCore.QRectF (-1000, -1000, 2000, 2000)
+    def boundingRect (self): return QtCore.QRectF (-1000, -1000, 2000, 2000)
         
         #extra = (self.pen().width() + 20) * 0.5
         #p1 = self.line().p1()
         #p2 = self.line().p2()    
         #return QtCore.QRectF (p1, QtCore.QSizeF(p2.x() - p1.x(), p2.y() - p1.y())).normalized().adjusted(-extra, -extra, extra, extra)
     
-    def shape(self):
+    def shape (self):
         
         path = super (Wire, self).shape()
         path.addPolygon (self.arrowHead)
@@ -65,7 +64,6 @@ class Wire (QGraphicsLineItem):
         self.xf = self.tf.pos().x() + 40
         self.yf = self.tf.pos().y() + 20
         
-        # draw tag's link 
         lines=[]
         if option.levelOfDetail>=0.4: lines=[QLine (self.xo, self.yo, self.xf, self.yf)]
         painter.drawLines(lines)
@@ -79,9 +77,6 @@ class Wire (QGraphicsLineItem):
         self.update ()
     
     def mouseMoveEvent (self, e):
-        if e.modifiers() & Qt.ShiftModifier:
-            self.stuff.append (e.pos ())
-            return
         QGraphicsItem.mouseMoveEvent (self, e)
     
     def mouseReleaseEvent (self, e):

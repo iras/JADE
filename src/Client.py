@@ -13,6 +13,8 @@ import Tags
 import Wires
 import View
 import Model as md
+import Harpoon as hp
+
 
 class MainWindow (QWidget):
 
@@ -20,6 +22,7 @@ class MainWindow (QWidget):
         
         QWidget.__init__ (self, parent)
         
+        self.scene = QGraphicsScene()
         self.populateScene ()
         
         self.hSplit = QSplitter ()
@@ -43,7 +46,10 @@ class MainWindow (QWidget):
     
     def populateScene (self):
         
-        self.scene = QGraphicsScene()
+        # init harpoon and make it invisible
+        self.harpoon = hp.Harpoon (0, 0, 0, 0)
+        self.harpoon.setVisible (False)
+        self.scene.addItem (self.harpoon)
         
         self._tag_list  = []
         self._wire_list = []
@@ -56,16 +62,16 @@ class MainWindow (QWidget):
         t5 = self.addNodeAndTag (100, 100)
         
         #l11 = self.addLinkAndWire (t1, t1) # implement self-referencing
-        l12 = self.addLinkAndWire (t1, t2)
-        l13 = self.addLinkAndWire (t1, t3)
-        l14 = self.addLinkAndWire (t1, t4)
-        l15 = self.addLinkAndWire (t1, t5)
-        l23 = self.addLinkAndWire (t2, t3)
-        l24 = self.addLinkAndWire (t2, t4)
-        l25 = self.addLinkAndWire (t2, t5)
-        l34 = self.addLinkAndWire (t3, t4)
-        l35 = self.addLinkAndWire (t3, t5)
-        l45 = self.addLinkAndWire (t4, t5)
+        self.addLinkAndWire (t1, t2)
+        self.addLinkAndWire (t1, t3)
+        self.addLinkAndWire (t1, t4)
+        self.addLinkAndWire (t1, t5)
+        self.addLinkAndWire (t2, t3)
+        self.addLinkAndWire (t2, t4)
+        self.addLinkAndWire (t2, t5)
+        self.addLinkAndWire (t3, t4)
+        self.addLinkAndWire (t3, t5)
+        self.addLinkAndWire (t4, t5)
     
     def addNodeAndTagButtonHook (self): self.addNodeAndTag (20, 20)
     def addNodeAndTag (self, x, y):
@@ -73,7 +79,7 @@ class MainWindow (QWidget):
         node = model.addNode ()
         
         color = QColor (Qt.white).dark (120)
-        tag = Tags.Tag0 (color, node.getId ())
+        tag = Tags.Tag0 (self.harpoon, color, node.getId ())
         tag.setPos (QPointF (x, y))
         self.scene.addItem (tag)
         self.connect (model.getComm (), SIGNAL('addLink_MSignal(int)'),    tag.addedLinkSignal)
@@ -98,6 +104,10 @@ class MainWindow (QWidget):
         ls = self.getListSelectedTags ()
         if len(ls)==2 and not model.areNodesRelated (ls[0].getNodeId(), ls[1].getNodeId()):
             self.addLinkAndWire (ls[0], ls[1])
+        
+            # take the focus away from the nodes
+            ls[0].setSelected(False)
+            ls[1].setSelected(False)
     
     def addLinkAndWire (self, tag1, tag2):
         
@@ -116,9 +126,14 @@ class MainWindow (QWidget):
     
     def removeLinkAndWireButtonHook (self):
         
-        tmp = self.findTheWireBetweenTwoTags (self.getListSelectedTags ())
+        ls = self.getListSelectedTags ()
+        tmp = self.findTheWireBetweenTwoTags (ls)
         if tmp!=None:
             self.removeLinkAndWire ([tmp])
+        
+            # take the focus away from the nodes
+            ls[0].setSelected(False)
+            ls[1].setSelected(False)
     
     def removeLinkAndWire (self, tmp_list):
         
