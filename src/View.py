@@ -22,6 +22,8 @@ class View (QFrame):
         self.graphicsView.setDragMode (QGraphicsView.RubberBandDrag)
         self.graphicsView.setViewportUpdateMode (QGraphicsView.SmartViewportUpdate)
         
+        #self.graphicsView.setMouseTracking(True)
+        
         size = self.style ().pixelMetric (QStyle.PM_ToolBarIconSize)
         iconSize = QSize (size, size)
         
