@@ -15,23 +15,26 @@ import Hook as hk
 
 class Tag0 (QGraphicsItem):
     
-    def __init__ (self, harpoon, color, node_id, parent=None, scene=None):
+    def __init__ (self, harpoon, color, node_id, helper, parent=None):
         
         QGraphicsItem.__init__ (self)
         
         self.node_id = node_id
+        self.helper  = helper
+        
+        self.scene = self.helper.getScene ()
         
         self.harpoon = harpoon
         self.color = color
-        self.stuff = []
         
         self.comm = Comm.Comm ()
         
         self.setFlags (QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsMovable)
-        self.setAcceptsHoverEvents (True)
+        self.setAcceptHoverEvents (True)
+        self.previousMouseGrabberItem = None
         
         """
-        # drag-n-drop behaviour : register
+        # drag-n-drop behaviour : init
         self.setAcceptDrops (True)
         """
         
@@ -129,12 +132,14 @@ class Tag0 (QGraphicsItem):
     
     def mousePressEvent (self, e):
         
-        QGraphicsItem.mousePressEvent (self, e)
+        #self.setAcceptedMouseButtons(Qt.NoButton)
+        self.previousMouseGrabberItem = self.scene.mouseGrabberItem()
         
         if e.button() == Qt.RightButton:
             pass
         
         if e.modifiers() & Qt.ShiftModifier:
+            #e.ignore()
             self.harpoon.setInitPos (self.pos())
             self.harpoon.setVisible (True)
             self.harpoon.update ()
@@ -148,7 +153,7 @@ class Tag0 (QGraphicsItem):
             drag.setMimeData (md) 
             drag.start (Qt.MoveAction)
         """
-        
+        QGraphicsItem.mousePressEvent (self, e)
         self.update ()
     
     def mouseMoveEvent (self, e):
@@ -161,21 +166,29 @@ class Tag0 (QGraphicsItem):
         else:
             QGraphicsItem.mouseMoveEvent (self, e)
     
+    def mouseReleaseEvent (self, e):
+        
+        self.harpoon.setVisible (False)
+        self.update ()
+        
+        self.helper.initAndStartTimer ()
+        
+        QGraphicsItem.mouseReleaseEvent (self, e)
+        
+    
     def hoverEnterEvent (self, e):
         
-        print 'hell0 '+str(self.node_id)
-        
+        # deal with the harpoon.
+        if not self.helper.isTimerEnded():
+            self.setSelected (True)
+            self.helper.getMain().addLinkAndWireButtonHook ()
+            
+                
         self._text_item.setToolTip (self._text_item.toPlainText ())
         
         QGraphicsItem.hoverEnterEvent (self, e)
     
     def hoverLeaveEvent (self, e): pass
-    
-    def mouseReleaseEvent (self, e):
-        
-        QGraphicsItem.mouseReleaseEvent (self, e)
-        self.harpoon.setVisible (False)
-        self.update ()
     
     """
     # drag-n-drop behaviour : listeners
@@ -183,6 +196,9 @@ class Tag0 (QGraphicsItem):
     def dragEnterEvent(self, event): 
         print "dragEnterEvent: %s (event type: %d)" % (type(event), event.type())
         event.acceptProposedAction() 
+    
+    def dragMoveEvent (self. e) : pass
+    def dragLeaveEvent (self. e): pass
     
     def dropEvent (self, e):
         print e.type ()

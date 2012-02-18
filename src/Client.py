@@ -9,6 +9,8 @@ from PyQt4.QtGui import *
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 
+import Utility
+
 import Tags
 import Wires
 import View
@@ -22,9 +24,12 @@ class MainWindow (QWidget):
         
         QWidget.__init__ (self, parent)
         
+        #self.setMouseTracking (True)
+        #self.setAttribute(Qt.WA_Hover)
+        
         self.scene = QGraphicsScene()
         self.populateScene ()
-        
+                
         self.hSplit = QSplitter ()
         
         vSplit = QSplitter ()
@@ -40,12 +45,14 @@ class MainWindow (QWidget):
         layout.addWidget (vSplit)
         self.setLayout (layout)
         
-        self.setWindowTitle("Just Another DEpendency_mapping tool")
+        self.setWindowTitle("Just Another DEpendency mapping tool")
         
         self.model = model
     
     def populateScene (self):
         
+        self.utility = Utility.Helper (self, self.scene)
+
         # init harpoon and make it invisible
         self.harpoon = hp.Harpoon (0, 0, 0, 0)
         self.harpoon.setVisible (False)
@@ -79,7 +86,7 @@ class MainWindow (QWidget):
         node = model.addNode ()
         
         color = QColor (Qt.white).dark (120)
-        tag = Tags.Tag0 (self.harpoon, color, node.getId ())
+        tag = Tags.Tag0 (self.harpoon, color, node.getId(), self.utility)
         tag.setPos (QPointF (x, y))
         self.scene.addItem (tag)
         self.connect (model.getComm (), SIGNAL('addLink_MSignal(int)'),    tag.addedLinkSignal)
@@ -106,8 +113,8 @@ class MainWindow (QWidget):
             self.addLinkAndWire (ls[0], ls[1])
         
             # take the focus away from the nodes
-            ls[0].setSelected(False)
-            ls[1].setSelected(False)
+            ls[0].setSelected (False)
+            ls[1].setSelected (False)
     
     def addLinkAndWire (self, tag1, tag2):
         
