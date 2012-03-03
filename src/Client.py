@@ -19,17 +19,19 @@ import Harpoon as hp
 
 
 class MainWindow (QWidget):
-
-    def __init__ (self, model, parent=None):
+    
+    def __init__ (self, graph, parent=None):
         
         QWidget.__init__ (self, parent)
+        
+        self.graph = graph
         
         #self.setMouseTracking (True)
         #self.setAttribute(Qt.WA_Hover)
         
         self.scene = QGraphicsScene()
         self.populateScene ()
-                
+        
         self.hSplit = QSplitter ()
         
         vSplit = QSplitter ()
@@ -46,13 +48,11 @@ class MainWindow (QWidget):
         self.setLayout (layout)
         
         self.setWindowTitle("Just Another DEpendency mapping tool")
-        
-        self.model = model
     
     def populateScene (self):
         
         self.utility = Utility.Helper (self, self.scene)
-
+        
         # init harpoon and make it invisible
         self.harpoon = hp.Harpoon (0, 0, 0, 0)
         self.harpoon.setVisible (False)

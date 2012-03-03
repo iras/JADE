@@ -14,15 +14,15 @@ class TestNode (unittest.TestCase):
 
     def setUp (self):
         
-        self.test_model = Model.Model ()
-        self.node1 = self.test_model.addNode ()
+        self.test_graph = Model.Model ()
+        self.node1 = self.test_graph.addNode ()
 
     def tearDown (self):
         pass
     
     def testAddParent (self):
         
-        node2 = self.test_model.addNode ()
+        node2 = self.test_graph.addNode ()
         self.node1.addParent (node2)
         
         self.assertEqual (len(self.node1.getParents()), 1, "error : something went wrong when adding the parent")
@@ -49,31 +49,24 @@ class TestNode (unittest.TestCase):
     
     def testAddChild (self):
         
-        node2 = self.test_model.addNode ()
+        node2 = self.test_graph.addNode ()
         self.node1.addChild (node2)
         
         self.assertEqual (len(self.node1.getChildren()), 1, "error : something went wrong when adding the child")
     
     def testRemoveChild (self):
         
-        node2 = self.test_model.addNode ()
-        node3 = self.test_model.addNode ()
+        node2 = self.test_graph.addNode ()
+        node3 = self.test_graph.addNode ()
         self.node1.addChild (node2)
         
         self.assertTrue  (self.node1.removeChild (node2), "error while removing the child")
         self.assertEqual (len(self.node1.getChildren()), 0, "error : something went wrong when removing the child")
     
-    def testAddParent (self):
-        
-        node2 = self.test_model.addNode ()
-        self.node1.addParent (node2)
-        
-        self.assertEqual (len(self.node1.getParents()), 1, "error : something went wrong when adding the parent")
-    
     def testRemoveParent (self):
         
-        node2 = self.test_model.addNode ()
-        node3 = self.test_model.addNode ()
+        node2 = self.test_graph.addNode ()
+        node3 = self.test_graph.addNode ()
         node2.addParent (node3)
         
         self.assertTrue  (node2.removeParent (node3), "error while removing the parent")
