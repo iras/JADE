@@ -29,8 +29,8 @@ class MainWindow (QWidget):
         
         self.graph_model = graph
         self.graph_model.setConnectionsMap (self.initConnectionsMap())
-        self.utility = utility.Helper (self, self.scene, self.graph_model)
-        self.graph_view  = grv.GraphView (self.graph_model, self.utility)
+        self.helper = utility.Helper (self, self.scene, self.graph_model)
+        self.graph_view  = grv.GraphView (self.graph_model, self.helper)
         
         # wiring Contextual Menu
         self.menu = QMenu ()
@@ -38,7 +38,8 @@ class MainWindow (QWidget):
         self.connect(self ,SIGNAL('customContextMenuRequested(QPoint)'), self.ctxMenu)
         
         # wiring buttons
-        self.connect (self.graph_model.getComm (), SIGNAL('addNode_MSignal(int)'), self.graph_view.addTag)
+        comm = self.graph_model.getComm ()
+        self.connect (comm, SIGNAL('addNode_MSignal(int)'),      self.graph_view.addTag)
         
         #self.setMouseTracking (True)
         #self.setAttribute(Qt.WA_Hover)
@@ -62,11 +63,20 @@ class MainWindow (QWidget):
         
         self.setWindowTitle("Just Another DEpendency mapping tool")
         
-        self.scene.addItem (self.utility.getHarpoon ())
+        self.scene.addItem (self.helper.getHarpoon ())
         
         self.temp_hovered_item_id = None
         self.first_click  = False
     
+    def populateScene (self):
+        
+        self.graph_view.addNodeAndTag ()
+    
+    def addLinkAndWirePressBtnListener (self):
+        
+        print 'this needs to go.'
+    
+    # - - -    context menu methods   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def ctxMenu (self, pos):
         
@@ -78,38 +88,51 @@ class MainWindow (QWidget):
                 left_list = self.graph_model.getInsTypesLeft (self.temp_hovered_item_id)
                 if len(left_list)!=0:
                     
-                    for i in left_list:
-                        self.menu.addAction (i, self.action1) #it is just a regular QMenu
-                    
+                    self.prepareCtxMenu (left_list)
                     self.menu.popup (self.mapToGlobal (pos))
+            
             else:
                 left_list = self.graph_model.getOutsTypesLeft (self.temp_hovered_item_id)
                 if len(left_list)!=0:
                     
-                    for i in left_list:
-                        self.menu.addAction (i, self.action1) #it is just a regular QMenu
-                    
+                    self.prepareCtxMenu (left_list)
                     self.menu.popup (self.mapToGlobal (pos))
-                
     
-    def action1 (self):
+    def prepareCtxMenu (self, list0):
         
-        tag = self.graph_view.getTag (self.temp_hovered_item_id)
-        print 'hi action '+str(tag) + ' '+str(self.graph_model.getComm().getHoveredItemId())
-        tag.makeRectBigger ()
+        self.menu.clear()
+        
+        # populate the QMenu dynamically and pass the menu string name to the receiver
+        for i in list0:
+            tmp = self.menu.addAction(i)
+            receiver = lambda value=i: self.addSocketAction (value)
+            self.connect(tmp, QtCore.SIGNAL('triggered()'), receiver)
     
-    def populateScene (self):
+    def addSocketAction (self, value):
         
-        self.graph_view.addNodeAndTag ()
-    
-    def addLinkAndWirePressBtnListener (self):
-        
-        print 'this needs to go.'
+        if self.first_click==True:
+            
+            #self.first_click=False
+            
+            tag = self.graph_view.getTag (self.temp_hovered_item_id) # retrieve the tag the ctx menu was open above.
+            
+            print 'addInSocket ',self.temp_hovered_item_id,value
+            # the event released by adding an InSocket signal will trigger the Tag0's method appendInHook() as a result.
+            self.graph_model.addInSocket (self.temp_hovered_item_id, value)
+        else:
+            
+            #self.first_click=False
+            
+            tag = self.graph_view.getTag (self.temp_hovered_item_id) # retrieve the tag the ctx menu was open above.
+            
+            print 'addOutSocket ',self.temp_hovered_item_id,value
+            # the event released by adding an InSocket signal will trigger the Tag0's method appendOutHook as a result.
+            self.graph_model.addOutSocket (self.temp_hovered_item_id, value)
     
     def initConnectionsMap (self):
         
         tmp_map = {
-                   'stateBegun'    :[['type0_s', 'type1_s', 'type2_s'],['type1_s']],
+                   'stateBegun'    :[['type0_s', 'type1_s', 'type2_s', 'type3_s'],['type1_s']],
                    'triggerFire'   :[['type0_s', 'type4_s'],['type1_s', 'type2_s']],
                    'stopAction'    :[['type1_s', 'type2_s'],[]],
                    'restoreAction' :[[],['type1_s', 'type2_s']]
@@ -129,7 +152,7 @@ def main (argv):
     
     return app.exec_()
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if __name__ == "__main__":
     import sys

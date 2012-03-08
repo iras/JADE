@@ -70,6 +70,18 @@ class Graph ():
     
     def getNodeList (self): return self._node_list
     
+    def addInSocket (self, node_id, stype):
+        
+        node = self.getNode(node_id)
+        if node!=None:
+            node.addIn (stype)
+    
+    def addOutSocket (self, node_id, stype):
+        
+        node = self.getNode(node_id)
+        if node!=None:
+            node.addOut (stype)
+    
     def getNode (self, node_id):
         
         tmp = None

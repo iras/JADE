@@ -23,44 +23,44 @@ class Node0 ():
         pass
     
     # - - -  sockets methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    def addIn  (self, type0):
+    
+    def addIn  (self, stype):
         
         inSocket = None
         
-        # there can only be one type of inSocket down an in_rail.
+        # check out that it's not already there as there can only be one type of inSocket down an in_rail.
         tmp = True
         for item in self._ins:
-            if item.getSType ()==type0:
+            if item.getSType ()==stype:
                 tmp = False
                 break
         
         if tmp:
             newId = self.comm.getNewSocketId()
-            inSocket = sk.InSocket (newId, type0, self)
+            inSocket = sk.InSocket (newId, stype, self)
         
             self._ins.append (inSocket)
-            self.comm.emitAddInSocketMSignal (inSocket.getSId())
+            self.comm.emitAddInSocketMSignal (self._id, inSocket.getSId())
         
         return inSocket
     
-    def addOut (self, type0):
+    def addOut (self, stype):
         
         outSocket = None
         
-        # there can only be one type of outSocket down an out_rail.
+        # check out that it's not already there as there can only be one type of outSocket down an out_rail.
         tmp = True
         for item in self._outs:
-            if item.getSType ()==type0:
+            if item.getSType ()==stype:
                 tmp = False
                 break
         
         if tmp:
             newId = self.comm.getNewSocketId()
-            outSocket = sk.OutSocket (newId, type0, self)
+            outSocket = sk.OutSocket (newId, stype, self)
         
             self._outs.append (outSocket)
-            self.comm.emitAddOutSocketMSignal (outSocket.getSId())
+            self.comm.emitAddOutSocketMSignal (self._id, outSocket.getSId())
         
         return outSocket
     
@@ -82,7 +82,7 @@ class Node0 ():
                     del pluggedInList[i]
                 
                 # (2) signal deletion of the inSocket
-                self.comm.emitDeleteInSocketMSignal (inSocket.getSId())
+                self.comm.emitDeleteInSocketMSignal (self._id, inSocket.getSId())
                 
                 # (3) delete the inSocket reference from this node
                 del self._ins [self._ins.index (inSocket)]
@@ -107,18 +107,18 @@ class Node0 ():
                     del pluggedOutList[i]
                 
                 # (2) signal deletion of the outSocket
-                self.comm.emitDeleteOutSocketMSignal (outSocket.getSId())
+                self.comm.emitDeleteOutSocketMSignal (self._id, outSocket.getSId())
                 
                 # (3) delete the outSocket reference from this node
                 del self._outs [self._outs.index (outSocket)]
                 
                 break
     
-    def getInByType (self, type0):    # VERIFY ITS USEFULLNESS
+    def getInByType (self, stype):    # VERIFY ITS USEFULLNESS
         
         tmp = None
         for item in self._ins:
-            if item.getSType()==type0:
+            if item.getSType()==stype:
                 tmp = item
                 break
         
@@ -133,11 +133,11 @@ class Node0 ():
         
         return tmp
     
-    def getOutByType (self, type0):    # VERIFY ITS USEFULLNESS
+    def getOutByType (self, stype):    # VERIFY ITS USEFULLNESS
         
         tmp = None
         for item in self._outs:
-            if item.getSType()==type0:
+            if item.getSType()==stype:
                 tmp = item
                 break
         

@@ -21,11 +21,19 @@ class Tag1 (QGraphicsItem):
         
         self.node_id = node_id
         self.helper  = helper
+        self.node_model = self.helper.getGraph().getNode(self.node_id)
+        
+        self.inHooks  = []
+        self.outHooks = []
         
         self.scene = self.helper.getScene ()
         
         self.harpoon = self.helper.getHarpoon()
         self.color = color
+        
+        self.tag_height_in_units = 0
+        #self.in_socket_rail_y  = 0   # ANY USEFUL ?
+        #self.out_socket_rail_y = 0   # ANY USEFUL ?
         
         self.comm = self.helper.getGraph().getComm()
         
@@ -49,23 +57,20 @@ class Tag1 (QGraphicsItem):
         self._text_item.setFont (QFont ("Geneva", 10, QFont.Bold, False))
         self._text_item.setTextWidth(50)
         self._text_item.setToolTip(self._text_item.toPlainText ())
-        #self._text_item.setHtml("<h2 align=\"center\">hello</h2><h2 align=\"center\">world 12334345354444444444444444444444444</h2>123");
+        #self._text_item.setHtml("<h2 align=\"center\">hello</h2><h2 align=\"center\">world 1234345345</h2>123");
         
-        self._box = hk.HookBox0 (self)
-        self._box.setParentItem (self)
-        
+        # init animation tweening
         self.tl = QtCore.QTimeLine (500)
         self.tl.setFrameRange (0, 100)
-        self.a = QtGui.QGraphicsItemAnimation ()
-        self.a.setItem (self._box)
-        self.a.setTimeLine (self.tl)
+        self.anim = QtGui.QGraphicsItemAnimation ()
+        self.anim.setTimeLine (self.tl)
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
     def shape (self):
         
         path = QPainterPath ()
-        path.addRect (0, 0, 82, 42)
+        path.addRect (0, 0, 82, self.tag_height_in_units*10 + 20)
         return path
     
     def paint (self, painter, option, unused_widget):
@@ -86,7 +91,7 @@ class Tag1 (QGraphicsItem):
             
             painter.setPen   (QPen (Qt.black, 0))
             painter.setBrush (fillColor)
-            painter.drawRect (0, 0, 80, 40)
+            painter.drawRect (0, 0, 80, self.tag_height_in_units*10 + 20)
             return
         
         oldPen = painter.pen ()
@@ -103,24 +108,117 @@ class Tag1 (QGraphicsItem):
         painter.setBrush (QBrush (fillColor.dark (level)))
         
         #painter.drawRoundRect (QRect (0, 0, 80, 34+self.height), 20)
-        painter.drawRect (QRect (0, 0, 80, 34+self.height))
+        painter.drawRect (QRect (0, 0, 80, self.tag_height_in_units*10 + 20))
     
     def remove (self): self.setVisible (False)
     
-    # - - -  listeners  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # - - -  miscellanea  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def makeRectBigger (self):
+    
+    
+    
+    
+    
+    
+    def appendInHook (self, node_id, inSocketId):
         
-        print 'makeRectBigger'
+        if self.node_id==node_id:
+            print 'appendInHook', node_id, inSocketId
+            
+            no_ins  = len (self.node_model.getIns ())
+            no_outs = len (self.node_model.getOuts())
+            
+            if no_ins>1:
+                
+                # (1) if the rect isn't long enough then start an anim to make it long enough to host the new inSocket
+                if no_ins > no_outs : self.tag_height_in_units+=1
+                
+                # (2) duplicate the inSocket on top of the last one and scroll it down until it reaches its place
+                tmp = self.addInHook ()
+                # set off the animation
+                self.anim.setItem (tmp)
+                self.startOffAnim (0, no_ins)
+            
+            else:
+                # generate the first inSocket and place it in the topmost place
+                tmp = self.addInHook ()
+    
+    def appendOutHook (self, node_id, outSocketId):
+        
+        if self.node_id==node_id:
+            print 'appendOutHook',node_id, outSocketId
+            
+            no_ins  = len (self.node_model.getIns ())
+            no_outs = len (self.node_model.getOuts())
+            
+            if no_outs>1:
+                
+                 # (1) if the rect isn't long enough then start an anim to make it long enough to host the new inSocket
+                if  no_outs > no_ins : self.tag_height_in_units+=1
+                
+                # (2) duplicate the inSocket on top of the last one and scroll it down until it reaches its place
+                tmp = self.addOutHook ()
+                # set off the animation
+                self.anim.setItem (tmp)
+                self.startOffAnim (70, no_outs)
+            
+            else:
+                # generate the first inSocket and place it in the topmost place
+                tmp = self.addOutHook ()
+    
+    
+    
+    def startOffAnim (self, x, y):
+        
+        self.tl.stop ()
+        self.height_hook_platform = (y-2)*10
+        self.anim.setPosAt (0, QtCore.QPointF(x, self.height_hook_platform))
+        self.height_hook_platform += 10
+        self.anim.setPosAt (1, QtCore.QPointF(x, self.height_hook_platform))
+        self.tl.start ()
+        self.update ()
+    
+    
+    
+    
+    
+    def addInHook (self):
+        
+        tmp_hook = hk.HookBox0 (self)
+        tmp_hook.setParentItem (self)
+        
+        self.inHooks.append (tmp_hook)
+        
+        return tmp_hook
+    
+    def addOutHook (self):
+        
+        tmp_hook = hk.HookBox0 (self)
+        tmp_hook.setParentItem (self)
+        
+        self.outHooks.append (tmp_hook)
+        
+        return tmp_hook
+    
+    def removeInHook  (self) : pass
+    def removeOutHook (self) : pass
+    
+    
+    
+    
+    
+    
+    
+    # - - -  listeners  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def addedLinkSignal (self, node_id): # TO BE REMOVED ?
         
         if node_id==self.node_id:
             
             self.tl.stop ()
-            self.a.setPosAt (0, QtCore.QPointF(1, self.height_hook_platform))
+            self.anim.setPosAt (0, QtCore.QPointF(1, self.height_hook_platform))
             self.height_hook_platform += 5
-            self.a.setPosAt (1, QtCore.QPointF(1, self.height_hook_platform))
+            self.anim.setPosAt (1, QtCore.QPointF(1, self.height_hook_platform))
             self.tl.start ()
             self.update ()
     
@@ -129,9 +227,9 @@ class Tag1 (QGraphicsItem):
         if node_id==self.node_id:
             
             self.tl.stop ()
-            self.a.setPosAt (0, QtCore.QPointF(1, self.height_hook_platform))
+            self.anim.setPosAt (0, QtCore.QPointF(1, self.height_hook_platform))
             self.height_hook_platform -= 5
-            self.a.setPosAt (1, QtCore.QPointF(1, self.height_hook_platform))
+            self.anim.setPosAt (1, QtCore.QPointF(1, self.height_hook_platform))
             self.tl.start ()
             self.update ()
     

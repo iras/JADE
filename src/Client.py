@@ -51,7 +51,7 @@ class MainWindow (QWidget):
     
     def populateScene (self):
         
-        self.utility = Utility.Helper (self, self.scene)
+        self.helper = Utility.Helper (self, self.scene)
         
         # init harpoon and make it invisible
         self.harpoon = hp.Harpoon (0, 0, 0, 0)
@@ -86,7 +86,7 @@ class MainWindow (QWidget):
         node = model.addNode ()
         
         color = QColor (Qt.white).dark (120)
-        tag = Tags.Tag0 (self.harpoon, color, node.getId(), self.utility)
+        tag = Tags.Tag0 (self.harpoon, color, node.getId(), self.helper)
         tag.setPos (QPointF (x, y))
         self.scene.addItem (tag)
         self.connect (model.getComm (), SIGNAL('addLink_MSignal(int)'),    tag.addedLinkSignal)

@@ -22,11 +22,11 @@ class TestGraph (unittest.TestCase):
         self.test_graph = gf.Graph ()
         
         QObject.connect (self.test_graph.getComm (), SIGNAL('addNode_MSignal(int)'),        self.addNode_MSignalListener)
-        QObject.connect (self.test_graph.getComm (), SIGNAL('deleteNode_MSignal(int)'),     self.removeNode_MSignalListener)
+        QObject.connect (self.test_graph.getComm (), SIGNAL('deleteNode_MSignal(int)'),     self.addInSocket_MSignalListener)
         QObject.connect (self.test_graph.getComm (), SIGNAL('addLink_MSignal(int,int)'),    self.addLink_MSignalListener)
         QObject.connect (self.test_graph.getComm (), SIGNAL('deleteLink_MSignal(int,int)'), self.removeLink_MSignalListener)
         
-        self.receivedId = 0
+        self.receivedNId = 0
         self.isAddNode_MSignalReceived    = False
         self.isRemoveNode_MSignalReceived = False
         self.isAddLink_MSignalReceived    = False
@@ -44,22 +44,22 @@ class TestGraph (unittest.TestCase):
     def addNode_MSignalListener (self,e):
         
         self.isAddNode_MSignalReceived = True
-        self.receivedId = e
+        self.receivedNId = e
     
-    def removeNode_MSignalListener (self,e):
+    def addInSocket_MSignalListener (self,e):
         
         self.isRemoveNode_MSignalReceived = True
-        self.receivedId = e
+        self.receivedNId = e
     
     def addLink_MSignalListener (self,e):
         
         self.isAddLink_MSignalReceived = True
-        self.receivedId = e
+        self.receivedNId = e
     
     def removeLink_MSignalListener (self,e):
         
         self.isRemoveLink_MSignalReceived = True
-        self.receivedId = e
+        self.receivedNId = e
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     

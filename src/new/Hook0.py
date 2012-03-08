@@ -38,7 +38,7 @@ class HookBox0 (QGraphicsItem):
         painter.setBrush (QBrush (Qt.darkCyan))
         painter.setPen   (self.pen_color)
         
-        painter.drawRoundRect (QRect (2, 2, 10, 10), 5)
+        painter.drawEllipse(1, 1, 8 ,8)
     
     def hoverEnterEvent (self, e):
         

@@ -23,39 +23,45 @@ class TestNode (unittest.TestCase):
         self.node2 = self.test_graph.addNode ()
         self.node3 = self.test_graph.addNode ()
         
-        self.receivedId = 0
+        self.receivedNId = 0
+        self.receivedSId = 0
         self.isAddInSocket_MSignalReceived     = False
         self.isAddOutSocket_MSignalReceived    = False
         self.isRemoveInSocket_MSignalReceived  = False
         self.isRemoveOutSocket_MSignalReceived = False
         
-        QObject.connect (self.test_graph.getComm (), SIGNAL('addInSocket_MSignal(int)'),  self.removeNode_MSignalListener)
-        QObject.connect (self.test_graph.getComm (), SIGNAL('addOutSocket_MSignal(int)'), self.addOutSocket_MSignalListener)
-        QObject.connect (self.test_graph.getComm (), SIGNAL('deleteInSocket_MSignal(int)'),  self.removeInSocket_MSignalListener)
-        QObject.connect (self.test_graph.getComm (), SIGNAL('deleteOutSocket_MSignal(int)'), self.removeOutSocket_MSignalListener)
+        comm=self.test_graph.getComm ()
+        QObject.connect (comm, SIGNAL('addInSocket_MSignal(int,int)'),     self.addInSocket_MSignalListener)
+        QObject.connect (comm, SIGNAL('addOutSocket_MSignal(int,int)'),    self.addOutSocket_MSignalListener)
+        QObject.connect (comm, SIGNAL('deleteInSocket_MSignal(int,int)'),  self.removeInSocket_MSignalListener)
+        QObject.connect (comm, SIGNAL('deleteOutSocket_MSignal(int,int)'), self.removeOutSocket_MSignalListener)
     
     def tearDown (self):
         pass
     
-    def removeNode_MSignalListener (self, e):
+    def addInSocket_MSignalListener (self, nid, sid):
         
         self.isAddInSocket_MSignalReceived = True
-        self.receivedId = e
+        self.receivedNId = nid
+        self.receivedSId = sid
     
-    def addOutSocket_MSignalListener (self, e):
+    def addOutSocket_MSignalListener (self, nid, sid):
         
         self.isAddOutSocket_MSignalReceived = True
-        self.receivedId = e
+        self.receivedNId = nid
+        self.receivedSId = sid
     
-    def removeInSocket_MSignalListener (self, e):
+    def removeInSocket_MSignalListener (self, nid, sid):
         
         self.isRemoveInSocket_MSignalReceived = True
-        self.receivedId = e
+        self.receivedNId = nid
+        self.receivedSId = sid
     
-    def removeOutSocket_MSignalListener (self, e):
+    def removeOutSocket_MSignalListener (self, nid, sid):
         
         self.isRemoveOutSocket_MSignalReceived = True
-        self.receivedId = e
+        self.receivedNId = nid
+        self.receivedSId = sid
     
     
     # In tests - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -65,8 +71,9 @@ class TestNode (unittest.TestCase):
         
         self.node1.addIn ('type0')
         self.assertEqual (len(self.node1.getIns()), 1, "error : something went wrong when adding the In socket")
-        self.assertEqual (self.isAddInSocket_MSignalReceived, True, 'Didn''t get SIGNAL addInSocket_MSignal(int)')
-        self.assertEqual (self.receivedId, 1, 'Id hasn''t been updated correctly')
+        self.assertEqual (self.isAddInSocket_MSignalReceived, True, 'Didn''t get SIGNAL addInSocket_MSignal(int,int)')
+        self.assertEqual (self.receivedSId, 1, 'SocketId hasn''t been updated correctly')
+        self.assertEqual (self.receivedNId, self.node1.getId(), 'NodeId hasn''t been updated correctly')
     
     def testAddInWithDifferentTypes (self):
         
@@ -74,7 +81,8 @@ class TestNode (unittest.TestCase):
         self.node1.addIn ('type1')
         self.node1.addIn ('type2')
         self.assertEqual (len(self.node1.getIns()), 3, "error : something went wrong when adding the In socket")
-        self.assertEqual (self.receivedId, 3, 'Id hasn''t been updated correctly')
+        self.assertEqual (self.receivedSId, 3, 'SocketId hasn''t been updated correctly')
+        self.assertEqual (self.receivedNId, self.node1.getId(), 'NodeId hasn''t been updated correctly')
     
     def testAddInWithOneRepeatedType (self):
         
@@ -83,7 +91,8 @@ class TestNode (unittest.TestCase):
         self.assertEqual (self.node1.addIn ('type1'), None, 'The last addIn hasn''t be rejected as instead it was expected.')
         self.node1.addIn ('type2')
         self.assertEqual (len(self.node1.getIns()), 3, "error : something went wrong when adding the In socket")
-        self.assertEqual (self.receivedId, 3, 'Id hasn''t been updated correctly')
+        self.assertEqual (self.receivedSId, 3, 'SocketId hasn''t been updated correctly')
+        self.assertEqual (self.receivedNId, self.node1.getId(), 'NodeId hasn''t been updated correctly')
     
     def testRemoveInSimple (self):
         
@@ -91,8 +100,9 @@ class TestNode (unittest.TestCase):
         self.node1.removeIn (tmpInSocket)
         self.assertEqual (len(self.node1.getIns()), 0, "error : something went wrong when adding the In socket")
         
-        self.assertEqual (self.isRemoveInSocket_MSignalReceived, True, 'Didn''t get SIGNAL removeInSocket_MSignal(int)')
-        self.assertEqual (self.receivedId, 1, 'Id hasn''t been updated correctly')
+        self.assertEqual (self.isRemoveInSocket_MSignalReceived, True, 'Didn''t get SIGNAL removeInSocket_MSignal(int,int)')
+        self.assertEqual (self.receivedSId, 1, 'SocketId hasn''t been updated correctly')
+        self.assertEqual (self.receivedNId, self.node1.getId(), 'NodeId hasn''t been updated correctly')
     
     def testRemoveInWithDifferentTypes (self):
         
@@ -106,8 +116,9 @@ class TestNode (unittest.TestCase):
         self.assertEqual (tmp_list[0].getSType(), 'type0', 'Not the right one has been found.')
         self.assertEqual (tmp_list[1].getSType(), 'type2', 'Not the right one has been found.')
         
-        self.assertEqual (self.isRemoveInSocket_MSignalReceived, True, 'Didn''t get SIGNAL removeInSocket_MSignal(int)')
-        self.assertEqual (self.receivedId, 2, 'Id hasn''t been updated correctly')
+        self.assertEqual (self.isRemoveInSocket_MSignalReceived, True, 'Didn''t get SIGNAL removeInSocket_MSignal(int,int)')
+        self.assertEqual (self.receivedSId, 2, 'SocketId hasn''t been updated correctly')
+        self.assertEqual (self.receivedNId, self.node1.getId(), 'NodeId hasn''t been updated correctly')
     
     def testGetInByType (self):
         
@@ -133,8 +144,9 @@ class TestNode (unittest.TestCase):
         
         self.node1.addOut ('type0')
         self.assertEqual (len(self.node1.getOuts()), 1, "error : something went wrong when adding the Out socket")
-        self.assertEqual (self.isAddOutSocket_MSignalReceived, True, 'Didn''t get SIGNAL addOutSocket_MSignal(int)')
-        self.assertEqual (self.receivedId, 1, 'Id hasn''t been updated correctly')
+        self.assertEqual (self.isAddOutSocket_MSignalReceived, True, 'Didn''t get SIGNAL addOutSocket_MSignal(int,int)')
+        self.assertEqual (self.receivedSId, 1, 'SocketId hasn''t been updated correctly')
+        self.assertEqual (self.receivedNId, self.node1.getId(), 'NodeId hasn''t been updated correctly')
     
     def testAddOutWithDifferentTypes (self):
         
@@ -142,7 +154,8 @@ class TestNode (unittest.TestCase):
         self.node1.addOut ('type1')
         self.node1.addOut ('type2')
         self.assertEqual (len(self.node1.getOuts()), 3, "error : something went wrong when adding the Out socket")
-        self.assertEqual (self.receivedId, 3, 'Id hasn''t been updated correctly')
+        self.assertEqual (self.receivedSId, 3, 'SocketId hasn''t been updated correctly')
+        self.assertEqual (self.receivedNId, self.node1.getId(), 'NodeId hasn''t been updated correctly')
     
     def testAddOutWithOneRepeatedType (self):
         
@@ -151,7 +164,8 @@ class TestNode (unittest.TestCase):
         self.assertEqual (self.node1.addOut ('type1'), None, 'The last addOut hasn''t be rejected as instead it was expected.')
         self.node1.addOut ('type2')
         self.assertEqual (len(self.node1.getOuts()), 3, "error : something went wrong when adding the Out socket")
-        self.assertEqual (self.receivedId, 3, 'Id hasn''t been updated correctly')
+        self.assertEqual (self.receivedSId, 3, 'SocketId hasn''t been updated correctly')
+        self.assertEqual (self.receivedNId, self.node1.getId(), 'NodeId hasn''t been updated correctly')
     
     def testRemoveOutSimple (self):
         
@@ -159,8 +173,9 @@ class TestNode (unittest.TestCase):
         self.node1.removeOut (tmpOutSocket)
         self.assertEqual (len(self.node1.getOuts()), 0, "error : something went wrong when adding the Out socket")
         
-        self.assertEqual (self.isRemoveOutSocket_MSignalReceived, True, 'Didn''t get SIGNAL removeOutSocket_MSignal(int)')
-        self.assertEqual (self.receivedId, 1, 'Id hasn''t been updated correctly')
+        self.assertEqual (self.isRemoveOutSocket_MSignalReceived, True, 'Didn''t get SIGNAL removeOutSocket_MSignal(int,int)')
+        self.assertEqual (self.receivedSId, 1, 'SocketId hasn''t been updated correctly')
+        self.assertEqual (self.receivedNId, self.node1.getId(), 'NodeId hasn''t been updated correctly')
     
     def testRemoveOutWithDifferentTypes (self):
         
@@ -174,8 +189,9 @@ class TestNode (unittest.TestCase):
         self.assertEqual (tmp_list[0].getSType(), 'type0', 'Not the right one has been found.')
         self.assertEqual (tmp_list[1].getSType(), 'type2', 'Not the right one has been found.')
         
-        self.assertEqual (self.isRemoveOutSocket_MSignalReceived, True, 'Didn''t get SIGNAL removeOutSocket_MSignal(int)')
-        self.assertEqual (self.receivedId, 2, 'Id hasn''t been updated correctly')
+        self.assertEqual (self.isRemoveOutSocket_MSignalReceived, True, 'Didn''t get SIGNAL removeOutSocket_MSignal(int,int)')
+        self.assertEqual (self.receivedSId, 2, 'SocketId hasn''t been updated correctly')
+        self.assertEqual (self.receivedNId, self.node1.getId(), 'NodeId hasn''t been updated correctly')
     
     def testGetOutByType (self):
         

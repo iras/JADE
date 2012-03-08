@@ -56,6 +56,10 @@ class GraphView ():
         tag = Tags0.Tag1 (color, node_id, self.utility)
         tag.setPos (QPointF (20, 20))
         self.utility.getScene().addItem (tag)
+        
+        comm = self.graph.getComm ()
+        self.utility.connect (comm, SIGNAL('addInSocket_MSignal(int,int)'),  tag.appendInHook)
+        self.utility.connect (comm, SIGNAL('addOutSocket_MSignal(int,int)'), tag.appendOutHook)
         """
         self.connect (self.graph.getComm (), SIGNAL('addLink_MSignal(int)'),    tag.addedLinkSignal)
         self.connect (self.graph.getComm (), SIGNAL('deleteLink_MSignal(int)'), tag.deletedLinkSignal)
@@ -81,7 +85,6 @@ class GraphView ():
         
         seeked_tag = None
         for tag in self._tag_list:
-            print '2222 '+str(tag.getSId())+' '+str(node_id)
             if tag.getSId()==node_id:
                 seeked_tag = tag
                 break

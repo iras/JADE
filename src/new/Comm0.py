@@ -55,17 +55,21 @@ class Comm0 (QObject):
     def emitDeleteLinkMSignal (self, inSocket_id, outSocket_id):
         self.emit (SIGNAL ('deleteLink_MSignal(int, int)'), inSocket_id, outSocket_id)
     
-    def emitAddInSocketMSignal (self, inSocket_id):
-        self.emit (SIGNAL ('addInSocket_MSignal(int)'), inSocket_id)
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     
-    def emitDeleteInSocketMSignal (self, inSocket_id):
-        self.emit (SIGNAL ('deleteInSocket_MSignal(int)'), inSocket_id)
+    def emitAddInSocketMSignal (self, node_id, inSocket_id):
+        self.emit (SIGNAL ('addInSocket_MSignal(int, int)'), node_id, inSocket_id)
     
-    def emitAddOutSocketMSignal (self, outSocket_id):
-        self.emit (SIGNAL ('addOutSocket_MSignal(int)'), outSocket_id)
+    def emitAddOutSocketMSignal (self, node_id, outSocket_id):
+        self.emit (SIGNAL ('addOutSocket_MSignal(int, int)'), node_id, outSocket_id)
     
-    def emitDeleteOutSocketMSignal (self, outSocket_id):
-        self.emit (SIGNAL ('deleteOutSocket_MSignal(int)'), outSocket_id)
+    def emitDeleteInSocketMSignal (self, node_id, inSocket_id):
+        self.emit (SIGNAL ('deleteInSocket_MSignal(int,int)'), node_id, inSocket_id)
+    
+    def emitDeleteOutSocketMSignal (self, node_id, outSocket_id):
+        self.emit (SIGNAL ('deleteOutSocket_MSignal(int,int)'), node_id, outSocket_id)
+    
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     
     def emitCtxMenuSignal (self, pos):
         self.emit (SIGNAL ('customContextMenuRequested(QPoint)'), pos)
