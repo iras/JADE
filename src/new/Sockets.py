@@ -16,7 +16,9 @@ class Socket ():
         
         self._attributes = []
     
-    # - - getters / setters - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    def isPluggedWith (self, socket):
+        raise Exception ("*** Method isPluggedWith (...) needs to be implemented.")
+    # - - getters / setters - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def getSId    (self): return self._sid
     def getNodeId (self): return self._node
@@ -29,7 +31,7 @@ class Socket ():
 
 
 
-# -------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 class InSocket (Socket):
     
@@ -66,12 +68,21 @@ class InSocket (Socket):
         
         return tmp
     
-    # - - getters / setters - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    def isPluggedWith (self, socket):  # TO UNIT-TEST
+        
+        try:
+            tmp = self._plugged_ins.index (socket)
+        except ValueError:
+            tmp = -1
+        
+        return False if tmp==-1 else True
+    
+    # - - getters / setters - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def getPluggedIns (self): return self._plugged_ins
 
 
-# -------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 class OutSocket (Socket):
     
@@ -108,6 +119,15 @@ class OutSocket (Socket):
         
         return tmp
     
-    # - - getters / setters - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    def isPluggedWith (self, socket):  # TO UNIT-TEST
+        
+        try:
+            tmp = self._plugged_outs.index (socket)
+        except ValueError:
+            tmp = -1
+        
+        return False if tmp==-1 else True
+    
+    # - - getters / setters - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def getPluggedOuts (self): return self._plugged_outs

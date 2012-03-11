@@ -23,6 +23,9 @@ class Harpoon0 (QGraphicsLineItem):
         self.x1 = x1
         self.y1 = y1
         
+        self.cx = 2
+        self.cy = 2
+        
     def boundingRect (self):
         
         return QtCore.QRectF (-1000, -1000, 2000, 2000)
@@ -38,13 +41,13 @@ class Harpoon0 (QGraphicsLineItem):
         painter.setPen (grayPen)
         
         lines=[]
-        if option.levelOfDetail>=0.4: lines=[QLine (self.x0, self.y0, self.x1, self.y1)]
+        if option.levelOfDetail>=0.4: lines=[QLine (self.x0+self.cx, self.y0+self.cy, self.x1, self.y1)]
         painter.drawLines(lines)
     
     def setInitPos (self, pos):
         
-        self.x0 = pos.x()
-        self.y0 = pos.y()
+        self.x0 = pos.x()+self.cx
+        self.y0 = pos.y()+self.cy
         self.x1 = pos.x()
         self.y1 = pos.y()
         

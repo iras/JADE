@@ -108,7 +108,7 @@ class Graph ():
         for socket in node.getOuts ():
             tmp_list.append (socket.getSType())
         
-        return list (set(self.connections_map[node.getName()][0]) - set(tmp_list))
+        return list (set(self.connections_map[node.getName()][1]) - set(tmp_list))
     
     # - - -  links methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -127,5 +127,38 @@ class Graph ():
         self.comm.emitDeleteLinkMSignal (inSocket.getSId(), outSocket.getSId())
     
     # - - -  miscellanea  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    def areSocketsRelated (self, s1_id, s2_id):  # TO UNIT-TEST
+        
+        flag = False
+        
+        s1 = self.getSocket (s1_id)
+        s2 = self.getSocket (s2_id)
+        
+        if s1.isPluggedWith(s2) or s2.isPluggedWith(s1): flag=True
+        
+        return flag
+    
+    def getSocket (self, sid):  # TO UNIT-TEST
+        
+        s = None
+        
+        for node in self._node_list:
+            
+            if s==None:
+                
+                for socket in node.getIns ():
+                    if socket.getSId()==sid:
+                        s = socket
+                        break
+                
+                for socket in node.getOuts ():
+                    if socket.getSId()==sid:
+                        s = socket
+                        break
+            else:
+                break
+        
+        return s
     
     def setConnectionsMap (self, tmp):   self.connections_map=tmp

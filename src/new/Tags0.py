@@ -134,14 +134,14 @@ class Tag1 (QGraphicsItem):
                 if no_ins > no_outs : self.tag_height_in_units+=1
                 
                 # (2) duplicate the inSocket on top of the last one and scroll it down until it reaches its place
-                tmp = self.addInHook ()
+                tmp = self.addInHook (inSocketId)
                 # set off the animation
                 self.anim.setItem (tmp)
-                self.startOffAnim (0, no_ins)
+                self.startOffAnim (tmp, no_ins)
             
             else:
                 # generate the first inSocket and place it in the topmost place
-                tmp = self.addInHook ()
+                tmp = self.addInHook (inSocketId)
     
     def appendOutHook (self, node_id, outSocketId):
         
@@ -153,28 +153,28 @@ class Tag1 (QGraphicsItem):
             
             if no_outs>1:
                 
-                 # (1) if the rect isn't long enough then start an anim to make it long enough to host the new inSocket
-                if  no_outs > no_ins : self.tag_height_in_units+=1
+                # (1) if the rect isn't long enough then start an anim to make it long enough to host the new inSocket
+                if no_outs>no_ins : self.tag_height_in_units+=1
                 
                 # (2) duplicate the inSocket on top of the last one and scroll it down until it reaches its place
-                tmp = self.addOutHook ()
+                tmp = self.addOutHook (outSocketId)
                 # set off the animation
                 self.anim.setItem (tmp)
-                self.startOffAnim (70, no_outs)
+                self.startOffAnim (tmp, no_outs)
             
             else:
                 # generate the first inSocket and place it in the topmost place
-                tmp = self.addOutHook ()
+                tmp = self.addOutHook (outSocketId)
     
     
     
-    def startOffAnim (self, x, y):
+    def startOffAnim (self, item, y):
         
         self.tl.stop ()
         self.height_hook_platform = (y-2)*10
-        self.anim.setPosAt (0, QtCore.QPointF(x, self.height_hook_platform))
+        self.anim.setPosAt (0, QtCore.QPointF (item.x(), self.height_hook_platform))
         self.height_hook_platform += 10
-        self.anim.setPosAt (1, QtCore.QPointF(x, self.height_hook_platform))
+        self.anim.setPosAt (1, QtCore.QPointF (item.x(), self.height_hook_platform))
         self.tl.start ()
         self.update ()
     
@@ -182,18 +182,24 @@ class Tag1 (QGraphicsItem):
     
     
     
-    def addInHook (self):
+    def addInHook (self, socket_id):
         
         tmp_hook = hk.HookBox0 (self)
+        tmp_hook.setSocketId (socket_id)
+        tmp_hook.setHelper (self.helper)
+        tmp_hook.setPos (QPointF (0,0))
         tmp_hook.setParentItem (self)
         
         self.inHooks.append (tmp_hook)
         
         return tmp_hook
     
-    def addOutHook (self):
+    def addOutHook (self, socket_id):
         
-        tmp_hook = hk.HookBox0 (self)
+        tmp_hook = hk.HookBox0 (self, socket_id)
+        tmp_hook.setSocketId (socket_id)
+        tmp_hook.setHelper (self.helper)
+        tmp_hook.setPos (QPointF (70,0))
         tmp_hook.setParentItem (self)
         
         self.outHooks.append (tmp_hook)
@@ -242,11 +248,14 @@ class Tag1 (QGraphicsItem):
             pos = self.pos()
             self.comm.emitCtxMenuSignal (pos)
         
+        """
         if e.modifiers() & Qt.ShiftModifier:
             #e.ignore()
             self.harpoon.setInitPos (self.pos())
             self.harpoon.setVisible (True)
             self.harpoon.update ()
+        """
+        
         """
         # drag-n-drop behaviour : action
         
@@ -257,9 +266,16 @@ class Tag1 (QGraphicsItem):
             drag.setMimeData (md) 
             drag.start (Qt.MoveAction)
         """
+        
         QGraphicsItem.mousePressEvent (self, e)
         self.update ()
     
+    def mouseReleaseEvent (self, e):
+        
+        self.update ()
+        QGraphicsItem.mouseReleaseEvent (self, e)
+    
+    """
     def mouseMoveEvent (self, e):
         
         if e.modifiers () & Qt.ShiftModifier:
@@ -278,16 +294,11 @@ class Tag1 (QGraphicsItem):
         self.helper.initAndStartTimer ()
         
         QGraphicsItem.mouseReleaseEvent (self, e)
-    
+    """
     def hoverEnterEvent (self, e):
         
         # records the node_id in the helper's attribute.
         self.comm.setHoveredItemId (self.node_id)
-        
-        # deal with the harpoon.
-        if not self.helper.isTimerEnded():
-            self.setSelected (True)
-            self.helper.getMain().addLinkAndWirePressBtnListener ()
         
         self._text_item.setToolTip (self._text_item.toPlainText ())
         
@@ -305,8 +316,8 @@ class Tag1 (QGraphicsItem):
         print "dragEnterEvent: %s (event type: %d)" % (type(event), event.type())
         event.acceptProposedAction() 
     
-    def dragMoveEvent (self. e) : pass
-    def dragLeaveEvent (self. e): pass
+    def dragMoveEvent (self, e) : pass
+    def dragLeaveEvent (self, e): pass
     
     def dropEvent (self, e):
         print e.type ()
@@ -315,5 +326,7 @@ class Tag1 (QGraphicsItem):
     
     # - - -  getters/setters  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     
-    def getSId (self): return self.node_id
-    def getComm   (self): return self.comm
+    def getSId  (self): return self.node_id
+    def getComm (self): return self.comm
+    def getInHooks  (self): return self.inHooks
+    def getOutHooks (self): return self.outHooks

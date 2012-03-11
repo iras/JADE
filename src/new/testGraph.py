@@ -33,7 +33,7 @@ class TestGraph (unittest.TestCase):
         self.isRemoveLink_MSignalReceived = False
         
         map = {'stateBegun'    :[['type0_s', 'type1_s', 'type2_s', 'type3_s'],['type1_s']],
-               'triggerFire'   :[['type0_s', 'type4_s'],['type1_s', 'type2_s']],
+               'triggerFire'   :[['type0_s', 'type4_s'],['type1_s', 'type2_s', 'type3_s']],
                'stopAction'    :[['type1_s', 'type2_s'],[]],
                'restoreAction' :[[],['type1_s', 'type2_s']]}
         self.test_graph.setConnectionsMap (map)
@@ -185,16 +185,15 @@ class TestGraph (unittest.TestCase):
     def testGetOutsTypesLeft (self):
         
         self.node1 = self.test_graph.addNode ()
-        self.node1.setName ('stateBegun')
+        self.node1.setName ('triggerFire')
         
         n1sout1  = self.node1.addOut ('type3_s')
         n1sout2  = self.node1.addOut ('type1_s')
         
         result = self.test_graph.getOutsTypesLeft (self.node1.getId())
-
-        self.assertEqual (result[0], 'type0_s', 'received wrong outs type left.')
-        self.assertEqual (result[1], 'type2_s', 'received wrong outs type left.')
-        self.assertEqual (len(result), 2, 'received wrong amount of outs type left.')
+        
+        self.assertEqual (result[0], 'type2_s', 'received wrong outs type left.')
+        self.assertEqual (len(result), 1, 'received wrong amount of outs type left.')
 
     
 

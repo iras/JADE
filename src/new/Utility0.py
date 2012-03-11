@@ -19,6 +19,7 @@ class Helper (QObject):
         self.main  = MainWindow
         self.scene = scene
         self.graph = graph
+        self.graph_view = None
         
         self.ctimer = QTimer()
         
@@ -54,3 +55,6 @@ class Helper (QObject):
     def getMain  (self): return self.main
     def getTimer (self): return self.ctimer
     def isTimerEnded (self): return self.timer_flag
+    def getGraphView (self): return self.graph_view
+    
+    def setGraphView (self, gv): self.graph_view = gv

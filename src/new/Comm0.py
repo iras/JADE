@@ -25,7 +25,8 @@ class Comm0 (QObject):
         self.id_node_counter   = 0
         self.id_socket_counter = 0
         
-        self.hovered_item_id = None
+        self.hovered_node_id   = None
+        self.hovered_socket_id = None
     
     def getNewNodeId (self):
         
@@ -84,9 +85,14 @@ class Comm0 (QObject):
     
     # misc
     
+    def setHoveredSocketId (self, socket_id):
+        
+        print 'hovered socket : '+str(socket_id)
+        self.hovered_socket_id = socket_id
+    
     def setHoveredItemId (self, node_id):
         
-        print 'hovered '+str(node_id)
-        self.hovered_item_id = node_id
+        print 'hovered node : '+str(node_id)
+        self.hovered_node_id = node_id
     
-    def getHoveredItemId (self): return self.hovered_item_id
+    def getHoveredItemId (self): return self.hovered_node_id
