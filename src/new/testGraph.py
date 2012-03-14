@@ -156,7 +156,7 @@ class TestGraph (unittest.TestCase):
         
         self.test_graph.addLink (n1sin1, n2sout1)
         
-        self.test_graph.removeLink (n1sin1, n2sout1)
+        self.test_graph.removeLink (n1sin1.getSId(), n2sout1.getSId())
         self.assertTrue (self.isRemoveLink_MSignalReceived, 'not as true as it was expected to be.')
     
     def testGetNode (self):
@@ -195,7 +195,60 @@ class TestGraph (unittest.TestCase):
         self.assertEqual (result[0], 'type2_s', 'received wrong outs type left.')
         self.assertEqual (len(result), 1, 'received wrong amount of outs type left.')
 
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
+    def testGetSocket (self):
+        
+        self.node1 = self.test_graph.addNode ()
+        self.node2 = self.test_graph.addNode ()
+        self.node3 = self.test_graph.addNode ()
+        self.node4 = self.test_graph.addNode ()
+        self.node5 = self.test_graph.addNode ()
+        
+        # going to duplicate node1
+        # add sockets - in and out
+        n1sin1  = self.node1.addIn ('type0')
+        n1sin2  = self.node1.addIn ('type1')
+        n1sout1 = self.node1.addOut('type0')
+        
+        # add other nodes' sockets
+        n2sout1 = self.node2.addOut('type0')
+        n3sout1 = self.node3.addOut('type1')
+        n4sin1  = self.node4.addIn ('type0')
+        n5sin1  = self.node5.addIn ('type0')
+        
+        self.assertEqual (self.test_graph.getSocket (n4sin1.getSId()),  n4sin1, 'socket not found')
+        self.assertEqual (self.test_graph.getSocket (n1sin2.getSId()),  n1sin2, 'socket not found')
+        self.assertEqual (self.test_graph.getSocket (n5sin1.getSId()),  n5sin1, 'socket not found')
+        self.assertEqual (self.test_graph.getSocket (n3sout1.getSId()), n3sout1,'socket not found')
+    
+    def testAreSocketsRelated (self):
+        
+        self.node1 = self.test_graph.addNode ()
+        self.node2 = self.test_graph.addNode ()
+        self.node3 = self.test_graph.addNode ()
+        self.node4 = self.test_graph.addNode ()
+        self.node5 = self.test_graph.addNode ()
+        
+        # going to duplicate node1
+        # add sockets - in and out
+        n1sin1  = self.node1.addIn ('type0')
+        n1sin2  = self.node1.addIn ('type1')
+        n1sout1 = self.node1.addOut('type0')
+        
+        # add other nodes' sockets
+        n2sout1 = self.node2.addOut('type0')
+        n3sout1 = self.node3.addOut('type1')
+        n4sin1  = self.node4.addIn ('type0')
+        n5sin1  = self.node5.addIn ('type0')
+        
+        self.test_graph.addLink(n5sin1, n1sout1)
+        self.test_graph.addLink(n1sin2, n3sout1)
+        
+        self.assertTrue (self.test_graph.areSocketsRelated (n1sout1.getSId(), n5sin1.getSId()), 'unexpectedly unrelated.')
+        self.assertTrue (self.test_graph.areSocketsRelated (n1sin2.getSId(), n3sout1.getSId()), 'unexpectedly unrelated.')
+        self.assertFalse(self.test_graph.areSocketsRelated (n1sin2.getSId(), n1sout1.getSId()), 'unexpectedly unrelated.')
+        
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

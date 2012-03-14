@@ -91,6 +91,13 @@ class TestSocket (unittest.TestCase):
         self.assertTrue (self.i1.removePluggedIn (self.o1), 'received wrong boolean')
         self.assertEqual (len(self.i1.getPluggedIns()), 1, 'unexpected no. of items returned.')
     
+    def testIsPluggedWith_In (self):
+        
+        self.i1.addPluggedIn (self.o1)
+        self.assertTrue (self.i1.isPluggedWith(self.o1), 'unexpectedly not plugged in with the specified socket')
+        self.i1.removePluggedIn (self.o1)
+        self.assertFalse (self.i1.isPluggedWith(self.o1), 'unexpectedly still plugged in with the specified socket')
+    
     # OutSocket tests - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def testAddPluggedOutBasic (self):
@@ -146,6 +153,13 @@ class TestSocket (unittest.TestCase):
         self.o1.addPluggedOut (self.i3)
         self.assertTrue (self.o1.removePluggedOut (self.i1), 'received wrong boolean')
         self.assertEqual (len(self.o1.getPluggedOuts()), 1, 'unexpected no. of items returned.')
+    
+    def testIsPluggedWith_Out (self):
+        
+        self.o1.addPluggedOut (self.i1)
+        self.assertTrue (self.o1.isPluggedWith(self.i1), 'unexpectedly not plugged in with the specified socket')
+        self.o1.removePluggedOut (self.i1)
+        self.assertFalse (self.o1.isPluggedWith(self.i1), 'unexpectedly still plugged in with the specified socket')
 
         
 if __name__ == "__main__":

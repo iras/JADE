@@ -40,7 +40,7 @@ class MainWindow (QWidget):
         
         # wirings
         comm = self.graph_model.getComm ()
-        self.connect (comm, SIGNAL('addNode_MSignal(int)'),     self.graph_view.addTag)
+        self.connect (comm, SIGNAL('addNode_MSignal(int)'), self.graph_view.addTag)
         self.connect (comm, SIGNAL('addLink_MSignal(int,int)'), self.graph_view.addWire)
         
         #self.setMouseTracking (True)
@@ -70,6 +70,11 @@ class MainWindow (QWidget):
         self.temp_hovered_item_id = None
         self.first_click = False
     
+    def keyPressEvent (self, e):
+        
+        if e.key() == Qt.Key_Backspace:
+            self.graph_view.removeSelectedItems ()
+    
     def populateScene (self):
         
         self.graph_view.addNodeAndTag ()
@@ -87,7 +92,6 @@ class MainWindow (QWidget):
                     
                     self.prepareCtxMenu (left_list)
                     self.menu.popup (self.mapToGlobal (pos))
-            
             else:
                 left_list = self.graph_model.getOutsTypesLeft (self.temp_hovered_item_id)
                 if len(left_list)!=0:
@@ -110,19 +114,15 @@ class MainWindow (QWidget):
         if self.first_click==True:
             
             self.first_click=False
-            
             tag = self.graph_view.getTag (self.temp_hovered_item_id) # retrieve the tag the ctx menu was open above.
             
-            print 'addInSocket ',self.temp_hovered_item_id,value
             # the event released by adding an InSocket signal will trigger the Tag0's method appendInHook() as a result.
             self.graph_model.addInSocket (self.temp_hovered_item_id, value)
         else:
             
             self.first_click=True
-            
             tag = self.graph_view.getTag (self.temp_hovered_item_id) # retrieve the tag the ctx menu was open above.
             
-            print 'addOutSocket ',self.temp_hovered_item_id,value
             # the event released by adding an InSocket signal will trigger the Tag0's method appendOutHook as a result.
             self.graph_model.addOutSocket (self.temp_hovered_item_id, value)
     

@@ -18,6 +18,7 @@ class Socket ():
     
     def isPluggedWith (self, socket):
         raise Exception ("*** Method isPluggedWith (...) needs to be implemented.")
+    
     # - - getters / setters - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def getSId    (self): return self._sid
@@ -68,7 +69,7 @@ class InSocket (Socket):
         
         return tmp
     
-    def isPluggedWith (self, socket):  # TO UNIT-TEST
+    def isPluggedWith (self, socket):
         
         try:
             tmp = self._plugged_ins.index (socket)
@@ -119,7 +120,7 @@ class OutSocket (Socket):
         
         return tmp
     
-    def isPluggedWith (self, socket):  # TO UNIT-TEST
+    def isPluggedWith (self, socket):
         
         try:
             tmp = self._plugged_outs.index (socket)

@@ -143,7 +143,7 @@ class Node0 ():
         
         return tmp
     
-    def getAllOutsTypes (self):         # VERIFY ITS USEFULLNESS
+    def getAllOutsTypes (self):        # VERIFY ITS USEFULLNESS
         
         tmp = []
         for item in self._outs:

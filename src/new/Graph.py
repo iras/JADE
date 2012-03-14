@@ -20,7 +20,7 @@ class Graph ():
         
     def getComm (self): return self.comm
     
-    # - - -  nodes methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # - - -  nodes methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def addNode (self):
         
@@ -110,7 +110,7 @@ class Graph ():
         
         return list (set(self.connections_map[node.getName()][1]) - set(tmp_list))
     
-    # - - -  links methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # - - -  links methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def addLink (self, inSocket, outSocket):
         
@@ -119,16 +119,26 @@ class Graph ():
         
         self.comm.emitAddLinkMSignal (inSocket.getSId(), outSocket.getSId())
     
-    def removeLink (self, inSocket, outSocket):
+    def removeLink (self, s_in_id, s_out_id):
         
-        inSocket.removePluggedIn   (outSocket)
-        outSocket.removePluggedOut (inSocket)
-        
-        self.comm.emitDeleteLinkMSignal (inSocket.getSId(), outSocket.getSId())
+        if self.areSocketsRelated(s_in_id, s_out_id) == True:
+            
+            flag1 = False
+            flag2 = False
+            
+            s_in  = self.getSocket (s_in_id)
+            s_out = self.getSocket (s_out_id)
+            
+            if s_in.isPluggedWith (s_out):
+                flag1 = s_in.removePluggedIn   (s_out)
+                flag2 = s_out.removePluggedOut (s_in)
+            
+            if flag1==True and flag2==True:
+                self.comm.emitDeleteLinkMSignal (s_in_id, s_out_id)
     
     # - - -  miscellanea  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def areSocketsRelated (self, s1_id, s2_id):  # TO UNIT-TEST
+    def areSocketsRelated (self, s1_id, s2_id):
         
         flag = False
         
@@ -139,7 +149,7 @@ class Graph ():
         
         return flag
     
-    def getSocket (self, sid):  # TO UNIT-TEST
+    def getSocket (self, sid):
         
         s = None
         

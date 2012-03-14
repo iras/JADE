@@ -24,7 +24,15 @@ class GraphView ():
         
         self.graph   = graph
         self.utility = utility
+    
+    def removeSelectedItems (self):
         
+        # wires
+        tmp_ls = self.getListSelectedWires()
+        for wire in tmp_ls:
+            tmp_ls = wire.get2HooksIds ()
+            self.graph.removeLink (tmp_ls[0], tmp_ls[1])
+    
     # - Listeners from key pressing - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     def addNodeAndTagPressBtnListener (self): self.addNodeAndTag()
@@ -69,10 +77,7 @@ class GraphView ():
         comm = self.graph.getComm ()
         self.utility.connect (comm, SIGNAL('addInSocket_MSignal(int,int)'),  tag.appendInHook)
         self.utility.connect (comm, SIGNAL('addOutSocket_MSignal(int,int)'), tag.appendOutHook)
-        """
-        self.connect (self.graph.getComm (), SIGNAL('addLink_MSignal(int)'),    tag.addedLinkSignal)
-        self.connect (self.graph.getComm (), SIGNAL('deleteLink_MSignal(int)'), tag.deletedLinkSignal)
-        """
+        
         self._tag_list.append (tag)
         
         return tag
@@ -100,17 +105,17 @@ class GraphView ():
             else:
                 self.graph.addLink (s2, s1)
         else:
-            print 'Sockets must be of the opposite kind. No connection will be made.'
+            print 'Sockets must be one of each kind. No connection will be made now.'
     
     def addWire (self, s_in_id, s_out_id):
         
-        print 'Hello, I will extend the link now between ',s_in_id,' and ',s_out_id
+        print 'will extend the wire between ',s_in_id,' and ',s_out_id
         
         hook_in  = self.getHook (s_in_id)
         hook_out = self.getHook (s_out_id)
         wire_sin_sout = Wires0.Wire0 (hook_in, hook_out)
         self.utility.getScene().addItem (wire_sin_sout)
-        self.utility.connect (self.graph.getComm(), SIGNAL ('deleteNode_MSignal(int)'), wire_sin_sout.switchOffLink)
+        self.utility.connect (self.graph.getComm(), SIGNAL ('deleteLink_MSignal(int,int)'), wire_sin_sout.switchOffLink)
         self._wire_list.append (wire_sin_sout)
         
         # update the two tags in order to draw the link's line.

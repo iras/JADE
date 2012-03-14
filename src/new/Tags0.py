@@ -217,28 +217,6 @@ class Tag1 (QGraphicsItem):
     
     # - - -  listeners  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def addedLinkSignal (self, node_id): # TO BE REMOVED ?
-        
-        if node_id==self.node_id:
-            
-            self.tl.stop ()
-            self.anim.setPosAt (0, QtCore.QPointF(1, self.height_hook_platform))
-            self.height_hook_platform += 5
-            self.anim.setPosAt (1, QtCore.QPointF(1, self.height_hook_platform))
-            self.tl.start ()
-            self.update ()
-    
-    def deletedLinkSignal (self, node_id): # TO BE REMOVED ?
-        
-        if node_id==self.node_id:
-            
-            self.tl.stop ()
-            self.anim.setPosAt (0, QtCore.QPointF(1, self.height_hook_platform))
-            self.height_hook_platform -= 5
-            self.anim.setPosAt (1, QtCore.QPointF(1, self.height_hook_platform))
-            self.tl.start ()
-            self.update ()
-    
     def mousePressEvent (self, e):
         
         #self.setAcceptedMouseButtons(Qt.NoButton)
@@ -247,14 +225,6 @@ class Tag1 (QGraphicsItem):
         if e.button() == Qt.RightButton:
             pos = self.pos()
             self.comm.emitCtxMenuSignal (pos)
-        
-        """
-        if e.modifiers() & Qt.ShiftModifier:
-            #e.ignore()
-            self.harpoon.setInitPos (self.pos())
-            self.harpoon.setVisible (True)
-            self.harpoon.update ()
-        """
         
         """
         # drag-n-drop behaviour : action
@@ -275,26 +245,6 @@ class Tag1 (QGraphicsItem):
         self.update ()
         QGraphicsItem.mouseReleaseEvent (self, e)
     
-    """
-    def mouseMoveEvent (self, e):
-        
-        if e.modifiers () & Qt.ShiftModifier:
-            
-            self.harpoon.setEndPos (e.pos()+self.pos())
-            self.harpoon.update ()
-        
-        else:
-            QGraphicsItem.mouseMoveEvent (self, e)
-    
-    def mouseReleaseEvent (self, e):
-        
-        self.harpoon.setVisible (False)
-        self.update ()
-        
-        self.helper.initAndStartTimer ()
-        
-        QGraphicsItem.mouseReleaseEvent (self, e)
-    """
     def hoverEnterEvent (self, e):
         
         # records the node_id in the helper's attribute.
