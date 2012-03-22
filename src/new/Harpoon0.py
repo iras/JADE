@@ -1,7 +1,7 @@
 '''
 Created on Feb 11, 2012
 
-@author: macbookpro
+@author: ivanoras
 '''
 
 from PyQt4.QtCore import *

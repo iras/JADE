@@ -43,7 +43,7 @@ class Wire0 (QGraphicsLineItem):
         self.setAcceptHoverEvents (True)
         self.setActive(True)
         
-        self.wire_pen = QPen(Qt.gray, 2, Qt.DashLine, Qt.RoundCap, Qt.RoundJoin) # Qt.SolidLine
+        self.wire_pen = QPen(Qt.gray, 2, Qt.SolidLine) # Qt.SolidLine
     
     def paint (self, painter, option, unused_widget):
         
@@ -93,8 +93,8 @@ class Wire0 (QGraphicsLineItem):
     
     def switchOffLink (self, s_in_id, s_out_id):
         
-        print 'switchOffLink !'
-        if self.s_in.getSocketId()==s_in_id or self.s_out.getSocketId()==s_out_id:
+        if self.s_in.getSocketId()==s_in_id and self.s_out.getSocketId()==s_out_id:
+            print 'switchOffLink : ', self.s_in.getSocketId(), self.s_out.getSocketId()
             self.setVisible (False)
     
     # - - -  getters/setters  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

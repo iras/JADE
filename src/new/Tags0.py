@@ -58,12 +58,6 @@ class Tag1 (QGraphicsItem):
         self._text_item.setTextWidth(50)
         self._text_item.setToolTip(self._text_item.toPlainText ())
         #self._text_item.setHtml("<h2 align=\"center\">hello</h2><h2 align=\"center\">world 1234345345</h2>123");
-        
-        # init animation tweening
-        self.tl = QtCore.QTimeLine (500)
-        self.tl.setFrameRange (0, 100)
-        self.anim = QtGui.QGraphicsItemAnimation ()
-        self.anim.setTimeLine (self.tl)
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
@@ -112,6 +106,37 @@ class Tag1 (QGraphicsItem):
     
     def remove (self): self.setVisible (False)
     
+    def scrollRestOfHooksUp (self, rail, s_id):
+        
+        tmp_ls = self.findHookPos (rail, s_id)
+        
+        print 'scrollRestOfHooksUp', self.node_id
+    
+    def findHookPos (self, rail, s_id):
+        
+        marker = False
+        tmp_index = None
+        
+        if rail=='in':
+            
+            ilen = len (self.inHooks)
+            for i in range (0, ilen):
+                cond = self.inHooks[i].getSocketId()==s_id
+                if cond==True : marker=True
+                if marker==True and cond==False: self.inHooks[i].moveUp (i)
+        
+        elif rail=='out':
+            
+            olen = len (self.outHooks)
+            for i in range (0, olen):
+                cond = self.outHooks[i].getSocketId()==s_id
+                if cond==True : marker=True
+                if marker==True and cond==False: self.outHooks[i].moveUp (i)
+        else:
+            print 'ERROR : there''s no more than two rails for sockets'
+        
+        return [marker, tmp_index]
+    
     # - - -  miscellanea  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     
@@ -136,8 +161,7 @@ class Tag1 (QGraphicsItem):
                 # (2) duplicate the inSocket on top of the last one and scroll it down until it reaches its place
                 tmp = self.addInHook (inSocketId)
                 # set off the animation
-                self.anim.setItem (tmp)
-                self.startOffAnim (tmp, no_ins)
+                tmp.startOffAnim (no_ins)
             
             else:
                 # generate the first inSocket and place it in the topmost place
@@ -159,52 +183,39 @@ class Tag1 (QGraphicsItem):
                 # (2) duplicate the inSocket on top of the last one and scroll it down until it reaches its place
                 tmp = self.addOutHook (outSocketId)
                 # set off the animation
-                self.anim.setItem (tmp)
-                self.startOffAnim (tmp, no_outs)
+                tmp.startOffAnim (no_outs)
             
             else:
                 # generate the first inSocket and place it in the topmost place
                 tmp = self.addOutHook (outSocketId)
     
-    
-    
-    def startOffAnim (self, item, y):
-        
-        self.tl.stop ()
-        self.height_hook_platform = (y-2)*10
-        self.anim.setPosAt (0, QtCore.QPointF (item.x(), self.height_hook_platform))
-        self.height_hook_platform += 10
-        self.anim.setPosAt (1, QtCore.QPointF (item.x(), self.height_hook_platform))
-        self.tl.start ()
-        self.update ()
-    
-    
-    
-    
-    
     def addInHook (self, socket_id):
         
-        tmp_hook = hk.HookBox0 (self)
-        tmp_hook.setSocketId (socket_id)
-        tmp_hook.setHelper (self.helper)
-        tmp_hook.setPos (QPointF (0,0))
-        tmp_hook.setParentItem (self)
+        hook = hk.HookBox0 (self)
+        hook.setSocketId (socket_id)
+        hook.setHookType ('in')
+        hook.setHelper (self.helper)
+        self.helper.connect (self.comm, SIGNAL ('deleteInSocket_MSignal (int,int)'), hook.switchOffHook)
+        hook.setPos (QPointF (0,0))
+        hook.setParentItem (self)
         
-        self.inHooks.append (tmp_hook)
+        self.inHooks.append (hook)
         
-        return tmp_hook
+        return hook
     
     def addOutHook (self, socket_id):
         
-        tmp_hook = hk.HookBox0 (self, socket_id)
-        tmp_hook.setSocketId (socket_id)
-        tmp_hook.setHelper (self.helper)
-        tmp_hook.setPos (QPointF (70,0))
-        tmp_hook.setParentItem (self)
+        hook = hk.HookBox0 (self)
+        hook.setSocketId (socket_id)
+        hook.setHookType ('out')
+        hook.setHelper (self.helper)
+        self.helper.connect (self.comm, SIGNAL ('deleteOutSocket_MSignal (int,int)'), hook.switchOffHook)
+        hook.setPos (QPointF (70,0))
+        hook.setParentItem (self)
         
-        self.outHooks.append (tmp_hook)
+        self.outHooks.append (hook)
         
-        return tmp_hook
+        return hook
     
     def removeInHook  (self) : pass
     def removeOutHook (self) : pass

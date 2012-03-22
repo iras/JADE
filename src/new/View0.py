@@ -71,6 +71,10 @@ class View (QFrame):
         self.printOutBtn.setText ("print graph")
         self.printOutBtn.setEnabled (True)
         
+        self.browseRulesBtn = QPushButton()
+        self.browseRulesBtn.setText ("browse rules file")
+        self.browseRulesBtn.setEnabled (True)
+        
         self.resetButton = QToolButton ()
         self.resetButton.setText ("0")
         self.resetButton.setEnabled (False)
@@ -83,6 +87,7 @@ class View (QFrame):
         labelLayout.addWidget (self.addLinkBtn)
         labelLayout.addWidget (self.removeLinkBtn)
         labelLayout.addWidget (self.printOutBtn)
+        labelLayout.addWidget (self.browseRulesBtn)
         
         labelLayout.addWidget (self.label)
         labelLayout.addStretch ()
@@ -132,6 +137,15 @@ class View (QFrame):
         qqq = QPainter (self.printer)
         self.graphicsView.render(qqq)
     
+    def getRulesPath (self):
+                
+        #logfile = open (QFileDialog.getOpenFileName (self, QString("Choose a rule file"), QString(""), QString("")), 'r')
+        #logfile.close ()
+        
+        #print logfile
+        
+        print str(QFileDialog.getOpenFileName (self, QString("Choose a rule file"), QString(""), QString("")))
+    
     def zoomIn  (self) : self.zoomSlider.setValue (self.zoomSlider.value() + 1)
     def zoomOut (self) : self.zoomSlider.setValue (self.zoomSlider.value() - 1)
 
@@ -141,8 +155,9 @@ class View (QFrame):
         
         self.graph_view = graph_view
         
-        self.connect (self.addNodeBtn,    SIGNAL ("clicked()"), self.graph_view.addNodeAndTagPressBtnListener)
-        self.connect (self.removeNodeBtn, SIGNAL ("clicked()"), self.graph_view.removeNodeAndTagPressBtnListener)
-        self.connect (self.addLinkBtn,    SIGNAL ("clicked()"), self.graph_view.addLinkAndWirePressBtnListener)
-        self.connect (self.removeLinkBtn, SIGNAL ("clicked()"), self.graph_view.removeLinkAndWirePressBtnListener)
-        self.connect (self.printOutBtn,   SIGNAL ("clicked()"), self.printOutGraph)
+        self.connect (self.addNodeBtn,     SIGNAL ("clicked()"), self.graph_view.addNodeAndTagPressBtnListener)
+        self.connect (self.removeNodeBtn,  SIGNAL ("clicked()"), self.graph_view.removeNodeAndTagPressBtnListener)
+        self.connect (self.addLinkBtn,     SIGNAL ("clicked()"), self.graph_view.addLinkAndWirePressBtnListener)
+        self.connect (self.removeLinkBtn,  SIGNAL ("clicked()"), self.graph_view.removeLinkAndWirePressBtnListener)
+        self.connect (self.printOutBtn,    SIGNAL ("clicked()"), self.printOutGraph)
+        self.connect (self.browseRulesBtn, SIGNAL ("clicked()"), self.getRulesPath)

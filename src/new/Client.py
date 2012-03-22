@@ -36,12 +36,13 @@ class MainWindow (QWidget):
         # wiring Contextual Menu
         self.menu = QMenu ()
         self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.connect (self ,SIGNAL('customContextMenuRequested(QPoint)'), self.ctxMenu)
+        self.connect (self, SIGNAL('customContextMenuRequested(QPoint)'), self.ctxMenu)
         
         # wirings
         comm = self.graph_model.getComm ()
-        self.connect (comm, SIGNAL('addNode_MSignal(int)'), self.graph_view.addTag)
-        self.connect (comm, SIGNAL('addLink_MSignal(int,int)'), self.graph_view.addWire)
+        self.connect (comm, SIGNAL('addNode_MSignal(int)'),        self.graph_view.addTag)
+        self.connect (comm, SIGNAL('addLink_MSignal(int,int)'),    self.graph_view.addWire)
+        self.connect (comm, SIGNAL('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
         
         #self.setMouseTracking (True)
         #self.setAttribute(Qt.WA_Hover)
@@ -67,7 +68,7 @@ class MainWindow (QWidget):
         
         self.scene.addItem (self.helper.getHarpoon ())
         
-        self.temp_hovered_item_id = None
+        self.hovered_tag_id = None
         self.first_click = False
     
     def keyPressEvent (self, e):
@@ -83,17 +84,17 @@ class MainWindow (QWidget):
     
     def ctxMenu (self, pos):
         
-        self.temp_hovered_item_id = self.graph_model.getComm().getHoveredItemId()
+        self.hovered_tag_id = self.graph_model.getComm().getHoveredItemId()
         
-        if self.temp_hovered_item_id!=None:
+        if self.hovered_tag_id!=None:
             if self.first_click==True:
-                left_list = self.graph_model.getInsTypesLeft (self.temp_hovered_item_id)
+                left_list = self.graph_model.getInsTypesLeft (self.hovered_tag_id)
                 if len(left_list)!=0:
                     
                     self.prepareCtxMenu (left_list)
                     self.menu.popup (self.mapToGlobal (pos))
             else:
-                left_list = self.graph_model.getOutsTypesLeft (self.temp_hovered_item_id)
+                left_list = self.graph_model.getOutsTypesLeft (self.hovered_tag_id)
                 if len(left_list)!=0:
                     
                     self.prepareCtxMenu (left_list)
@@ -107,24 +108,24 @@ class MainWindow (QWidget):
         for i in list0:
             tmp = self.menu.addAction(i)
             receiver = lambda value=i: self.addSocketAction (value)
-            self.connect(tmp, QtCore.SIGNAL('triggered()'), receiver)
+            self.connect (tmp, QtCore.SIGNAL('triggered()'), receiver)
     
     def addSocketAction (self, value):
         
         if self.first_click==True:
             
             self.first_click=False
-            tag = self.graph_view.getTag (self.temp_hovered_item_id) # retrieve the tag the ctx menu was open above.
+            tag = self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
             
             # the event released by adding an InSocket signal will trigger the Tag0's method appendInHook() as a result.
-            self.graph_model.addInSocket (self.temp_hovered_item_id, value)
+            self.graph_model.addInSocket (self.hovered_tag_id, value)
         else:
             
             self.first_click=True
-            tag = self.graph_view.getTag (self.temp_hovered_item_id) # retrieve the tag the ctx menu was open above.
+            tag = self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
             
             # the event released by adding an InSocket signal will trigger the Tag0's method appendOutHook as a result.
-            self.graph_model.addOutSocket (self.temp_hovered_item_id, value)
+            self.graph_model.addOutSocket (self.hovered_tag_id, value)
     
     def initConnectionsMap (self):
         

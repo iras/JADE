@@ -17,13 +17,16 @@ class Socket ():
         self._attributes = []
     
     def isPluggedWith (self, socket):
-        raise Exception ("*** Method isPluggedWith (...) needs to be implemented.")
+        raise Exception ("*** Method isPluggedWith (...) needs implementing.")
+    
+    def isEmpty (self):
+        raise Exception ("*** Method isEmpty () needs implementing.")
     
     # - - getters / setters - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def getSId    (self): return self._sid
-    def getNodeId (self): return self._node
-    def getSType  (self): return self._stype
+    def getSId   (self): return self._sid
+    def getNode  (self): return self._node
+    def getSType (self): return self._stype
     
     def getAttributes (self): return self._attributes
     
@@ -78,6 +81,15 @@ class InSocket (Socket):
         
         return False if tmp==-1 else True
     
+    def isEmpty (self):
+        
+        flag = False
+        
+        if len(self._plugged_ins)==0:
+            flag=True
+        
+        return flag
+    
     # - - getters / setters - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def getPluggedIns (self): return self._plugged_ins
@@ -128,6 +140,15 @@ class OutSocket (Socket):
             tmp = -1
         
         return False if tmp==-1 else True
+    
+    def isEmpty (self):
+        
+        flag = False
+        
+        if len(self._plugged_outs)==0:
+            flag=True
+        
+        return flag
     
     # - - getters / setters - - - - - - - - - - - - - - - - - - - - - - - - -
     

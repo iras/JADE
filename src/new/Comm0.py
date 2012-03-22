@@ -54,6 +54,7 @@ class Comm0 (QObject):
         self.emit (SIGNAL ('addLink_MSignal(int, int)'), inSocket_id, outSocket_id)
         
     def emitDeleteLinkMSignal (self, inSocket_id, outSocket_id):
+        print '*** just shot delete ', inSocket_id, outSocket_id
         self.emit (SIGNAL ('deleteLink_MSignal(int, int)'), inSocket_id, outSocket_id)
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 

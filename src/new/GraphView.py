@@ -27,11 +27,15 @@ class GraphView ():
     
     def removeSelectedItems (self):
         
-        # wires
+        # remove wires
         tmp_ls = self.getListSelectedWires()
+        print tmp_ls
         for wire in tmp_ls:
-            tmp_ls = wire.get2HooksIds ()
-            self.graph.removeLink (tmp_ls[0], tmp_ls[1])
+            ls = wire.get2HooksIds ()
+            self.graph.removeLink (ls[0], ls[1])
+        
+        # remove tags
+        pass
     
     # - Listeners from key pressing - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -63,6 +67,16 @@ class GraphView ():
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
+    def checkIfEmpty (self, s_in_id, s_out_id):
+        
+        s_in = self.graph.getSocket (s_in_id)
+        s_out= self.graph.getSocket (s_out_id)
+        
+        if s_in.isEmpty ()==True: s_in.getNode ().removeIn (s_in)
+        if s_out.isEmpty()==True: s_out.getNode().removeOut(s_out)
+    
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
     def addNodeAndTag (self):
         tmp = self.graph.addNode ()
         tmp.setName ('stateBegun')
@@ -75,7 +89,7 @@ class GraphView ():
         self.utility.getScene().addItem (tag)
         
         comm = self.graph.getComm ()
-        self.utility.connect (comm, SIGNAL('addInSocket_MSignal(int,int)'),  tag.appendInHook)
+        self.utility.connect (comm, SIGNAL('addInSocket_MSignal (int,int)'), tag.appendInHook)
         self.utility.connect (comm, SIGNAL('addOutSocket_MSignal(int,int)'), tag.appendOutHook)
         
         self._tag_list.append (tag)

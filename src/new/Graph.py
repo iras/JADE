@@ -121,7 +121,7 @@ class Graph ():
     
     def removeLink (self, s_in_id, s_out_id):
         
-        if self.areSocketsRelated(s_in_id, s_out_id) == True:
+        if self.areSocketsRelated (s_in_id, s_out_id) == True:
             
             flag1 = False
             flag2 = False

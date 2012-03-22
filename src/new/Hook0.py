@@ -23,9 +23,17 @@ class HookBox0 (QGraphicsItem):
         self.setFlags (QGraphicsItem.ItemIsSelectable)
         self.setAcceptsHoverEvents (True)
         
-        self.pen_color = QPen (Qt.darkRed)
+        self.pen_color = QPen (Qt.black, 2)
         
         self.socket_id = None
+        self.hookType  = None
+        
+        # init Hook Animation Tweening
+        self.tl = QtCore.QTimeLine (500)
+        self.tl.setFrameRange (0, 100)
+        self.anim = QtGui.QGraphicsItemAnimation ()
+        self.anim.setItem (self)
+        self.anim.setTimeLine (self.tl)
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
@@ -37,17 +45,42 @@ class HookBox0 (QGraphicsItem):
     
     def paint (self, painter, option, unused_widget):
         
-        painter.setBrush (QBrush (Qt.darkCyan))
+        painter.setBrush (QBrush (Qt.white))
         painter.setPen   (self.pen_color)
         
-        painter.drawEllipse(1, 1, 8 ,8)
+        painter.drawEllipse (1, 1, 8 ,8)
+    
+    def startOffAnim (self, y):
+        
+        self.tl.stop ()
+        self.height_hook_platform = (y-2)*10
+        self.anim.setPosAt (0, QtCore.QPointF (self.x(), self.height_hook_platform))
+        self.height_hook_platform += 10
+        self.anim.setPosAt (1, QtCore.QPointF (self.x(), self.height_hook_platform))
+        self.tl.start ()
+        self.update ()
+    
+    def moveUp (self, y):
+        
+        self.tl.stop ()
+        self.height_hook_platform = float(self.y())
+        self.anim.setPosAt (0, QtCore.QPointF (self.x(), self.height_hook_platform))
+        self.height_hook_platform -= 10
+        self.anim.setPosAt (1, QtCore.QPointF (self.x(), self.height_hook_platform))
+        self.tl.start ()
+        self.update ()
+    
+    def switchOffHook (self, node_id, socket_id):
+        
+        if self.socket_id==socket_id:
+            self.parent.scrollRestOfHooksUp (self.hookType, self.socket_id)
+            self.setVisible (False)
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    
     def hoverEnterEvent (self, e):
         
-        self.pen_color = QPen (Qt.red)
+        self.pen_color = QPen (Qt.red, 2)
         self.update ()
         
         # records the node_id in the helper's attribute.
@@ -64,7 +97,7 @@ class HookBox0 (QGraphicsItem):
     
     def hoverLeaveEvent (self, e):
         
-        self.pen_color = QPen (Qt.darkRed)
+        self.pen_color = QPen (Qt.black, 2)
         self.update ()
         
         # records the node_id in the helper's attribute.
@@ -102,6 +135,7 @@ class HookBox0 (QGraphicsItem):
     def setSocketId (self, socket_id) : self.socket_id = socket_id
     def getSocketId (self): return self.socket_id
     
+    def setHookType (self, htype): self.hookType = htype
     def setHelper (self, helper):
         
         self.helper  = helper
