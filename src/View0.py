@@ -59,14 +59,6 @@ class View (QFrame):
         self.removeNodeBtn.setText ("remove node")
         self.removeNodeBtn.setEnabled (True)
         
-        self.addLinkBtn = QPushButton()
-        self.addLinkBtn.setText ("add link")
-        self.addLinkBtn.setEnabled (True)
-        
-        self.removeLinkBtn = QPushButton()
-        self.removeLinkBtn.setText ("remove link")
-        self.removeLinkBtn.setEnabled (True)
-        
         self.printOutBtn = QPushButton()
         self.printOutBtn.setText ("print graph")
         self.printOutBtn.setEnabled (True)
@@ -84,8 +76,6 @@ class View (QFrame):
         self.label = QLabel (name)
         labelLayout.addWidget (self.addNodeBtn)
         labelLayout.addWidget (self.removeNodeBtn)
-        labelLayout.addWidget (self.addLinkBtn)
-        labelLayout.addWidget (self.removeLinkBtn)
         labelLayout.addWidget (self.printOutBtn)
         labelLayout.addWidget (self.browseRulesBtn)
         
@@ -138,13 +128,9 @@ class View (QFrame):
         self.graphicsView.render(qqq)
     
     def getRulesPath (self):
-                
-        #logfile = open (QFileDialog.getOpenFileName (self, QString("Choose a rule file"), QString(""), QString("")), 'r')
-        #logfile.close ()
         
-        #print logfile
-        
-        print str(QFileDialog.getOpenFileName (self, QString("Choose a rule file"), QString(""), QString("")))
+        fd = QtGui.QFileDialog (self)
+        self.graph_view.setRules (open(fd.getOpenFileName()).read())
     
     def zoomIn  (self) : self.zoomSlider.setValue (self.zoomSlider.value() + 1)
     def zoomOut (self) : self.zoomSlider.setValue (self.zoomSlider.value() - 1)
@@ -157,7 +143,5 @@ class View (QFrame):
         
         self.connect (self.addNodeBtn,     SIGNAL ("clicked()"), self.graph_view.addNodeAndTagPressBtnListener)
         self.connect (self.removeNodeBtn,  SIGNAL ("clicked()"), self.graph_view.removeNodeAndTagPressBtnListener)
-        self.connect (self.addLinkBtn,     SIGNAL ("clicked()"), self.graph_view.addLinkAndWirePressBtnListener)
-        self.connect (self.removeLinkBtn,  SIGNAL ("clicked()"), self.graph_view.removeLinkAndWirePressBtnListener)
         self.connect (self.printOutBtn,    SIGNAL ("clicked()"), self.printOutGraph)
         self.connect (self.browseRulesBtn, SIGNAL ("clicked()"), self.getRulesPath)

@@ -72,8 +72,8 @@ class Node0 ():
                 
                 # (1) clear all the references to the current inSocket
                 for outSocket in inSocket.getPluggedIns():
-                    self.comm.emitDeleteLinkMSignal (inSocket.getId(), outSocket.getSId())
-                    outSocket.removePluggedOut (self)
+                    outSocket.removePluggedOut (inSocket)
+                    self.comm.emitDeleteLinkMSignal (inSocket.getSId(), outSocket.getSId())
                 
                 # (1b) clear the references to all the outSockets
                 pluggedInList = inSocket.getPluggedIns ()
@@ -97,8 +97,8 @@ class Node0 ():
                 
                 # (1) clear all the references to the current outSocket.
                 for inSocket in outSocket.getPluggedOuts():
-                    self.comm.emitDeleteLinkMSignal (inSocket.getId(), outSocket.getSId())
-                    inSocket.removePluggedIn (self)
+                    inSocket.removePluggedIn (outSocket)
+                    self.comm.emitDeleteLinkMSignal (inSocket.getSId(), outSocket.getSId())
                 
                 # (1b) clear the references to all the inSockets
                 pluggedOutList = outSocket.getPluggedOuts ()

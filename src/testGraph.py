@@ -36,7 +36,7 @@ class TestGraph (unittest.TestCase):
                'triggerFire'   :[['type0_s', 'type4_s'],['type1_s', 'type2_s', 'type3_s']],
                'stopAction'    :[['type1_s', 'type2_s'],[]],
                'restoreAction' :[[],['type1_s', 'type2_s']]}
-        self.test_graph.setConnectionsMap (map)
+        self.test_graph.connections_map = map
     
     def tearDown(self):
         pass

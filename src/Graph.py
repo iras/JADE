@@ -3,9 +3,12 @@ Created on Feb 18, 2012
 
 @author: ivanoras
 '''
+from xml.dom import minidom
+from xml.dom.minidom import parseString
 
 import Nodes0 as nd
 import Comm0
+
 
 
 class Graph ():
@@ -72,13 +75,13 @@ class Graph ():
     
     def addInSocket (self, node_id, stype):
         
-        node = self.getNode(node_id)
+        node = self.getNode (node_id)
         if node!=None:
             node.addIn (stype)
     
     def addOutSocket (self, node_id, stype):
         
-        node = self.getNode(node_id)
+        node = self.getNode (node_id)
         if node!=None:
             node.addOut (stype)
     
@@ -171,4 +174,33 @@ class Graph ():
         
         return s
     
-    def setConnectionsMap (self, tmp):   self.connections_map=tmp
+    def setRules (self, text_xml):
+        
+        self.xml_rules_table = parseString(text_xml)
+        
+        self.node_rules_XMLList = self.xml_rules_table.getElementsByTagName ('muffin')
+        
+        for item in self.node_rules_XMLList:
+                        
+            node_name = item.getElementsByTagName ('class')[0].firstChild.data
+            tmp_ls = node_name.split('.')
+            node_name = str(tmp_ls[-1])
+            
+            inputs_ls = []
+            self.inputs_XMLList  = item.getElementsByTagName ('input')
+            for item_input in self.inputs_XMLList:
+                if item_input.getElementsByTagName ('type')[0].firstChild.data == 'IConnector':
+                    inputs_ls.append (str(item_input.getElementsByTagName ('name')[0].firstChild.data))
+            
+            outputs_ls = []
+            self.outputs_XMLList  = item.getElementsByTagName ('output')
+            for item_output in self.outputs_XMLList:
+                if item_output.getElementsByTagName ('type')[0].firstChild.data == 'IConnector':
+                    outputs_ls.append (str(item_output.getElementsByTagName ('name')[0].firstChild.data))
+            
+            self.connections_map[node_name] = [list(inputs_ls), list(outputs_ls)]
+            
+        print self.connections_map
+    
+    def getRules (self): return self.connections_map
+

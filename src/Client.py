@@ -1,5 +1,7 @@
 '''
-Created on Jan 18, 2012
+JADE mapping tool
+
+Created on Feb 23, 2012
 
 @author: ivanoras
 '''
@@ -9,13 +11,12 @@ from PyQt4.QtGui import *
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 
-import Utility
+import View0
 
-import Tags
-import Wires
-import View
-import Model as md
-import Harpoon as hp
+import Graph as gr
+import GraphView as grv
+import Utility0 as utility
+
 
 
 class MainWindow (QWidget):
@@ -24,12 +25,28 @@ class MainWindow (QWidget):
         
         QWidget.__init__ (self, parent)
         
-        self.graph = graph
+        self.scene = QGraphicsScene()
+        
+        self.graph_model = graph
+        self.helper = utility.Helper (self, self.scene, self.graph_model)
+        self.graph_view  = grv.GraphView (self.graph_model, self.helper)
+        self.helper.setGraphView (self.graph_view)
+        
+        # wiring Contextual Menu
+        self.menu = QMenu ()
+        self.setContextMenuPolicy (Qt.CustomContextMenu)
+        self.connect (self, SIGNAL('customContextMenuRequested(QPoint)'), self.ctxMenu)
+        
+        # wirings
+        comm = self.graph_model.getComm ()
+        self.connect (comm, SIGNAL('addNode_MSignal(int)'),        self.graph_view.addTag)
+        self.connect (comm, SIGNAL('deleteNode_MSignal(int)'),     self.graph_view.removeTag)
+        self.connect (comm, SIGNAL('addLink_MSignal(int,int)'),    self.graph_view.addWire)
+        self.connect (comm, SIGNAL('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
         
         #self.setMouseTracking (True)
         #self.setAttribute(Qt.WA_Hover)
         
-        self.scene = QGraphicsScene()
         self.populateScene ()
         
         self.hSplit = QSplitter ()
@@ -38,8 +55,8 @@ class MainWindow (QWidget):
         vSplit.setOrientation (Qt.Vertical)
         vSplit.addWidget (self.hSplit)
         
-        view = View.View ("Main view")
-        view.setClientAndWireViewItems (self)
+        view = View0.View ("Main view")
+        view.setClientAndWireViewItems (self.graph_view)
         view.view().setScene (self.scene)
         self.hSplit.addWidget (view)
         
@@ -48,163 +65,104 @@ class MainWindow (QWidget):
         self.setLayout (layout)
         
         self.setWindowTitle("Just Another DEpendency mapping tool")
+        
+        self.scene.addItem (self.helper.getHarpoon ())
+        
+        self.hovered_tag_id = None
+        self.first_click = False
+    
+    def keyPressEvent (self, e):
+        
+        if e.key() == Qt.Key_Backspace:
+            self.graph_view.removeSelectedItems ()
     
     def populateScene (self):
         
-        self.helper = Utility.Helper (self, self.scene)
-        
-        # init harpoon and make it invisible
-        self.harpoon = hp.Harpoon (0, 0, 0, 0)
-        self.harpoon.setVisible (False)
-        self.scene.addItem (self.harpoon)
-        
-        self._tag_list  = []
-        self._wire_list = []
-        
-        # Populate scene
-        t1 = self.addNodeAndTag (-100, -100)
-        t2 = self.addNodeAndTag (0, 0)
-        t3 = self.addNodeAndTag (-100, 100)
-        t4 = self.addNodeAndTag (100, -100)
-        t5 = self.addNodeAndTag (100, 100)
-        
-        #l11 = self.addLinkAndWire (t1, t1) # implement self-referencing
-        self.addLinkAndWire (t1, t2)
-        self.addLinkAndWire (t1, t3)
-        self.addLinkAndWire (t1, t4)
-        self.addLinkAndWire (t1, t5)
-        self.addLinkAndWire (t2, t3)
-        self.addLinkAndWire (t2, t4)
-        self.addLinkAndWire (t2, t5)
-        self.addLinkAndWire (t3, t4)
-        self.addLinkAndWire (t3, t5)
-        self.addLinkAndWire (t4, t5)
+        pass
     
-    def addNodeAndTagButtonHook (self): self.addNodeAndTag (20, 20)
-    def addNodeAndTag (self, x, y):
-        
-        node = model.addNode ()
-        
-        color = QColor (Qt.white).dark (120)
-        tag = Tags.Tag0 (self.harpoon, color, node.getId(), self.helper)
-        tag.setPos (QPointF (x, y))
-        self.scene.addItem (tag)
-        self.connect (model.getComm (), SIGNAL('addLink_MSignal(int)'),    tag.addedLinkSignal)
-        self.connect (model.getComm (), SIGNAL('deleteLink_MSignal(int)'), tag.deletedLinkSignal)
-        self._tag_list.append (tag)
-        
-        return tag
+    # - - -    context menu methods   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def removeNodeAndTagButtonHook (self):
+    def ctxMenu (self, pos):
         
-        self.removeNodeAndTag (self.getListSelectedTags ())
+        self.hovered_tag_id = self.graph_model.getComm().getHoveredItemId()
+        
+        if self.hovered_tag_id!=None:
+            if self.first_click==True:
+                left_list = self.graph_model.getInsTypesLeft (self.hovered_tag_id)
+                if len(left_list)!=0:
+                    
+                    self.prepareNodeCtxMenu (left_list)
+                    self.menu.popup (self.mapToGlobal (pos))
+            else:
+                left_list = self.graph_model.getOutsTypesLeft (self.hovered_tag_id)
+                if len(left_list)!=0:
+                    
+                    self.prepareNodeCtxMenu (left_list)
+                    self.menu.popup (self.mapToGlobal (pos))
+        
+        else:
+            # ctx menu to establish what node is going to be retrieved
+            tmp_ls = []
+            [tmp_ls.append(key) for key in self.graph_model.getRules()]
+            self.prepareGeneralCtxMenu (tmp_ls)
+            self.menu.popup (self.mapToGlobal (pos))
     
-    def removeNodeAndTag (self, tmp_list):
+    def prepareGeneralCtxMenu (self, list0):
         
-        for i in tmp_list:
-            nid = i.getNodeId ()
-            model.removeNode (nid)
-            self.removeTag   (nid)
-    
-    def addLinkAndWireButtonHook (self):
+        self.menu.clear()
         
-        ls = self.getListSelectedTags ()
-        if len(ls)==2 and not model.areNodesRelated (ls[0].getNodeId(), ls[1].getNodeId()):
-            self.addLinkAndWire (ls[0], ls[1])
-        
-            # take the focus away from the nodes
-            ls[0].setSelected (False)
-            ls[1].setSelected (False)
-    
-    def addLinkAndWire (self, tag1, tag2):
-        
-        link = model.addLink (tag1.getNodeId(), tag2.getNodeId ())
-        
-        link_tag1_tag2 = Wires.Wire (tag1, tag2, link.getId ())
-        self.scene.addItem (link_tag1_tag2)
-        self.connect (model.getComm(), SIGNAL ('deleteNode_MSignal(int)'), link_tag1_tag2.switchOffLink)
-        self._wire_list.append (link_tag1_tag2)
-        
-        # update the two tags in order to draw the link's line.
-        tag1.update ()
-        tag2.update ()
-        
-        return link_tag1_tag2
-    
-    def removeLinkAndWireButtonHook (self):
-        
-        ls = self.getListSelectedTags ()
-        tmp = self.findTheWireBetweenTwoTags (ls)
-        if tmp!=None:
-            self.removeLinkAndWire ([tmp])
-        
-            # take the focus away from the nodes
-            ls[0].setSelected(False)
-            ls[1].setSelected(False)
-    
-    def removeLinkAndWire (self, tmp_list):
-        
-        for i in tmp_list:
-            lid = i.getLinkId()
-            flag = model.removeLink (lid)
-            if flag:
-                self.removeWire  (lid)
-    
-    def removeTag (self, node_id):
-        
-        for tag in self._tag_list:
-            if tag.getNodeId()==node_id:
-                tag.remove ()
-                del self._tag_list [self._tag_list.index (tag)]
-                break
-    
-    def removeWire (self, link_id):
-        
-        for wire in self._wire_list:
-            if wire.getLinkId()==link_id:
-                wire.remove ()
-                del self._wire_list [self._wire_list.index (wire)]
-                break
-    
-    def findTheWireBetweenTwoTags (self, ls):
-        
-        tmp = None
-        if len(ls)==2:
-            n1_id = ls[0].getNodeId ()
-            n2_id = ls[1].getNodeId ()
+        # populate the QMenu dynamically and pass the menu string name to the receiver
+        for i in list0:
             
-            for item in self._wire_list:
-                wls = item.get2NodesIds ()
-                if (wls[0]==n1_id and wls[1]==n2_id) or (wls[1]==n1_id and wls[0]==n2_id):
-                    tmp = item
-                    break
-        return tmp
+            tmp = self.menu.addAction(i)
+            receiver = lambda value=i: self.addTag (value)
+            self.connect (tmp, QtCore.SIGNAL('triggered()'), receiver)
     
-    def getListSelectedTags (self):
+    def addTag (self, name0):
         
-        ls = []
-        [ls.append (item) for item in self._tag_list if item.isSelected ()]
-        return ls
+        tmp = self.graph_model.addNode ()
+        tmp.setName (name0)
     
-    def getListSelectedWires (self):
+    def prepareNodeCtxMenu (self, list0):
         
-        ls = []
-        [ls.append (item) for item in self._wire_list if item.isSelected ()]
-        return ls
+        self.menu.clear()
+        
+        # populate the QMenu dynamically and pass the menu string name to the receiver
+        for i in list0:
+            tmp = self.menu.addAction(i)
+            receiver = lambda value=i: self.addSocketAction (value)
+            self.connect (tmp, QtCore.SIGNAL('triggered()'), receiver)
+    
+    def addSocketAction (self, value):
+        
+        if self.first_click==True:
+            
+            self.first_click=False
+            tag = self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
+            
+            # the event released by adding an InSocket signal will trigger the Tag0's method appendInHook() as a result.
+            self.graph_model.addInSocket (self.hovered_tag_id, value)
+        else:
+            
+            self.first_click=True
+            tag = self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
+            
+            # the event released by adding an InSocket signal will trigger the Tag0's method appendOutHook as a result.
+            self.graph_model.addOutSocket (self.hovered_tag_id, value)
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def main (argv):
     
     app = QApplication(argv)
     
-    window = MainWindow   (model)
+    window = MainWindow   (gr.Graph())
     window.setWindowFlags (Qt.WindowStaysOnTopHint)
     window.show ()
     
     return app.exec_()
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-model = md.Model ()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if __name__ == "__main__":
     import sys

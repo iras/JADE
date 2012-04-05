@@ -9,6 +9,8 @@ from PyQt4.QtGui import *
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 
+import GText as gt
+
 
 class HookBox0 (QGraphicsItem):
 
@@ -27,6 +29,7 @@ class HookBox0 (QGraphicsItem):
         
         self.socket_id = None
         self.hookType  = None
+        self.hookName  = ''
         
         # init Hook Animation Tweening
         self.tl = QtCore.QTimeLine (500)
@@ -35,6 +38,25 @@ class HookBox0 (QGraphicsItem):
         self.anim.setItem (self)
         self.anim.setTimeLine (self.tl)
     
+    def setTextfield (self):
+        
+        tx = 8
+            
+        self._text_item = gt.GText (self.hookName, self)
+        self._text_item.setEnabled (False)
+        
+        if self.hookType=='out' :
+            tx=-40
+            tmp0 = QTextBlockFormat()
+            tmp0.setAlignment(Qt.AlignRight)
+            tmp = QTextCursor()
+            tmp.setBlockFormat(tmp0)
+            self._text_item.setTextCursor (tmp)
+        
+        self._text_item.setPos (QPointF (tx, -5))
+        self._text_item.setFont (QFont ("Geneva", 8, QFont.AllLowercase, False))
+        self._text_item.setTextWidth(70)
+        
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
     def shape (self):
@@ -72,7 +94,11 @@ class HookBox0 (QGraphicsItem):
     
     def switchOffHook (self, node_id, socket_id):
         
+        print self.socket_id, socket_id
         if self.socket_id==socket_id:
+            
+            print 'switch off'
+            
             self.parent.scrollRestOfHooksUp (self.hookType, self.socket_id)
             self.setVisible (False)
     
@@ -141,3 +167,8 @@ class HookBox0 (QGraphicsItem):
         self.helper  = helper
         self.comm    = self.helper.getGraph().getComm()
         self.harpoon = self.helper.getHarpoon()
+    
+    def setHookName (self, name0):
+        
+        self.hookName = name0
+        self.setTextfield()

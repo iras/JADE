@@ -31,9 +31,9 @@ class TestNode (unittest.TestCase):
         self.isRemoveOutSocket_MSignalReceived = False
         
         comm=self.test_graph.getComm ()
-        QObject.connect (comm, SIGNAL('addInSocket_MSignal(int,int)'),     self.addInSocket_MSignalListener)
-        QObject.connect (comm, SIGNAL('addOutSocket_MSignal(int,int)'),    self.addOutSocket_MSignalListener)
-        QObject.connect (comm, SIGNAL('deleteInSocket_MSignal(int,int)'),  self.removeInSocket_MSignalListener)
+        QObject.connect (comm, SIGNAL('addInSocket_MSignal(int,int)'),  self.addInSocket_MSignalListener)
+        QObject.connect (comm, SIGNAL('addOutSocket_MSignal(int,int)'),  self.addOutSocket_MSignalListener)
+        QObject.connect (comm, SIGNAL('deleteInSocket_MSignal(int,int)'), self.removeInSocket_MSignalListener)
         QObject.connect (comm, SIGNAL('deleteOutSocket_MSignal(int,int)'), self.removeOutSocket_MSignalListener)
     
     def tearDown (self):

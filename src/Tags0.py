@@ -109,8 +109,6 @@ class Tag1 (QGraphicsItem):
     def scrollRestOfHooksUp (self, rail, s_id):
         
         tmp_ls = self.findHookPos (rail, s_id)
-        
-        print 'scrollRestOfHooksUp', self.node_id
     
     def findHookPos (self, rail, s_id):
         
@@ -194,6 +192,7 @@ class Tag1 (QGraphicsItem):
         hook = hk.HookBox0 (self)
         hook.setSocketId (socket_id)
         hook.setHookType ('in')
+        hook.setHookName (self.helper.getGraph().getSocket(socket_id).getSType())
         hook.setHelper (self.helper)
         self.helper.connect (self.comm, SIGNAL ('deleteInSocket_MSignal (int,int)'), hook.switchOffHook)
         hook.setPos (QPointF (0,0))
@@ -208,6 +207,7 @@ class Tag1 (QGraphicsItem):
         hook = hk.HookBox0 (self)
         hook.setSocketId (socket_id)
         hook.setHookType ('out')
+        hook.setHookName (self.helper.getGraph().getSocket(socket_id).getSType())
         hook.setHelper (self.helper)
         self.helper.connect (self.comm, SIGNAL ('deleteOutSocket_MSignal (int,int)'), hook.switchOffHook)
         hook.setPos (QPointF (70,0))

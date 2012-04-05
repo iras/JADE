@@ -39,16 +39,14 @@ class GraphView ():
     
     # - Listeners from key pressing - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    def addNodeAndTagPressBtnListener (self): self.addNodeAndTag()
+    def addNodeAndTagPressBtnListener (self): self.addNodeAndTag('test')
     
     def removeNodeAndTagPressBtnListener (self):
         
-        # pop-up window
-        
-        #self.removeNodeAndTag (self.getListSelectedHooks ())
-        pass
+        for tag in self.getListSelectedTags ():
+            self.removeNodeAndTag (tag.getSId())
     
-    def addLinkAndWirePressBtnListener (self):
+    def addLinkAndWirePressBtnListener (self):               # IS THIS METHOD STILL NEEDED ????
         
         lh = self.getListSelectedHooks ()
         if len(lh)==2 and not self.graph.areSocketsRelated (lh[0].getSocketId(), lh[1].getSocketId()):
@@ -57,13 +55,6 @@ class GraphView ():
             # take the focus away from the nodes
             lh[0].setSelected (False)
             lh[1].setSelected (False)
-    
-    def removeLinkAndWirePressBtnListener (self):
-        
-        # pop-up window
-        
-        # self.removeLinkAndWire (self.getListSelectedWires ())
-        pass
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -77,9 +68,10 @@ class GraphView ():
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def addNodeAndTag (self):
+    def addNodeAndTag (self, name0):
+        
         tmp = self.graph.addNode ()
-        tmp.setName ('stateBegun')
+        tmp.setName (name0)
     
     def addTag (self, node_id):
         
@@ -96,11 +88,17 @@ class GraphView ():
         
         return tag
     
-    def removeNodeAndTag (self, selected_tags):
-        pass
+    def removeNodeAndTag (self, node_id):
+        
+        self.graph.removeNode (node_id)
     
-    
-    
+    def removeTag (self, node_id): # listener to deleteNode_MSignal
+        
+        for tag in self._tag_list:
+            if tag.getSId() == node_id:
+                self.utility.getScene().removeItem (tag)
+                del self._tag_list [self._tag_list.index (tag)]
+                break
     
     def addLinkAndWire (self, s_out_id, s_in_id):
         
@@ -141,8 +139,10 @@ class GraphView ():
     def removeLinkAndWire (self, selected_wires):
         pass
     
-    # - - Getters - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # - - Getters / Setters- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
+    def setRules (self, textfile) : self.graph.setRules (textfile)
+        
     def getTag (self, node_id):
         
         seeked_tag = None
@@ -152,14 +152,6 @@ class GraphView ():
                 break
         
         return seeked_tag
-    
-    def getListSelectedHooks (self):
-        
-        ls = []
-        for tag in self._tag_list:
-            [ls.append (hook) for hook in tag.getInHooks () if hook.isSelected ()]
-            [ls.append (hook) for hook in tag.getOutHooks() if hook.isSelected ()]
-        return ls
     
     def getHook (self, socked_id):
         
@@ -182,10 +174,25 @@ class GraphView ():
                 break
         
         return hook
+    
+    # - -  misc  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    def getListSelectedTags (self):
         
+        ls = []
+        [ls.append (tag) for tag in self._tag_list if tag.isSelected()==True]
+        return ls
+    
+    def getListSelectedHooks (self):
+        
+        ls = []
+        for tag in self._tag_list:
+            [ls.append (hook) for hook in tag.getInHooks () if hook.isSelected()==True]
+            [ls.append (hook) for hook in tag.getOutHooks() if hook.isSelected()==True]
+        return ls
     
     def getListSelectedWires (self):
         
         ls = []
-        [ls.append (item) for item in self._wire_list if item.isSelected ()]
+        [ls.append (item) for item in self._wire_list if item.isSelected()==True]
         return ls
