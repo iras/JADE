@@ -19,7 +19,7 @@ class Node0 ():
         
         self._attributes = []
         
-    def disposeNode (self):   # WHAT TO DO WITH THIS ?
+    def disposeNode (self):   # SURPLUS - WHAT TO DO WITH THIS ?
         pass
     
     # - - -  sockets methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

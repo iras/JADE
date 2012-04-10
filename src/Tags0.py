@@ -64,7 +64,7 @@ class Tag1 (QGraphicsItem):
     def shape (self):
         
         path = QPainterPath ()
-        path.addRect (0, 0, 82, self.tag_height_in_units*10 + 20)
+        path.addRect (0, 0, 102, self.tag_height_in_units*10 + 20)
         return path
     
     def paint (self, painter, option, unused_widget):
@@ -85,7 +85,7 @@ class Tag1 (QGraphicsItem):
             
             painter.setPen   (QPen (Qt.black, 0))
             painter.setBrush (fillColor)
-            painter.drawRect (0, 0, 80, self.tag_height_in_units*10 + 20)
+            painter.drawRect (0, 0, 100, self.tag_height_in_units*10 + 20)
             return
         
         oldPen = painter.pen ()
@@ -102,7 +102,7 @@ class Tag1 (QGraphicsItem):
         painter.setBrush (QBrush (fillColor.dark (level)))
         
         #painter.drawRoundRect (QRect (0, 0, 80, 34+self.height), 20)
-        painter.drawRect (QRect (0, 0, 80, self.tag_height_in_units*10 + 20))
+        painter.drawRect (QRect (0, 0, 100, self.tag_height_in_units*10 + 20))
     
     def remove (self): self.setVisible (False)
     
@@ -210,7 +210,7 @@ class Tag1 (QGraphicsItem):
         hook.setHookName (self.helper.getGraph().getSocket(socket_id).getSType())
         hook.setHelper (self.helper)
         self.helper.connect (self.comm, SIGNAL ('deleteOutSocket_MSignal (int,int)'), hook.switchOffHook)
-        hook.setPos (QPointF (70,0))
+        hook.setPos (QPointF (90,0))
         hook.setParentItem (self)
         
         self.outHooks.append (hook)

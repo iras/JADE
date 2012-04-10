@@ -178,7 +178,7 @@ class Graph ():
         
         self.xml_rules_table = parseString(text_xml)
         
-        self.node_rules_XMLList = self.xml_rules_table.getElementsByTagName ('muffin')
+        self.node_rules_XMLList = self.xml_rules_table.getElementsByTagName ('node')
         
         for item in self.node_rules_XMLList:
                         
@@ -189,13 +189,13 @@ class Graph ():
             inputs_ls = []
             self.inputs_XMLList  = item.getElementsByTagName ('input')
             for item_input in self.inputs_XMLList:
-                if item_input.getElementsByTagName ('type')[0].firstChild.data == 'IConnector':
+                if item_input.getElementsByTagName ('type')[0].firstChild.data == 'Connector':
                     inputs_ls.append (str(item_input.getElementsByTagName ('name')[0].firstChild.data))
             
             outputs_ls = []
             self.outputs_XMLList  = item.getElementsByTagName ('output')
             for item_output in self.outputs_XMLList:
-                if item_output.getElementsByTagName ('type')[0].firstChild.data == 'IConnector':
+                if item_output.getElementsByTagName ('type')[0].firstChild.data == 'Connector':
                     outputs_ls.append (str(item_output.getElementsByTagName ('name')[0].firstChild.data))
             
             self.connections_map[node_name] = [list(inputs_ls), list(outputs_ls)]

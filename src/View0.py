@@ -64,7 +64,7 @@ class View (QFrame):
         self.printOutBtn.setEnabled (True)
         
         self.browseRulesBtn = QPushButton()
-        self.browseRulesBtn.setText ("browse rules file")
+        self.browseRulesBtn.setText ("browse available nodes")
         self.browseRulesBtn.setEnabled (True)
         
         self.resetButton = QToolButton ()
