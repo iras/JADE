@@ -1,8 +1,9 @@
-'''
-Created on Feb 18, 2012
+"""
+Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
 
-@author: ivanoras
-'''
+See the file license.txt for copying permission.
+"""
+
 import Sockets as sk
 
 class Node0 ():
@@ -78,7 +79,7 @@ class Node0 ():
                 # (1b) clear the references to all the outSockets
                 pluggedInList = inSocket.getPluggedIns ()
                 qq = len (pluggedInList)
-                for i in range(qq-1, 0, -1):
+                for i in range (qq-1, -1, -1):
                     del pluggedInList[i]
                 
                 # (2) signal deletion of the inSocket
@@ -103,7 +104,7 @@ class Node0 ():
                 # (1b) clear the references to all the inSockets
                 pluggedOutList = outSocket.getPluggedOuts ()
                 qq = len (pluggedOutList)
-                for i in range(qq-1, 0, -1):
+                for i in range (qq-1, -1, -1):
                     del pluggedOutList[i]
                 
                 # (2) signal deletion of the outSocket

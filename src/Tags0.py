@@ -1,8 +1,8 @@
-'''
-Created on Jan 18, 2012
+"""
+Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
 
-@author: ivanoras
-'''
+See the file license.txt for copying permission.
+"""
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui  import *
@@ -31,7 +31,7 @@ class Tag1 (QGraphicsItem):
         self.harpoon = self.helper.getHarpoon()
         self.color = color
         
-        self.tag_height_in_units = 0
+        self.tag_height_in_units = 0.0
         #self.in_socket_rail_y  = 0   # ANY USEFUL ?
         #self.out_socket_rail_y = 0   # ANY USEFUL ?
         
@@ -40,11 +40,6 @@ class Tag1 (QGraphicsItem):
         self.setFlags (QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsMovable)
         self.setAcceptHoverEvents (True)
         self.previousMouseGrabberItem = None
-        
-        """
-        # drag-n-drop behaviour : init
-        self.setAcceptDrops (True)
-        """
         
         self.setZValue (1.0)
         
@@ -58,13 +53,22 @@ class Tag1 (QGraphicsItem):
         self._text_item.setTextWidth(50)
         self._text_item.setToolTip(self._text_item.toPlainText ())
         #self._text_item.setHtml("<h2 align=\"center\">hello</h2><h2 align=\"center\">world 1234345345</h2>123");
+        
+        # init Tag's Animation Tweening
+        self.timeline = QtCore.QTimeLine (200)
+        self.timeline.setFrameRange (0, 100)
+        self.anim = QtGui.QGraphicsItemAnimation ()
+        self.anim.setItem (self)
+        self.anim.setTimeLine (self.timeline)
+        
+        #self.qproperty = QPropertyAnimation(box, 'geometry', state1)
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
     def shape (self):
         
         path = QPainterPath ()
-        path.addRect (0, 0, 102, self.tag_height_in_units*10 + 20)
+        path.addRect (0, 0, 122, self.tag_height_in_units*10 + 20)
         return path
     
     def paint (self, painter, option, unused_widget):
@@ -85,7 +89,7 @@ class Tag1 (QGraphicsItem):
             
             painter.setPen   (QPen (Qt.black, 0))
             painter.setBrush (fillColor)
-            painter.drawRect (0, 0, 100, self.tag_height_in_units*10 + 20)
+            painter.drawRect (0, 0, 120, self.tag_height_in_units*10 + 20)
             return
         
         oldPen = painter.pen ()
@@ -102,15 +106,11 @@ class Tag1 (QGraphicsItem):
         painter.setBrush (QBrush (fillColor.dark (level)))
         
         #painter.drawRoundRect (QRect (0, 0, 80, 34+self.height), 20)
-        painter.drawRect (QRect (0, 0, 100, self.tag_height_in_units*10 + 20))
+        painter.drawRect (QRect (0, 0, 120, self.tag_height_in_units*10 + 20))
     
     def remove (self): self.setVisible (False)
     
-    def scrollRestOfHooksUp (self, rail, s_id):
-        
-        tmp_ls = self.findHookPos (rail, s_id)
-    
-    def findHookPos (self, rail, s_id):
+    def scrollRestOfHooksUp (self, rail):
         
         marker = False
         tmp_index = None
@@ -119,29 +119,86 @@ class Tag1 (QGraphicsItem):
             
             ilen = len (self.inHooks)
             for i in range (0, ilen):
-                cond = self.inHooks[i].getSocketId()==s_id
-                if cond==True : marker=True
-                if marker==True and cond==False: self.inHooks[i].moveUp (i)
+                self.inHooks[i].moveUp ()
         
         elif rail=='out':
             
             olen = len (self.outHooks)
             for i in range (0, olen):
-                cond = self.outHooks[i].getSocketId()==s_id
-                if cond==True : marker=True
-                if marker==True and cond==False: self.outHooks[i].moveUp (i)
+                self.outHooks[i].moveUp ()
         else:
-            print 'ERROR : there''s no more than two rails for sockets'
+            print 'ERROR : there''s no more than two rails per socket'
         
         return [marker, tmp_index]
     
-    # - - -  miscellanea  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    def getHookPos (self, hk):
+        
+        pos = None
+        
+        if hk.getHookType()=='in':
+            
+            s_id = hk.getSocketId()
+            ilen = len (self.inHooks)
+            for i in range (0, ilen):
+                if self.inHooks[i].getSocketId()==s_id:
+                    pos = i
+                    break
+        
+        elif hk.getHookType()=='out':
+            
+            s_id = hk.getSocketId()
+            olen = len (self.outHooks)
+            for i in range (0, olen):
+                if self.outHooks[i].getSocketId()==s_id:
+                    pos = i
+                    break
+        
+        return pos
     
+    # - - -  hook-related  methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
+    def removeInHook  (self, node_id, inSocketId):
+        
+        if self.node_id==node_id:
+            print 'RemoveInHook', node_id, inSocketId
+            
+            l = len (self.inHooks)
+            for i in range(0, l):
+                if self.inHooks[i].getSocketId()==inSocketId:
+                    del self.inHooks[i]
+                    break
+            
+            if self.isInsLessThanOuts()==True : self.reduceTagsHeight()
+            
+    def removeOutHook (self, node_id, outSocketId):
+        
+        if self.node_id==node_id:
+            print 'RemoveOutHook', node_id, outSocketId
+            
+            l = len (self.outHooks)
+            for i in range(0, l):
+                if self.outHooks[i].getSocketId()==outSocketId:
+                    del self.outHooks[i]
+                    break
+            
+            if self.isOutsLessThanIns()==True : self.reduceTagsHeight()
     
+    def reduceTagsHeight (self): self.tag_height_in_units-=1
     
+    def isInsLessThanOuts (self):        
+        flag=False
+        if len (self.node_model.getIns())>=len (self.node_model.getOuts()):
+            flag=True
+
+        return flag
     
-    
+    def isOutsLessThanIns (self):
+        flag=False
+        if len (self.node_model.getIns())<=len (self.node_model.getOuts()):
+            flag=True
+        
+        return flag
+            
     
     def appendInHook (self, node_id, inSocketId):
         
@@ -157,13 +214,13 @@ class Tag1 (QGraphicsItem):
                 if no_ins > no_outs : self.tag_height_in_units+=1
                 
                 # (2) duplicate the inSocket on top of the last one and scroll it down until it reaches its place
-                tmp = self.addInHook (inSocketId)
+                tmp = self.addInHook (inSocketId, no_ins)
                 # set off the animation
-                tmp.startOffAnim (no_ins)
+                tmp.moveDown ()
             
             else:
                 # generate the first inSocket and place it in the topmost place
-                tmp = self.addInHook (inSocketId)
+                tmp = self.addInHook (inSocketId, no_ins)
     
     def appendOutHook (self, node_id, outSocketId):
         
@@ -179,18 +236,27 @@ class Tag1 (QGraphicsItem):
                 if no_outs>no_ins : self.tag_height_in_units+=1
                 
                 # (2) duplicate the inSocket on top of the last one and scroll it down until it reaches its place
-                tmp = self.addOutHook (outSocketId)
+                tmp = self.addOutHook (outSocketId, no_outs)
                 # set off the animation
-                tmp.startOffAnim (no_outs)
+                tmp.moveDown ()
             
             else:
                 # generate the first inSocket and place it in the topmost place
-                tmp = self.addOutHook (outSocketId)
+                tmp = self.addOutHook (outSocketId, no_outs)
     
-    def addInHook (self, socket_id):
+    def makeTagTaller (self):
+                        
+        self.timeline.stop ()
+        self.anim.setPosAt (0, self.tag_height_in_units, self.tag_height_in_units)
+        self.anim.setPosAt (1, self.tag_height_in_units, self.tag_height_in_units+1)
+        self.timeline.start ()
+        self.update ()
+    
+    def addInHook (self, socket_id, pos):
         
         hook = hk.HookBox0 (self)
         hook.setSocketId (socket_id)
+        hook.setPosInList (pos)
         hook.setHookType ('in')
         hook.setHookName (self.helper.getGraph().getSocket(socket_id).getSType())
         hook.setHelper (self.helper)
@@ -202,29 +268,21 @@ class Tag1 (QGraphicsItem):
         
         return hook
     
-    def addOutHook (self, socket_id):
+    def addOutHook (self, socket_id, pos):
         
         hook = hk.HookBox0 (self)
         hook.setSocketId (socket_id)
+        hook.setPosInList (pos)
         hook.setHookType ('out')
         hook.setHookName (self.helper.getGraph().getSocket(socket_id).getSType())
         hook.setHelper (self.helper)
         self.helper.connect (self.comm, SIGNAL ('deleteOutSocket_MSignal (int,int)'), hook.switchOffHook)
-        hook.setPos (QPointF (90,0))
+        hook.setPos (QPointF (110,0))
         hook.setParentItem (self)
         
         self.outHooks.append (hook)
         
         return hook
-    
-    def removeInHook  (self) : pass
-    def removeOutHook (self) : pass
-    
-    
-    
-    
-    
-    
     
     # - - -  listeners  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -236,17 +294,6 @@ class Tag1 (QGraphicsItem):
         if e.button() == Qt.RightButton:
             pos = self.pos()
             self.comm.emitCtxMenuSignal (pos)
-        
-        """
-        # drag-n-drop behaviour : action
-        
-        if e.modifiers() & Qt.ShiftModifier:
-            md = QMimeData () 
-            md.setText ("test") 
-            drag = QDrag (e.widget()) 
-            drag.setMimeData (md) 
-            drag.start (Qt.MoveAction)
-        """
         
         QGraphicsItem.mousePressEvent (self, e)
         self.update ()
@@ -269,21 +316,6 @@ class Tag1 (QGraphicsItem):
         
         # records the node_id in the helper's attribute.
         self.comm.setHoveredItemId (None)
-    
-    """
-    # drag-n-drop behaviour : listeners
-    
-    def dragEnterEvent(self, event): 
-        print "dragEnterEvent: %s (event type: %d)" % (type(event), event.type())
-        event.acceptProposedAction() 
-    
-    def dragMoveEvent (self, e) : pass
-    def dragLeaveEvent (self, e): pass
-    
-    def dropEvent (self, e):
-        print e.type ()
-        print 'caught '+str(self.node_id)
-    """
     
     # - - -  getters/setters  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     

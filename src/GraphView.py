@@ -6,6 +6,12 @@ Created on Feb 23, 2012
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+"""
+Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
+
+See the file license.txt for copying permission.
+"""
+
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 
@@ -29,7 +35,7 @@ class GraphView ():
         
         # remove wires
         tmp_ls = self.getListSelectedWires()
-        print tmp_ls
+        print 'removeSelectedItems', tmp_ls
         for wire in tmp_ls:
             ls = wire.get2HooksIds ()
             self.graph.removeLink (ls[0], ls[1])
@@ -81,8 +87,10 @@ class GraphView ():
         self.utility.getScene().addItem (tag)
         
         comm = self.graph.getComm ()
-        self.utility.connect (comm, SIGNAL('addInSocket_MSignal (int,int)'), tag.appendInHook)
-        self.utility.connect (comm, SIGNAL('addOutSocket_MSignal(int,int)'), tag.appendOutHook)
+        self.utility.connect (comm, SIGNAL('addInSocket_MSignal    (int,int)'), tag.appendInHook)
+        self.utility.connect (comm, SIGNAL('addOutSocket_MSignal   (int,int)'), tag.appendOutHook)
+        self.utility.connect (comm, SIGNAL('deleteInSocket_MSignal (int,int)'), tag.removeInHook)
+        self.utility.connect (comm, SIGNAL('deleteOutSocket_MSignal(int,int)'), tag.removeOutHook)
         
         self._tag_list.append (tag)
         

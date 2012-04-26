@@ -33,10 +33,14 @@
         <type>Connector</type>
         <label/>
       </output>
+      <output>
+      	<name>isUndefined</name>
+      	<type>Connector</type>
+      	<label></label></output>
     </outputs>
   </node>
   <node>
-    <class>3_Adder</class>
+    <class>4_Adder</class>
     <label/>
     <inputs>
       <input>
@@ -54,6 +58,10 @@
         <type>Connector</type>
         <label/>
       </input>
+	<input>
+		<name>input4</name>
+		<type>Connector</type>
+		<label></label></input>
     </inputs>
     <outputs>
       <output>

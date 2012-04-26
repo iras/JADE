@@ -1,8 +1,10 @@
-'''
-Created on Jan 18, 2012
+"""
+Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
 
-@author: ivanoras
-'''
+See the file license.txt for copying permission.
+"""
+
+
 import PyQt4
 from PyQt4 import QtCore
 from PyQt4 import QtGui

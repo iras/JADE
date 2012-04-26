@@ -1,8 +1,8 @@
-'''
-Created on Apr 5, 2012
+"""
+Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
 
-@author: macbookpro
-'''
+See the file license.txt for copying permission.
+"""
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *

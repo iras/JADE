@@ -130,7 +130,10 @@ class View (QFrame):
     def getRulesPath (self):
         
         fd = QtGui.QFileDialog (self)
-        self.graph_view.setRules (open(fd.getOpenFileName()).read())
+        
+        aa = fd.getOpenFileName()
+        if aa!=QString(u''): # it can be equal to QString(u'') when the user presses the Escape key, so in that circumstance, nothing is returned.
+            self.graph_view.setRules (open(aa).read())
     
     def zoomIn  (self) : self.zoomSlider.setValue (self.zoomSlider.value() + 1)
     def zoomOut (self) : self.zoomSlider.setValue (self.zoomSlider.value() - 1)

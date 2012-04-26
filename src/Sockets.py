@@ -1,8 +1,8 @@
-'''
-Created on Feb 18, 2012
+"""
+Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
 
-@author: ivanoras
-'''
+See the file license.txt for copying permission.
+"""
 
 class Socket ():
     """
@@ -31,11 +31,8 @@ class Socket ():
     def getAttributes (self): return self._attributes
     
 
-
-
-
-
 # ---------------------------------------------------------------------------
+
 
 class InSocket (Socket):
     

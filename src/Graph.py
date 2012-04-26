@@ -1,8 +1,9 @@
-'''
-Created on Feb 18, 2012
+"""
+Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
 
-@author: ivanoras
-'''
+See the file license.txt for copying permission.
+"""
+
 from xml.dom import minidom
 from xml.dom.minidom import parseString
 
@@ -45,8 +46,9 @@ class Graph ():
             if node.getId()==node0_id:
                 
                 # unplug connections first
-                for item in node.getIns() : node.removeIn (item)
-                for item in node.getOuts(): node.removeOut(item)
+                
+                for item in reversed(node.getIns()) : node.removeIn (item)
+                for item in reversed(node.getOuts()): node.removeOut(item)
                 
                 del self._node_list [self._node_list.index (node)]
                 node.disposeNode ()
@@ -199,8 +201,11 @@ class Graph ():
                     outputs_ls.append (str(item_output.getElementsByTagName ('name')[0].firstChild.data))
             
             self.connections_map[node_name] = [list(inputs_ls), list(outputs_ls)]
-            
-        print self.connections_map
+        
+        # print map
+        import pprint
+        pp = pprint.PrettyPrinter(indent=4)
+        pp.pprint (self.connections_map)
     
     def getRules (self): return self.connections_map
 

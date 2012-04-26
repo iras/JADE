@@ -1,9 +1,11 @@
+"""
+Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
+
+See the file license.txt for copying permission.
+"""
+
 '''
 JADE mapping tool
-
-Created on Feb 23, 2012
-
-@author: ivanoras
 '''
 
 from PyQt4.QtCore import *

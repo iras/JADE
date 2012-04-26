@@ -1,8 +1,8 @@
-'''
-Created on Feb 9, 2012
+"""
+Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
 
-@author: macbookpro
-'''
+See the file license.txt for copying permission.
+"""
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -32,30 +32,32 @@ class HookBox0 (QGraphicsItem):
         self.hookName  = ''
         
         # init Hook Animation Tweening
-        self.tl = QtCore.QTimeLine (500)
-        self.tl.setFrameRange (0, 100)
+        self.timeline = QtCore.QTimeLine (200)
+        self.timeline.setFrameRange (0, 100)
         self.anim = QtGui.QGraphicsItemAnimation ()
         self.anim.setItem (self)
-        self.anim.setTimeLine (self.tl)
+        self.anim.setTimeLine (self.timeline)
+        self.parent.helper.connect (self.timeline, QtCore.SIGNAL("finished()"), self.moveFurtherUp)
+        self.anim_active = False
     
     def setTextfield (self):
         
         tx = 8
-            
+        
         self._text_item = gt.GText (self.hookName, self)
         self._text_item.setEnabled (False)
         
         if self.hookType=='out' :
-            tx=-40
-            tmp0 = QTextBlockFormat()
-            tmp0.setAlignment(Qt.AlignRight)
-            tmp = QTextCursor()
+            tx=-50
+            tmp0 = QTextBlockFormat ()
+            tmp0.setAlignment (Qt.AlignRight)
+            tmp = QTextCursor ()
             tmp.setBlockFormat(tmp0)
             self._text_item.setTextCursor (tmp)
         
         self._text_item.setPos (QPointF (tx, -5))
-        self._text_item.setFont (QFont ("Geneva", 8, QFont.AllLowercase, False))
-        self._text_item.setTextWidth(70)
+        self._text_item.setFont(QFont ("Geneva", 8, QFont.AllLowercase, False))
+        self._text_item.setTextWidth (65)
         
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
@@ -72,34 +74,55 @@ class HookBox0 (QGraphicsItem):
         
         painter.drawEllipse (1, 1, 8 ,8)
     
-    def startOffAnim (self, y):
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    def moveDown (self):
         
-        self.tl.stop ()
-        self.height_hook_platform = (y-2)*10
+        self.anim_active = True
+        self.up_flag=False
+        
+        self.timeline.stop ()
+        self.height_hook_platform = (self.pos_in_list-2)*10
         self.anim.setPosAt (0, QtCore.QPointF (self.x(), self.height_hook_platform))
         self.height_hook_platform += 10
         self.anim.setPosAt (1, QtCore.QPointF (self.x(), self.height_hook_platform))
-        self.tl.start ()
+        self.timeline.start ()
         self.update ()
     
-    def moveUp (self, y):
+    def moveUp (self):
+                
+        if self.anim_active == False:
+            
+            self.anim_active = True
+            self.up_flag=True
+            
+            self.timeline.stop ()
+            self.pos_in_list -= 1
+            self.height_hook_platform = float(self.y())
+            self.anim.setPosAt (0, QtCore.QPointF (self.x(), self.height_hook_platform))
+            self.height_hook_platform -= 10
+            self.anim.setPosAt (1, QtCore.QPointF (self.x(), self.height_hook_platform))
+            self.timeline.start ()
+            self.update ()
+    
+    # this method double-checks whether the hook needs to move up again as a result
+    # of receiving other asynchronous "delete link" SIGNALs while moving up.
+    def moveFurtherUp (self):
         
-        self.tl.stop ()
-        self.height_hook_platform = float(self.y())
-        self.anim.setPosAt (0, QtCore.QPointF (self.x(), self.height_hook_platform))
-        self.height_hook_platform -= 10
-        self.anim.setPosAt (1, QtCore.QPointF (self.x(), self.height_hook_platform))
-        self.tl.start ()
-        self.update ()
+        self.anim_active = False
+        
+        if self.up_flag==True and self.parent.getHookPos(self)!=None: # it can happen to be None in the case the Hook gets only switched off instead of properly erased.
+                        
+            if (self.parent.getHookPos(self)+1) < self.pos_in_list:
+                self.moveUp ()
     
     def switchOffHook (self, node_id, socket_id):
         
-        print self.socket_id, socket_id
         if self.socket_id==socket_id:
             
-            print 'switch off'
+            print 'switch off hook ',str(self.socket_id)
             
-            self.parent.scrollRestOfHooksUp (self.hookType, self.socket_id)
+            self.parent.scrollRestOfHooksUp (self.hookType)
             self.setVisible (False)
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -161,7 +184,9 @@ class HookBox0 (QGraphicsItem):
     def setSocketId (self, socket_id) : self.socket_id = socket_id
     def getSocketId (self): return self.socket_id
     
+    def getHookType (self): return self.hookType
     def setHookType (self, htype): self.hookType = htype
+    
     def setHelper (self, helper):
         
         self.helper  = helper
@@ -172,3 +197,5 @@ class HookBox0 (QGraphicsItem):
         
         self.hookName = name0
         self.setTextfield()
+    
+    def setPosInList (self, pos): self.pos_in_list=pos
