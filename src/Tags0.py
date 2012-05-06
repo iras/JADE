@@ -11,6 +11,7 @@ from PyQt4 import QtGui
 
 import Comm0
 import Hook0 as hk
+import Canvas as cs
 
 
 class Tag1 (QGraphicsItem):
@@ -31,9 +32,7 @@ class Tag1 (QGraphicsItem):
         self.harpoon = self.helper.getHarpoon()
         self.color = color
         
-        self.tag_height_in_units = 0.0
-        #self.in_socket_rail_y  = 0   # ANY USEFUL ?
-        #self.out_socket_rail_y = 0   # ANY USEFUL ?
+        self.canvas_height_in_units = 0.0
         
         self.comm = self.helper.getGraph().getComm()
         
@@ -44,7 +43,7 @@ class Tag1 (QGraphicsItem):
         self.setZValue (1.0)
         
         self.height = 0
-        self.height_hook_platform = 0
+        self.height_canvas = 0
         
         self._text_item = QGraphicsTextItem ('text '+str(self.node_id), self)
         #self._text_item.setTextInteractionFlags (Qt.TextEditable)
@@ -54,25 +53,22 @@ class Tag1 (QGraphicsItem):
         self._text_item.setToolTip(self._text_item.toPlainText ())
         #self._text_item.setHtml("<h2 align=\"center\">hello</h2><h2 align=\"center\">world 1234345345</h2>123");
         
-        # init Tag's Animation Tweening
-        self.timeline = QtCore.QTimeLine (200)
-        self.timeline.setFrameRange (0, 100)
-        self.anim = QtGui.QGraphicsItemAnimation ()
-        self.anim.setItem (self)
-        self.anim.setTimeLine (self.timeline)
-        
-        #self.qproperty = QPropertyAnimation(box, 'geometry', state1)
+        self.canvas = cs.Canvas (self)
+        self.canvas.setParentItem (self)
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
     def shape (self):
         
         path = QPainterPath ()
-        path.addRect (0, 0, 122, self.tag_height_in_units*10 + 20)
+        path.addRect (0, 0, 122, self.canvas_height_in_units*10 + 20)
         return path
     
     def paint (self, painter, option, unused_widget):
         
+        pass
+        
+        """
         if option.state & QStyle.State_Selected:
             fillColor = self.color.dark (150)
         else:
@@ -89,7 +85,7 @@ class Tag1 (QGraphicsItem):
             
             painter.setPen   (QPen (Qt.black, 0))
             painter.setBrush (fillColor)
-            painter.drawRect (0, 0, 120, self.tag_height_in_units*10 + 20)
+            painter.drawRect (0, 0, 120, self.canvas_height_in_units*10 + 20)
             return
         
         oldPen = painter.pen ()
@@ -106,7 +102,8 @@ class Tag1 (QGraphicsItem):
         painter.setBrush (QBrush (fillColor.dark (level)))
         
         #painter.drawRoundRect (QRect (0, 0, 80, 34+self.height), 20)
-        painter.drawRect (QRect (0, 0, 120, self.tag_height_in_units*10 + 20))
+        painter.drawRect (QRect (0, 0, 120, self.canvas_height_in_units*10 + 20))
+        """
     
     def remove (self): self.setVisible (False)
     
@@ -168,7 +165,7 @@ class Tag1 (QGraphicsItem):
                     del self.inHooks[i]
                     break
             
-            if self.isInsLessThanOuts()==True : self.reduceTagsHeight()
+            if self.isInsLessThanOuts()==True : self.makeCanvasThinner()
             
     def removeOutHook (self, node_id, outSocketId):
         
@@ -181,9 +178,9 @@ class Tag1 (QGraphicsItem):
                     del self.outHooks[i]
                     break
             
-            if self.isOutsLessThanIns()==True : self.reduceTagsHeight()
+            if self.isOutsLessThanIns()==True : self.makeCanvasThinner()
     
-    def reduceTagsHeight (self): self.tag_height_in_units-=1
+    def makeCanvasThinner (self): self.canvas_height_in_units-=1
     
     def isInsLessThanOuts (self):        
         flag=False
@@ -211,7 +208,7 @@ class Tag1 (QGraphicsItem):
             if no_ins>1:
                 
                 # (1) if the rect isn't long enough then start an anim to make it long enough to host the new inSocket
-                if no_ins > no_outs : self.tag_height_in_units+=1
+                if no_ins > no_outs : self.makeCanvasThicker ()
                 
                 # (2) duplicate the inSocket on top of the last one and scroll it down until it reaches its place
                 tmp = self.addInHook (inSocketId, no_ins)
@@ -233,7 +230,7 @@ class Tag1 (QGraphicsItem):
             if no_outs>1:
                 
                 # (1) if the rect isn't long enough then start an anim to make it long enough to host the new inSocket
-                if no_outs>no_ins : self.tag_height_in_units+=1
+                if no_outs>no_ins : self.makeCanvasThicker ()
                 
                 # (2) duplicate the inSocket on top of the last one and scroll it down until it reaches its place
                 tmp = self.addOutHook (outSocketId, no_outs)
@@ -244,13 +241,11 @@ class Tag1 (QGraphicsItem):
                 # generate the first inSocket and place it in the topmost place
                 tmp = self.addOutHook (outSocketId, no_outs)
     
-    def makeTagTaller (self):
-                        
-        self.timeline.stop ()
-        self.anim.setPosAt (0, self.tag_height_in_units, self.tag_height_in_units)
-        self.anim.setPosAt (1, self.tag_height_in_units, self.tag_height_in_units+1)
-        self.timeline.start ()
-        self.update ()
+    def makeCanvasThicker (self):
+        
+        self.canvas.makeThicker (self.canvas_height_in_units)
+        
+        self.canvas_height_in_units+=1
     
     def addInHook (self, socket_id, pos):
         
