@@ -152,7 +152,7 @@ class Tag1 (QGraphicsItem):
         
         return pos
     
-    # - - -  hook-related  methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # - - -  hook-related methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def removeInHook  (self, node_id, inSocketId):
         
@@ -165,8 +165,8 @@ class Tag1 (QGraphicsItem):
                     del self.inHooks[i]
                     break
             
-            if self.isInsLessThanOuts()==True : self.makeCanvasThinner()
-            
+            if self.isInsNotLessThanOuts()==True : self.makeCanvasThinner()
+    
     def removeOutHook (self, node_id, outSocketId):
         
         if self.node_id==node_id:
@@ -178,24 +178,29 @@ class Tag1 (QGraphicsItem):
                     del self.outHooks[i]
                     break
             
-            if self.isOutsLessThanIns()==True : self.makeCanvasThinner()
+            if self.isOutsNotLessThanIns()==True : self.makeCanvasThinner()
     
-    def makeCanvasThinner (self): self.canvas_height_in_units-=1
+    def makeCanvasThinner (self):
+        
+        self.canvas.makeThinner ()
+        self.canvas_height_in_units-=1
     
-    def isInsLessThanOuts (self):        
+    def isInsNotLessThanOuts (self):        
         flag=False
         if len (self.node_model.getIns())>=len (self.node_model.getOuts()):
             flag=True
-
+        
         return flag
     
-    def isOutsLessThanIns (self):
+    def isOutsNotLessThanIns (self):
         flag=False
         if len (self.node_model.getIns())<=len (self.node_model.getOuts()):
             flag=True
         
         return flag
-            
+    
+    def getMaxLen (self):
+        return max ([len (self.node_model.getIns ()), len (self.node_model.getOuts())])
     
     def appendInHook (self, node_id, inSocketId):
         
@@ -244,7 +249,6 @@ class Tag1 (QGraphicsItem):
     def makeCanvasThicker (self):
         
         self.canvas.makeThicker (self.canvas_height_in_units)
-        
         self.canvas_height_in_units+=1
     
     def addInHook (self, socket_id, pos):

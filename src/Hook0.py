@@ -58,7 +58,7 @@ class HookBox0 (QGraphicsItem):
         self._text_item.setPos (QPointF (tx, -5))
         self._text_item.setFont(QFont ("Geneva", 8, QFont.AllLowercase, False))
         self._text_item.setTextWidth (65)
-        
+    
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
     def shape (self):
@@ -90,20 +90,22 @@ class HookBox0 (QGraphicsItem):
         self.update ()
     
     def moveUp (self):
-                
+        
         if self.anim_active == False:
             
-            self.anim_active = True
-            self.up_flag=True
+            if (self.parent.getHookPos(self)+1) < self.pos_in_list: # this check is to prevent the hooks with unchanged position from moving up.
             
-            self.timeline.stop ()
-            self.pos_in_list -= 1
-            self.height_canvas = float(self.y())
-            self.anim.setPosAt (0, QtCore.QPointF (self.x(), self.height_canvas))
-            self.height_canvas -= 10
-            self.anim.setPosAt (1, QtCore.QPointF (self.x(), self.height_canvas))
-            self.timeline.start ()
-            self.update ()
+                self.anim_active = True
+                self.up_flag=True
+                
+                self.timeline.stop ()
+                self.pos_in_list -= 1
+                self.height_canvas = float(self.y())
+                self.anim.setPosAt (0, QtCore.QPointF (self.x(), self.height_canvas))
+                self.height_canvas -= 10
+                self.anim.setPosAt (1, QtCore.QPointF (self.x(), self.height_canvas))
+                self.timeline.start ()
+                self.update ()
     
     # this method double-checks whether the hook needs to move up again as a result
     # of receiving other asynchronous "delete link" SIGNALs while moving up.

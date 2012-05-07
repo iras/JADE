@@ -36,11 +36,17 @@
       <output>
       	<name>isUndefined</name>
       	<type>Connector</type>
-      	<label></label></output>
+      	<label></label>
+      </output>
+      <output>
+      	<name>isUndefined2</name>
+      	<type>Connector</type>
+      	<label></label>
+      </output>
     </outputs>
   </node>
   <node>
-    <class>4_Adder</class>
+    <class>5_Adder</class>
     <label/>
     <inputs>
       <input>
@@ -48,20 +54,26 @@
         <type>Connector</type>
         <label/>
       </input>
-	<input>
+	  <input>
         <name>input2</name>
         <type>Connector</type>
         <label/>
       </input>
-	<input>
+	  <input>
         <name>input3</name>
         <type>Connector</type>
         <label/>
       </input>
-	<input>
+	  <input>
 		<name>input4</name>
 		<type>Connector</type>
-		<label></label></input>
+		<label></label>
+	  </input>
+	  <input>
+		<name>input5</name>
+		<type>Connector</type>
+		<label></label>
+	  </input>
     </inputs>
     <outputs>
       <output>
@@ -69,7 +81,7 @@
         <type>Connector</type>
         <label/>
       </output>
-	<output>
+	  <output>
         <name>sum</name>
         <type>Connector</type>
         <label/>
@@ -92,12 +104,12 @@
         <type>Connector</type>
         <label/>
       </input>
-	<input>
+	  <input>
         <name>input2</name>
         <type>Connector</type>
         <label/>
       </input>
-	<input>
+	  <input>
         <name>aux_input</name>
         <type>Connector</type>
         <label/>

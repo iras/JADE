@@ -35,7 +35,7 @@ class Canvas (QGraphicsItem):
         self.anim = QtGui.QGraphicsItemAnimation ()
         self.anim.setItem (self)
         self.anim.setTimeLine (self.timeline)
-        #self.parent.helper.connect (self.timeline, QtCore.SIGNAL("finished()"), self.moveFurtherUp)
+        self.parent.helper.connect (self.timeline, QtCore.SIGNAL("finished()"), self.makeFurtherThinner)
         self.anim_active = False
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
@@ -89,16 +89,47 @@ class Canvas (QGraphicsItem):
         
         print " --- make thicker ---"
         
-        self.anim_active = True
-        self.up_flag=False
+        self.anim_active   = True
+        self.thinning_flag = False
+        
+        self.canvas_height = canvas_height_in_units
         
         self.timeline.stop ()
         
-        self.anim.setScaleAt (0, 1, 1+(canvas_height_in_units+1)*0.3)
-        self.anim.setScaleAt (1, 1, 1+(canvas_height_in_units+2)*0.3)
+        self.anim.setScaleAt (0, 1, 1+(self.canvas_height+1)*0.31)
+        self.anim.setScaleAt (1, 1, 1+(self.canvas_height+2)*0.31)
         
         self.timeline.start ()
         self.update ()
+    
+    def makeThinner (self):
+        
+        print " --- make thinner ---"
+        
+        if self.anim_active == False:
+            
+            self.canvas_height -= 1
+            
+            self.anim_active   = True
+            self.thinning_flag = True
+            
+            self.timeline.stop ()
+            
+            self.anim.setScaleAt (0, 1, 1+(self.canvas_height+1)*0.31)
+            self.anim.setScaleAt (1, 1, 1+(self.canvas_height)*0.31)
+            
+            self.timeline.start ()
+    
+    # this method double-checks whether the canvas needs to be further thinner as a
+    # result of receiving other asynchronous "delete link" SIGNALs while moving up.
+    def makeFurtherThinner (self):
+        
+        self.anim_active = False
+        
+        if self.thinning_flag==True:
+                        
+            if (self.parent.getMaxLen()+1) < self.canvas_height:
+                self.makeThinner ()
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -125,3 +156,4 @@ class Canvas (QGraphicsItem):
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
+    def setMaxPosInLists (self, pos): self.max_pos_in_list=pos
