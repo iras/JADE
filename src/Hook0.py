@@ -82,10 +82,10 @@ class HookBox0 (QGraphicsItem):
         self.up_flag=False
         
         self.timeline.stop ()
-        self.height_canvas = (self.pos_in_list-2)*10
-        self.anim.setPosAt (0, QtCore.QPointF (self.x(), self.height_canvas))
-        self.height_canvas += 10
-        self.anim.setPosAt (1, QtCore.QPointF (self.x(), self.height_canvas))
+        self.hook_height = (self.pos_in_list-2)*10
+        self.anim.setPosAt (0, QtCore.QPointF (self.x(), self.hook_height))
+        self.hook_height += 10
+        self.anim.setPosAt (1, QtCore.QPointF (self.x(), self.hook_height))
         self.timeline.start ()
         self.update ()
     
@@ -100,10 +100,10 @@ class HookBox0 (QGraphicsItem):
                 
                 self.timeline.stop ()
                 self.pos_in_list -= 1
-                self.height_canvas = float(self.y())
-                self.anim.setPosAt (0, QtCore.QPointF (self.x(), self.height_canvas))
-                self.height_canvas -= 10
-                self.anim.setPosAt (1, QtCore.QPointF (self.x(), self.height_canvas))
+                self.hook_height = float(self.y())
+                self.anim.setPosAt (0, QtCore.QPointF (self.x(), self.hook_height))
+                self.hook_height -= 10
+                self.anim.setPosAt (1, QtCore.QPointF (self.x(), self.hook_height))
                 self.timeline.start ()
                 self.update ()
     

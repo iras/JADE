@@ -28,7 +28,7 @@ class Canvas (QGraphicsItem):
         self.pen_color = QPen (Qt.black, 2)
         
         self.color = QColor (Qt.white).dark (120)
-                
+        
         # init Canvas Animation Tweening
         self.timeline = QtCore.QTimeLine (200)
         self.timeline.setFrameRange (0, 100)
@@ -37,6 +37,8 @@ class Canvas (QGraphicsItem):
         self.anim.setTimeLine (self.timeline)
         self.parent.helper.connect (self.timeline, QtCore.SIGNAL("finished()"), self.makeFurtherThinner)
         self.anim_active = False
+        
+        self.SCALING = 0.25
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
@@ -82,7 +84,7 @@ class Canvas (QGraphicsItem):
         
         #painter.drawRoundRect (QRect (0, 0, 80, 34+self.height), 20)
         painter.drawRect (QRect (0, 0, 120, 20))
-        
+    
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def makeThicker (self, canvas_height_in_units):
@@ -96,29 +98,30 @@ class Canvas (QGraphicsItem):
         
         self.timeline.stop ()
         
-        self.anim.setScaleAt (0, 1, 1+(self.canvas_height+1)*0.31)
-        self.anim.setScaleAt (1, 1, 1+(self.canvas_height+2)*0.31)
+        self.anim.setScaleAt (0, 1, 1+(self.canvas_height+1)*self.SCALING)
+        self.anim.setScaleAt (1, 1, 1+(self.canvas_height+2)*self.SCALING)
         
         self.timeline.start ()
         self.update ()
     
-    def makeThinner (self):
+    def makeThinner (self, canvas_height_in_units):
         
         print " --- make thinner ---"
         
         if self.anim_active == False:
             
-            self.canvas_height -= 1
-            
             self.anim_active   = True
             self.thinning_flag = True
             
+            self.canvas_height = canvas_height_in_units
+            
             self.timeline.stop ()
             
-            self.anim.setScaleAt (0, 1, 1+(self.canvas_height+1)*0.31)
-            self.anim.setScaleAt (1, 1, 1+(self.canvas_height)*0.31)
+            self.anim.setScaleAt (0, 1, 1+(self.canvas_height+1)*self.SCALING)
+            self.anim.setScaleAt (1, 1, 1+(self.canvas_height)  *self.SCALING)
             
             self.timeline.start ()
+            self.update ()
     
     # this method double-checks whether the canvas needs to be further thinner as a
     # result of receiving other asynchronous "delete link" SIGNALs while moving up.
@@ -127,9 +130,9 @@ class Canvas (QGraphicsItem):
         self.anim_active = False
         
         if self.thinning_flag==True:
-                        
-            if (self.parent.getMaxLen()+1) < self.canvas_height:
-                self.makeThinner ()
+            
+            if self.parent.getMaxLen() < self.canvas_height:
+                self.makeThinner (self.canvas_height-1)
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

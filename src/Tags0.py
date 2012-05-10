@@ -32,7 +32,7 @@ class Tag1 (QGraphicsItem):
         self.harpoon = self.helper.getHarpoon()
         self.color = color
         
-        self.canvas_height_in_units = 0.0
+        self.canvas_height_in_units = 0
         
         self.comm = self.helper.getGraph().getComm()
         
@@ -43,7 +43,7 @@ class Tag1 (QGraphicsItem):
         self.setZValue (1.0)
         
         self.height = 0
-        self.height_canvas = 0
+        self.hook_height = 0
         
         self._text_item = QGraphicsTextItem ('text '+str(self.node_id), self)
         #self._text_item.setTextInteractionFlags (Qt.TextEditable)
@@ -181,9 +181,9 @@ class Tag1 (QGraphicsItem):
             if self.isOutsNotLessThanIns()==True : self.makeCanvasThinner()
     
     def makeCanvasThinner (self):
-        
-        self.canvas.makeThinner ()
-        self.canvas_height_in_units-=1
+        if self.canvas_height_in_units > 0:
+            self.canvas.makeThinner (self.canvas_height_in_units)
+            self.canvas_height_in_units-=1
     
     def isInsNotLessThanOuts (self):        
         flag=False

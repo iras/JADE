@@ -79,7 +79,6 @@ class MainWindow (QWidget):
             self.graph_view.removeSelectedItems ()
     
     def populateScene (self):
-        
         pass
     
     # - - -    context menu methods   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -101,7 +100,6 @@ class MainWindow (QWidget):
                     
                     self.prepareNodeCtxMenu (left_list)
                     self.menu.popup (self.mapToGlobal (pos))
-        
         else:
             # ctx menu to establish what node is going to be retrieved
             tmp_ls = []
