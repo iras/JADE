@@ -6,6 +6,8 @@ See the file license.txt for copying permission.
 
 '''
 JADE mapping tool - Maya Launcher Script
+
+=====> the path at the bottom needs to be changed to fit with the actual source code folder.
 '''
 
 import sys
@@ -34,11 +36,11 @@ def psource (module):
     
     if 'client' in globals():
         exec ('reload ('+ modname +')') in globals ()
-        #exec ('reload ('+'LTool'+')')  in globals ()  # importing the class DOES NOT solve the lack of red line when an error is raised.
+        #exec ('reload ('+'LTool'+')')  in globals ()
         module = eval (modname)
     else:
         exec ('import ' + modname) in globals ()
-        #exec ('reload ('+'LTool'+')')in globals ()    # importing the class DOES NOT solve the lack of red line when an error is raised.
+        #exec ('reload ('+'LTool'+')')in globals ()
         module = eval (modname)
     
     return modname
