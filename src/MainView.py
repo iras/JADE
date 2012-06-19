@@ -1,8 +1,8 @@
-"""
+'''
 Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
 
 See the file license.txt for copying permission.
-"""
+'''
 
 '''
 JADE mapping tool
@@ -15,15 +15,18 @@ from PyQt4 import QtGui
 
 import View0
 
-import Graph as gr
 import GraphView as grv
 import Utility0 as utility
 
 
 
+#class MainWindow (QObject):
 class MainWindow (QWidget):
     
     def __init__ (self, graph, parent=None):
+        
+        #super(MainWindow, self).__init__(parent)
+        #QObject.__init__(self) # initialisation indispensable for sending and receiving signals !!
         
         QWidget.__init__ (self, parent)
         
@@ -149,21 +152,3 @@ class MainWindow (QWidget):
             
             # the event released by adding an InSocket signal will trigger the Tag0's method appendOutHook as a result.
             self.graph_model.addOutSocket (self.hovered_tag_id, value)
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-def main (argv):
-    
-    app = QApplication(argv)
-    
-    window = MainWindow   (gr.Graph())
-    window.setWindowFlags (Qt.WindowStaysOnTopHint)
-    window.show ()
-    
-    return app.exec_()
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-if __name__ == "__main__":
-    import sys
-    sys.exit (main (sys.argv))

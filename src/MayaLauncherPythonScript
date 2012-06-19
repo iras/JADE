@@ -1,0 +1,46 @@
+'''
+Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
+
+See the file license.txt for copying permission.
+'''
+
+'''
+JADE mapping tool - Maya Launcher Script
+'''
+
+import sys
+import os
+import maya.cmds as cmds
+
+def psource (module):
+    
+    file = os.path.basename (module)
+    dir  = os.path.dirname  (module)
+    
+    toks = file.split ('.')
+    modname = toks [0]
+    
+    cmds.file (f=True, new=True) # create a new scene
+    
+    if (os.path.exists (dir)): # check if folder is really a folder
+        
+        # check if the file folder already exists in the sys.path array
+        paths = sys.path
+        pathfound = 0
+        for path in paths:
+            if (dir == path) : pathfound = 1
+        
+        if not pathfound : sys.path.append (dir) # If the folder is not part of sys.path add it
+    
+    if 'client' in globals():
+        exec ('reload ('+ modname +')') in globals ()
+        #exec ('reload ('+'LTool'+')')  in globals ()  # importing the class DOES NOT solve the lack of red line when an error is raised.
+        module = eval (modname)
+    else:
+        exec ('import ' + modname) in globals ()
+        #exec ('reload ('+'LTool'+')')in globals ()    # importing the class DOES NOT solve the lack of red line when an error is raised.
+        module = eval (modname)
+    
+    return modname
+
+psource ('/Users/macbookpro/git/JADE/src/MayaClient.py')

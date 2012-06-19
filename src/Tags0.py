@@ -11,7 +11,7 @@ from PyQt4 import QtGui
 
 import Comm0
 import Hook0 as hk
-import Canvas as cs
+import Canvas0 as cs
 
 
 class Tag1 (QGraphicsItem):

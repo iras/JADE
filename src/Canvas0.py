@@ -5,7 +5,7 @@ See the file license.txt for copying permission.
 """
 
 from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt4.QtGui  import *
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 
