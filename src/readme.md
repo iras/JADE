@@ -6,5 +6,5 @@ JADE is a simple cross-platform dependency mapping tool written in Python 2.6 an
 
 
 ver 0.0.2 wish list:
-- implement load/save XML maps.
+- implement load/save XML mappings.
 - add props canvas to each tag (textfields to manually input info in)
