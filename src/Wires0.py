@@ -8,7 +8,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4 import QtCore
 from PyQt4 import QtGui
-import math
+#import math
 
 import Comm0
 

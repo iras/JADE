@@ -41,9 +41,4 @@ ui.setupUi (MainWindow)
 #MainWindow.show ()
 if (cmds.dockControl('myDock', q=1, ex=1)): cmds.deleteUI ('myDock')
 allowedAreas = ['right', 'left']
-myDock = cmds.dockControl('myDock', aa=allowedAreas, a='right', content='MainWindow', label='Muffin Editor panel', w=600)
-
-
-def test2 ():
-    print 'TEST2'
-# ---------------------------------------------------------------------------------------------------------------------
+myDock = cmds.dockControl('myDock', aa=allowedAreas, a='right', content='MainWindow', label='JADE Editor panel', w=600)

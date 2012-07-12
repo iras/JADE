@@ -9,6 +9,8 @@ from PyQt4.QtGui import *
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 
+import CustomView as cvw
+
 class View (QFrame):
 
     def __init__ (self, name, parent=None):
@@ -17,7 +19,7 @@ class View (QFrame):
         
         self.setFrameStyle (QFrame.Sunken | QFrame.StyledPanel)
         
-        self.graphicsView = QGraphicsView ()
+        self.graphicsView = cvw.CustomView ()
         self.graphicsView.setRenderHint (QPainter.Antialiasing, True)
         self.graphicsView.setDragMode (QGraphicsView.RubberBandDrag)
         self.graphicsView.setViewportUpdateMode (QGraphicsView.SmartViewportUpdate)

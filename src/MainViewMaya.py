@@ -50,14 +50,6 @@ class MainMayaWindow (QObject):
         self.connect (comm, SIGNAL('addLink_MSignal(int,int)'),    self.graph_view.addWire)
         self.connect (comm, SIGNAL('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
         
-        """
-        # wiring Contextual Menu
-        self.menu = cmds.popupMenu (parent='viewPanes', alt=True, ctl=True, button=1, mm=True, pmc = 'MayaClient.ui.ctxMenu()')
-        """
-        
-        #self.setMouseTracking (True)
-        #self.setAttribute(Qt.WA_Hover)
-        
         self.scene.addItem (self.helper.getHarpoon ())
         
         self.hovered_tag_id = None
@@ -91,9 +83,9 @@ class MainMayaWindow (QObject):
         self.scrollAreaWidgetContents_3 = QtGui.QWidget()
         self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 350, 350))
         self.scrollAreaWidgetContents_3.setObjectName(_fromUtf8("scrollAreaWidgetContents_3"))
-        view = View0.View ("JADE", self.scrollAreaWidgetContents_3)
-        view.setObjectName(_fromUtf8("JADE"))
-        self.scene.setObjectName(_fromUtf8("jadeScene"))
+        view = View0.View ("JADEview", self.scrollAreaWidgetContents_3)
+        view.setObjectName(_fromUtf8("JADEview"))
+        view.graphicsView.setObjectName(_fromUtf8("JADE2"))
         self.scrollArea.setWidget(self.scrollAreaWidgetContents_3)
         self.verticalLayout.addWidget(self.scrollArea)
         
@@ -116,10 +108,14 @@ class MainMayaWindow (QObject):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         
-        
-        
+        print
+        cmds.control('JADE2', edit=True, ebg=True, bgc=[.5,.5,.9])
+        print cmds.control('JADE2', query=True, p=True)
+        print
+    
         # wiring Contextual Menu
-        self.menu = cmds.popupMenu (parent='JADE', button=1, mm=True, pmc = 'MayaClient.ui.ctxMenu()')
+        self.menu = cmds.popupMenu ('JADEmenu', parent='JADEview', button=3, pmc = 'MayaClient.ui.ctxMenu()', aob=True)
+        #self.menu = cmds.popupMenu ('JADEmenu', parent='viewPanes', alt=True, button=3, pmc = 'MayaClient.ui.ctxMenu()', aob=True)
     
     def retranslateUi (self, MainWindow):
         pass
@@ -136,6 +132,8 @@ class MainMayaWindow (QObject):
     def ctxMenu (self):
         
         print 'CTXMENU'
+        print cmds.getPanel (vis=True)
+        print cmds.getPanel (wf=True)
         
         self.hovered_tag_id = self.graph_model.getComm().getHoveredItemId()
         
@@ -158,22 +156,12 @@ class MainMayaWindow (QObject):
     
     def prepareGeneralCtxMenu (self, list0):
         
-        #self.menu.clear()
+        # clear all the menu items out.
+        cmds.popupMenu ('JADEmenu', edit=True, dai=True)
         
         # populate the QMenu dynamically and pass the menu string name to the receiver
         for i in list0:
-            
-            #tmp = self.menu.addAction(i)
-            tmp = cmds.menuItem (parent=self.menu, label=str(i), c='MayaClient.ui.test1 ('+str(i)+')', sm=True, itl=True)
-            
-            
-            
-            #receiver = lambda value=i: self.addTag (value)
-            #self.connect (tmp, QtCore.SIGNAL('triggered()'), receiver)
-    
-    def test1(self, value):
-        
-        print 'HELLO ', value
+            tmp = cmds.menuItem (parent=self.menu, label=str(i), c='MayaClient.ui.addTag ("'+str(i)+'")')
     
     def addTag (self, name0):
         
@@ -186,9 +174,7 @@ class MainMayaWindow (QObject):
         
         # populate the QMenu dynamically and pass the menu string name to the receiver
         for i in list0:
-            tmp = self.menu.addAction(i)
-            receiver = lambda value=i: self.addSocketAction (value)
-            self.connect (tmp, QtCore.SIGNAL('triggered()'), receiver)
+            tmp = cmds.menuItem (parent=self.menu, label=str(i), c='MayaClient.ui.addSocketAction ("'+str(i)+'")')
     
     def addSocketAction (self, value):
         
