@@ -34,7 +34,7 @@ class Helper (QObject):
         self.harpoon.setVisible (False)
     
     # - - - - - - - - - - - - - - - - - - - - 
-        
+    
     def initAndStartTimer (self):
         
         self.timer_flag = False

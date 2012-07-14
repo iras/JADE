@@ -29,8 +29,8 @@ class Tag1 (QGraphicsItem):
         
         self.scene = self.helper.getScene ()
         
-        self.harpoon = self.helper.getHarpoon()
-        self.color = color
+        #self.harpoon = self.helper.getHarpoon()
+        #self.color = color
         
         self.canvas_height_in_units = 0
         

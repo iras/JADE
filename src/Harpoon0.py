@@ -51,7 +51,7 @@ class Harpoon0 (QGraphicsLineItem):
         self.x1 = pos.x()
         self.y1 = pos.y()
         
-    def setEndPos   (self, pos):
+    def setEndPos (self, pos):
         
         self.x1 = pos.x()
         self.y1 = pos.y()
