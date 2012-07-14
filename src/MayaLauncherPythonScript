@@ -45,4 +45,4 @@ def psource (module):
     
     return modname
 
-psource ('/Users/macbookpro/git/JADE/src/MayaClient.py')
+psource ('/Users/macbookpro/git/JADE/src/ClientMaya.py')

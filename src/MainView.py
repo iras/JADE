@@ -25,9 +25,6 @@ class MainWindow (QWidget):
     
     def __init__ (self, graph, parent=None):
         
-        #super(MainWindow, self).__init__(parent)
-        #QObject.__init__(self) # initialisation indispensable for sending and receiving signals !!
-        
         QWidget.__init__ (self, parent)
         
         self.scene = QGraphicsScene()
@@ -48,11 +45,6 @@ class MainWindow (QWidget):
         self.connect (comm, SIGNAL('deleteNode_MSignal(int)'),     self.graph_view.removeTag)
         self.connect (comm, SIGNAL('addLink_MSignal(int,int)'),    self.graph_view.addWire)
         self.connect (comm, SIGNAL('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
-        
-        #self.setMouseTracking (True)
-        #self.setAttribute(Qt.WA_Hover)
-        
-        self.populateScene ()
         
         self.hSplit = QSplitter ()
         
@@ -81,14 +73,13 @@ class MainWindow (QWidget):
         if e.key() == Qt.Key_Backspace:
             self.graph_view.removeSelectedItems ()
     
-    def populateScene (self):
-        pass
-    
     # - - -    context menu methods   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def ctxMenu (self, pos):
         
         self.hovered_tag_id = self.graph_model.getComm().getHoveredItemId()
+        
+        self.menu.clear()
         
         if self.hovered_tag_id!=None:
             if self.first_click==True:
@@ -112,8 +103,6 @@ class MainWindow (QWidget):
     
     def prepareGeneralCtxMenu (self, list0):
         
-        self.menu.clear()
-        
         # populate the QMenu dynamically and pass the menu string name to the receiver
         for i in list0:
             
@@ -127,9 +116,7 @@ class MainWindow (QWidget):
         tmp.setName (name0)
     
     def prepareNodeCtxMenu (self, list0):
-        
-        self.menu.clear()
-        
+                
         # populate the QMenu dynamically and pass the menu string name to the receiver
         for i in list0:
             tmp = self.menu.addAction(i)

@@ -12,7 +12,6 @@ from PyQt4 import QtGui
 #import GText as gt
 
 
-
 class Canvas (QGraphicsItem):
 
 

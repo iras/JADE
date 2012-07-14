@@ -84,11 +84,10 @@ class MainMayaWindow (QObject):
         self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 350, 350))
         self.scrollAreaWidgetContents_3.setObjectName(_fromUtf8("scrollAreaWidgetContents_3"))
         view = View0.View ("JADEview", self.scrollAreaWidgetContents_3)
-        view.setObjectName(_fromUtf8("JADEview"))
-        view.graphicsView.setObjectName(_fromUtf8("JADE2"))
+        view.setObjectName(_fromUtf8("JADEview"))  # real ui name
+        view.graphicsView.setObjectName(_fromUtf8("JADEInnerView"))
         self.scrollArea.setWidget(self.scrollAreaWidgetContents_3)
         self.verticalLayout.addWidget(self.scrollArea)
-        
         
         self.hSplit = QSplitter (self.scrollAreaWidgetContents_3)
         
@@ -102,27 +101,24 @@ class MainMayaWindow (QObject):
         
         layout = QHBoxLayout (self.scrollAreaWidgetContents_3)
         layout.addWidget (vSplit)
-        #layout.setObjectName ("Just Another DEpendency mapping tool")1
-        #self.setLayout (layout)
         
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         
-        print
-        cmds.control('JADE2', edit=True, ebg=True, bgc=[.5,.5,.9])
-        print cmds.control('JADE2', query=True, p=True)
-        print
-    
-        # wiring Contextual Menu
-        self.menu = cmds.popupMenu ('JADEmenu', parent='JADEview', button=3, pmc = 'MayaClient.ui.ctxMenu()', aob=True)
-        #self.menu = cmds.popupMenu ('JADEmenu', parent='viewPanes', alt=True, button=3, pmc = 'MayaClient.ui.ctxMenu()', aob=True)
+        """
+        cmds.control('JADEInnerView', edit=True, ebg=True, bgc=[.5,.5,.9])
+        print cmds.control('JADEInnerView', query=True, p=True)
+        """
+        
+        # wiring the Maya Contextual pop-up Menu
+        self.menu = cmds.popupMenu ('JADEmenu', parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenu()', aob=True)
     
     def retranslateUi (self, MainWindow):
         pass
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    def keyPressEvent (self, e):
+    
+    def keyPressEvent (self, e):    # ...can't use this one within Maya : REMOVE it.
         
         if e.key() == Qt.Key_Backspace:
             self.graph_view.removeSelectedItems ()
@@ -131,11 +127,9 @@ class MainMayaWindow (QObject):
     
     def ctxMenu (self):
         
-        print 'CTXMENU'
-        print cmds.getPanel (vis=True)
-        print cmds.getPanel (wf=True)
-        
         self.hovered_tag_id = self.graph_model.getComm().getHoveredItemId()
+        
+        cmds.popupMenu ('JADEmenu', edit=True, dai=True) # clear all the menu items out.
         
         if self.hovered_tag_id!=None:
             if self.first_click==True:
@@ -156,12 +150,9 @@ class MainMayaWindow (QObject):
     
     def prepareGeneralCtxMenu (self, list0):
         
-        # clear all the menu items out.
-        cmds.popupMenu ('JADEmenu', edit=True, dai=True)
-        
         # populate the QMenu dynamically and pass the menu string name to the receiver
         for i in list0:
-            tmp = cmds.menuItem (parent=self.menu, label=str(i), c='MayaClient.ui.addTag ("'+str(i)+'")')
+            tmp = cmds.menuItem (parent=self.menu, label=str(i), c='ClientMaya.ui.addTag ("'+str(i)+'")')
     
     def addTag (self, name0):
         
@@ -170,11 +161,9 @@ class MainMayaWindow (QObject):
     
     def prepareNodeCtxMenu (self, list0):
         
-        #self.menu.clear()
-        
         # populate the QMenu dynamically and pass the menu string name to the receiver
         for i in list0:
-            tmp = cmds.menuItem (parent=self.menu, label=str(i), c='MayaClient.ui.addSocketAction ("'+str(i)+'")')
+            tmp = cmds.menuItem (parent=self.menu, label=str(i), c='ClientMaya.ui.addSocketAction ("'+str(i)+'")')
     
     def addSocketAction (self, value):
         
