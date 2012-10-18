@@ -32,6 +32,8 @@ class Helper (QObject):
         # init harpoon and make it invisible
         self.harpoon = hp.Harpoon0 (0, 0, 0, 0)
         self.harpoon.setVisible (False)
+        
+        self.menu = None
     
     # - - - - - - - - - - - - - - - - - - - - 
     
@@ -41,7 +43,7 @@ class Helper (QObject):
         
         if not self.ctimer.isActive():
             
-            self.ctimer.singleShot (50, self.singleUpdate)
+            self.ctimer.singleShot (30, self.singleUpdate)
             #self.ctimer.start (500)
     
     def singleUpdate (self):
@@ -59,3 +61,7 @@ class Helper (QObject):
     def getGraphView (self): return self.graph_view
     
     def setGraphView (self, gv): self.graph_view = gv
+    
+    # menu
+    def setMenu (self, mn): self.menu = mn
+    def getMenu (self): return self.menu

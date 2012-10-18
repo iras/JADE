@@ -13,6 +13,7 @@ import Comm0
 import Hook0 as hk
 import Canvas0 as cs
 
+import maya.cmds as cmds
 
 class Tag1 (QGraphicsItem):
     
@@ -315,6 +316,13 @@ class Tag1 (QGraphicsItem):
         
         # records the node_id in the helper's attribute.
         self.comm.setHoveredItemId (None)
+        
+        # deal with the harpoon.
+        if not self.helper.isTimerEnded():
+            self.setSelected (True)
+            print "Tag1.hoverLeaveEvent : open PICKER"
+            #self.menu = cmds.popupMenu ('JADEmenu', parent='JADEInnerView', button=1, pmc = 'ClientMaya.ui.ctxMenu()', aob=True)
+            #cmds.control (self.helper.getMenu(), edit=True, visible=True)
     
     # - - -  getters/setters  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     

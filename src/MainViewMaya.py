@@ -111,7 +111,9 @@ class MainMayaWindow (QObject):
         """
         
         # wiring the Maya Contextual pop-up Menu
-        self.menu = cmds.popupMenu ('JADEmenu', parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenu()', aob=True)
+        self.menu        = cmds.popupMenu ('JADEmenu',        parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenu()', aob=True)
+        self.menuAddOuts = cmds.popupMenu ('JADEmenuAddOuts', parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenuAddOuts()', aob=True, alt=True)
+        self.menuAddIns  = cmds.popupMenu ('JADEmenuAddIns',  parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenuAddIns()',  aob=True, ctl=True)
     
     def retranslateUi (self, MainWindow):
         pass
@@ -131,18 +133,7 @@ class MainMayaWindow (QObject):
         
         cmds.popupMenu ('JADEmenu', edit=True, dai=True) # clear all the menu items out.
         
-        if self.hovered_tag_id!=None:
-            if self.first_click==True:
-                left_list = self.graph_model.getInsTypesLeft (self.hovered_tag_id)
-                if len(left_list)!=0:
-                    
-                    self.prepareNodeCtxMenu (left_list)
-            else:
-                left_list = self.graph_model.getOutsTypesLeft (self.hovered_tag_id)
-                if len(left_list)!=0:
-                    
-                    self.prepareNodeCtxMenu (left_list)
-        else:
+        if self.hovered_tag_id==None:
             # ctx menu to establish what node is going to be retrieved
             tmp_ls = []
             [tmp_ls.append(key) for key in self.graph_model.getRules()]
@@ -159,25 +150,56 @@ class MainMayaWindow (QObject):
         tmp = self.graph_model.addNode ()
         tmp.setName (name0)
     
-    def prepareNodeCtxMenu (self, list0):
+    def ctxMenuAddOuts (self):
+        
+        self.hovered_tag_id = self.graph_model.getComm().getHoveredItemId()
+        
+        cmds.popupMenu ('JADEmenuAddOuts', edit=True, dai=True) # clear all the menu items out.
+        
+        if self.hovered_tag_id!=None:
+            
+            right_list = self.graph_model.getOutsTypesLeft (self.hovered_tag_id)
+            if len(right_list)!=0:
+                self.prepareNodeCtxMenuOnAddingOuts (right_list)
+    
+    def ctxMenuAddIns (self):
+        
+        self.hovered_tag_id = self.graph_model.getComm().getHoveredItemId()
+        
+        cmds.popupMenu ('JADEmenuAddIns', edit=True, dai=True) # clear all the menu items out.
+        
+        if self.hovered_tag_id!=None:
+            
+            left_list = self.graph_model.getInsTypesLeft (self.hovered_tag_id)
+            if len(left_list)!=0:
+                self.prepareNodeCtxMenuOnAddingIns (left_list)
+    
+    def prepareNodeCtxMenuOnAddingOuts (self, list0):
         
         # populate the QMenu dynamically and pass the menu string name to the receiver
         for i in list0:
-            tmp = cmds.menuItem (parent=self.menu, label=str(i), c='ClientMaya.ui.addSocketAction ("'+str(i)+'")')
-    
-    def addSocketAction (self, value):
+            tmp = cmds.menuItem (parent=self.menuAddOuts, label=str(i), c='ClientMaya.ui.addOutSocketAction ("'+str(i)+'")')
         
-        if self.first_click==True:
-            
-            self.first_click=False
-            tag = self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
-            
-            # the event released by adding an InSocket signal will trigger the Tag0's method appendInHook() as a result.
-            self.graph_model.addInSocket (self.hovered_tag_id, value)
-        else:
-            
-            self.first_click=True
+        self.helper.setMenu(self.menuAddOuts)
+    
+    def prepareNodeCtxMenuOnAddingIns (self, list0):
+        
+        # populate the QMenu dynamically and pass the menu string name to the receiver
+        for i in list0:
+            tmp = cmds.menuItem (parent=self.menuAddIns, label=str(i), c='ClientMaya.ui.addInSocketAction ("'+str(i)+'")')
+        
+        self.helper.setMenu(self.menuAddIns)
+    
+    def addOutSocketAction (self, value):
+        
             tag = self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
             
             # the event released by adding an InSocket signal will trigger the Tag0's method appendOutHook as a result.
             self.graph_model.addOutSocket (self.hovered_tag_id, value)
+    
+    def addInSocketAction (self, value):
+        
+        tag = self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
+            
+        # the event released by adding an InSocket signal will trigger the Tag0's method appendInHook() as a result.
+        self.graph_model.addInSocket (self.hovered_tag_id, value)
