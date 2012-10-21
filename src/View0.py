@@ -11,6 +11,7 @@ from PyQt4 import QtGui
 
 import CustomView as cvw
 
+
 class View (QFrame):
 
     def __init__ (self, name, parent=None):
@@ -66,8 +67,12 @@ class View (QFrame):
         self.printOutBtn.setEnabled (True)
         
         self.browseRulesBtn = QPushButton()
-        self.browseRulesBtn.setText ("browse available nodes")
+        self.browseRulesBtn.setText ("import available nodes")
         self.browseRulesBtn.setEnabled (True)
+        
+        self.graphExportBtn = QPushButton()
+        self.graphExportBtn.setText ("export graph")
+        self.graphExportBtn.setEnabled (True)
         
         self.resetButton = QToolButton ()
         self.resetButton.setText ("0")
@@ -80,6 +85,7 @@ class View (QFrame):
         labelLayout.addWidget (self.removeNodeBtn)
         labelLayout.addWidget (self.printOutBtn)
         labelLayout.addWidget (self.browseRulesBtn)
+        labelLayout.addWidget (self.graphExportBtn)
         
         labelLayout.addWidget (self.label)
         labelLayout.addStretch ()
@@ -126,6 +132,7 @@ class View (QFrame):
         self.setResetButtonEnabled ()
     
     def printOutGraph (self):
+        
         qqq = QPainter (self.printer)
         self.graphicsView.render(qqq)
     
@@ -136,6 +143,17 @@ class View (QFrame):
         aa = fd.getOpenFileName()
         if aa!=QString(u''): # it can be equal to QString(u'') when the user presses the Escape key, so in that circumstance, nothing is returned.
             self.graph_view.setRules (open(aa).read())
+    
+    def exportGraph (self):
+        
+        fd = QtGui.QFileDialog (self)
+        
+        aa = fd.getSaveFileName (self, QString ("Save file"))
+        if aa != QString (u''): # it can be equal to QString(u'') when the user presses the Escape key, so in that circumstance, nothing is returned.
+            logfile = open (aa, 'w')
+            logfile.write (self.graph_view.delegateExport ())
+            logfile.close ()
+            print '\n*** file exported.\n'
     
     def zoomIn  (self) : self.zoomSlider.setValue (self.zoomSlider.value() + 1)
     def zoomOut (self) : self.zoomSlider.setValue (self.zoomSlider.value() - 1)
@@ -150,3 +168,4 @@ class View (QFrame):
         self.connect (self.removeNodeBtn,  SIGNAL ("clicked()"), self.graph_view.removeNodeAndTagPressBtnListener)
         self.connect (self.printOutBtn,    SIGNAL ("clicked()"), self.printOutGraph)
         self.connect (self.browseRulesBtn, SIGNAL ("clicked()"), self.getRulesPath)
+        self.connect (self.graphExportBtn, SIGNAL ("clicked()"), self.exportGraph)

@@ -326,7 +326,7 @@ class Tag1 (QGraphicsItem):
     
     # - - -  getters/setters  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     
-    def getSId  (self): return self.node_id
+    def getId  (self): return self.node_id
     def getComm (self): return self.comm
     def getInHooks  (self): return self.inHooks
     def getOutHooks (self): return self.outHooks

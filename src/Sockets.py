@@ -10,8 +10,8 @@ class Socket ():
     """
     def __init__(self, sid, type0, node):
         
-        self._sid   = sid     # socket's id
-        self._node  = node # id of the node this socket belongs to.
+        self._sid   = sid   # socket's id
+        self._node  = node  # id of the node this socket belongs to.
         self._stype = str(type0)
         
         self._attributes = []

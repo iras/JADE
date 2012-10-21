@@ -50,7 +50,7 @@ class GraphView ():
     def removeNodeAndTagPressBtnListener (self):
         
         for tag in self.getListSelectedTags ():
-            self.removeNodeAndTag (tag.getSId())
+            self.removeNodeAndTag (tag.getId())
     
     def addLinkAndWirePressBtnListener (self):               # IS THIS METHOD STILL NEEDED ????
         
@@ -103,7 +103,7 @@ class GraphView ():
     def removeTag (self, node_id): # listener to deleteNode_MSignal
         
         for tag in self._tag_list:
-            if tag.getSId() == node_id:
+            if tag.getId() == node_id:
                 self.utility.getScene().removeItem (tag)
                 del self._tag_list [self._tag_list.index (tag)]
                 break
@@ -155,7 +155,7 @@ class GraphView ():
         
         seeked_tag = None
         for tag in self._tag_list:
-            if tag.getSId()==node_id:
+            if tag.getId()==node_id:
                 seeked_tag = tag
                 break
         
@@ -204,3 +204,12 @@ class GraphView ():
         ls = []
         [ls.append (item) for item in self._wire_list if item.isSelected()==True]
         return ls
+    
+    def delegateExport (self):
+        
+        # create a dictionary which associates a node's id with the x,y position of the tag.
+        tag_position_dict = {}
+        for tag in self._tag_list:
+            tag_position_dict [str(tag.getId())] = tag.pos()
+        
+        return self.graph.export (tag_position_dict)

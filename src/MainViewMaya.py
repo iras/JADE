@@ -21,12 +21,10 @@ import GraphView as grv
 import Utility0 as utility
 
 
-
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
     _fromUtf8 = lambda s: s
-
 
 
 class MainMayaWindow (QObject):
@@ -34,7 +32,7 @@ class MainMayaWindow (QObject):
     def __init__ (self, graph, parent=None):
         
         super (MainMayaWindow, self).__init__(parent)
-        QObject.__init__(self) # initialisation indispensable for sending and receiving signals !!
+        QObject.__init__(self) # initiation indispensable for sending and receiving signals!
                 
         self.scene = QGraphicsScene()
         
@@ -125,7 +123,7 @@ class MainMayaWindow (QObject):
         if e.key() == Qt.Key_Backspace:
             self.graph_view.removeSelectedItems ()
     
-    # - - -    context menu methods   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # - - -    context menus methods   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def ctxMenu (self):
         
@@ -143,7 +141,7 @@ class MainMayaWindow (QObject):
         
         # populate the QMenu dynamically and pass the menu string name to the receiver
         for i in list0:
-            tmp = cmds.menuItem (parent=self.menu, label=str(i), c='ClientMaya.ui.addTag ("'+str(i)+'")')
+            cmds.menuItem (parent=self.menu, label=str(i), c='ClientMaya.ui.addTag ("'+str(i)+'")')
     
     def addTag (self, name0):
         
@@ -178,7 +176,7 @@ class MainMayaWindow (QObject):
         
         # populate the QMenu dynamically and pass the menu string name to the receiver
         for i in list0:
-            tmp = cmds.menuItem (parent=self.menuAddOuts, label=str(i), c='ClientMaya.ui.addOutSocketAction ("'+str(i)+'")')
+            cmds.menuItem (parent=self.menuAddOuts, label=str(i), c='ClientMaya.ui.addOutSocketAction ("'+str(i)+'")')
         
         self.helper.setMenu(self.menuAddOuts)
     
@@ -186,20 +184,20 @@ class MainMayaWindow (QObject):
         
         # populate the QMenu dynamically and pass the menu string name to the receiver
         for i in list0:
-            tmp = cmds.menuItem (parent=self.menuAddIns, label=str(i), c='ClientMaya.ui.addInSocketAction ("'+str(i)+'")')
+            cmds.menuItem (parent=self.menuAddIns, label=str(i), c='ClientMaya.ui.addInSocketAction ("'+str(i)+'")')
         
         self.helper.setMenu(self.menuAddIns)
     
     def addOutSocketAction (self, value):
         
-            tag = self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
+            self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
             
             # the event released by adding an InSocket signal will trigger the Tag0's method appendOutHook as a result.
             self.graph_model.addOutSocket (self.hovered_tag_id, value)
     
     def addInSocketAction (self, value):
         
-        tag = self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
+        self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
             
         # the event released by adding an InSocket signal will trigger the Tag0's method appendInHook() as a result.
         self.graph_model.addInSocket (self.hovered_tag_id, value)

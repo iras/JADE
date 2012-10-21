@@ -89,7 +89,7 @@
     </outputs>
   </node>
   <node>
-    <class> State01Closed</class>
+    <class>State01Closed</class>
     <label/>
     <props>
       <prop>

@@ -9,6 +9,7 @@ from xml.dom.minidom import parseString
 
 import Nodes0 as nd
 import Comm0
+import GraphExporter as ge
 
 
 
@@ -21,6 +22,8 @@ class Graph ():
         self.connections_map = {}
         
         self._node_list = []
+        
+        self.graph_exporter = ge.Exporter()
         
     def getComm (self): return self.comm
     
@@ -208,4 +211,6 @@ class Graph ():
         pp.pprint (self.connections_map)
     
     def getRules (self): return self.connections_map
+    
+    def export (self, tag_position_dict): return self.graph_exporter.export (self._node_list, tag_position_dict)
 
