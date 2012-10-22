@@ -54,13 +54,13 @@ class View (QFrame):
         zoomSliderLayout.addWidget (self.zoomSlider)
         zoomSliderLayout.addWidget (zoomOutIcon)
         
-        self.addNodeBtn = QPushButton ()
-        self.addNodeBtn.setText ("add node")
-        self.addNodeBtn.setEnabled (True)
+        #self.addNodeBtn = QPushButton ()
+        #self.addNodeBtn.setText ("add node")
+        #self.addNodeBtn.setEnabled (True)
         
-        self.removeNodeBtn = QPushButton ()
-        self.removeNodeBtn.setText ("remove node")
-        self.removeNodeBtn.setEnabled (True)
+        #self.removeNodeBtn = QPushButton ()
+        #self.removeNodeBtn.setText ("remove node")
+        #self.removeNodeBtn.setEnabled (True)
         
         self.printOutBtn = QPushButton()
         self.printOutBtn.setText ("print graph")
@@ -74,6 +74,10 @@ class View (QFrame):
         self.graphExportBtn.setText ("export graph")
         self.graphExportBtn.setEnabled (True)
         
+        self.graphImportBtn = QPushButton()
+        self.graphImportBtn.setText ("import graph")
+        self.graphImportBtn.setEnabled (True)
+        
         self.resetButton = QToolButton ()
         self.resetButton.setText ("0")
         self.resetButton.setEnabled (False)
@@ -81,11 +85,12 @@ class View (QFrame):
         # Label layout
         labelLayout = QHBoxLayout ()
         self.label = QLabel (name)
-        labelLayout.addWidget (self.addNodeBtn)
-        labelLayout.addWidget (self.removeNodeBtn)
+        #labelLayout.addWidget (self.addNodeBtn)
+        #labelLayout.addWidget (self.removeNodeBtn)
         labelLayout.addWidget (self.printOutBtn)
         labelLayout.addWidget (self.browseRulesBtn)
         labelLayout.addWidget (self.graphExportBtn)
+        labelLayout.addWidget (self.graphImportBtn)
         
         labelLayout.addWidget (self.label)
         labelLayout.addStretch ()
@@ -148,12 +153,24 @@ class View (QFrame):
         
         fd = QtGui.QFileDialog (self)
         
-        aa = fd.getSaveFileName (self, QString ("Save file"))
+        aa = fd.getSaveFileName (self, QString ("Export file"))
         if aa != QString (u''): # it can be equal to QString(u'') when the user presses the Escape key, so in that circumstance, nothing is returned.
-            logfile = open (aa, 'w')
-            logfile.write (self.graph_view.delegateExport ())
-            logfile.close ()
+            file = open (aa, 'w')
+            file.write (self.graph_view.delegateExport ())
+            file.close ()
             print '\n*** file exported.\n'
+    
+    def importGraph (self):
+        
+        fd = QtGui.QFileDialog (self)
+        
+        aa = fd.getOpenFileName (self, QString ("Import file"))
+        if aa != QString (u''): # it can be equal to QString(u'') when the user presses the Escape key, so in that circumstance, nothing is returned.
+            file = open (aa, 'r')
+            XML_content = file.read()
+            file.close ()
+            self.graph_view.delegateImport (XML_content)
+            print '\n*** file imported.\n'
     
     def zoomIn  (self) : self.zoomSlider.setValue (self.zoomSlider.value() + 1)
     def zoomOut (self) : self.zoomSlider.setValue (self.zoomSlider.value() - 1)
@@ -164,8 +181,10 @@ class View (QFrame):
         
         self.graph_view = graph_view
         
-        self.connect (self.addNodeBtn,     SIGNAL ("clicked()"), self.graph_view.addNodeAndTagPressBtnListener)
-        self.connect (self.removeNodeBtn,  SIGNAL ("clicked()"), self.graph_view.removeNodeAndTagPressBtnListener)
+        #self.connect (self.addNodeBtn,     SIGNAL ("clicked()"), self.graph_view.addNodeAndTagPressBtnListener)
+        #self.connect (self.removeNodeBtn,  SIGNAL ("clicked()"), self.graph_view.removeNodeAndTagPressBtnListener)
         self.connect (self.printOutBtn,    SIGNAL ("clicked()"), self.printOutGraph)
         self.connect (self.browseRulesBtn, SIGNAL ("clicked()"), self.getRulesPath)
         self.connect (self.graphExportBtn, SIGNAL ("clicked()"), self.exportGraph)
+        self.connect (self.graphImportBtn, SIGNAL ("clicked()"), self.importGraph)
+        

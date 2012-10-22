@@ -205,11 +205,17 @@ class GraphView ():
         [ls.append (item) for item in self._wire_list if item.isSelected()==True]
         return ls
     
+    # - -   import / export   - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
     def delegateExport (self):
         
-        # create a dictionary which associates a node's id with the x,y position of the tag.
+        # create a dictionary which associates a node's id with its x,y position.
         tag_position_dict = {}
         for tag in self._tag_list:
             tag_position_dict [str(tag.getId())] = tag.pos()
         
-        return self.graph.export (tag_position_dict)
+        return self.graph.exportGraph (tag_position_dict)
+    
+    def delegateImport (self, XML_content):
+        
+        self.graph.importGraph (XML_content)

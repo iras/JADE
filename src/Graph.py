@@ -9,7 +9,7 @@ from xml.dom.minidom import parseString
 
 import Nodes0 as nd
 import Comm0
-import GraphExporter as ge
+import GraphIO as gio
 
 
 
@@ -23,7 +23,7 @@ class Graph ():
         
         self._node_list = []
         
-        self.graph_exporter = ge.Exporter()
+        self.graph_io = gio.IO()
         
     def getComm (self): return self.comm
     
@@ -40,6 +40,15 @@ class Graph ():
         self.comm.emitAddNodeMSignal (newNode.getId())
         
         return newNode
+    
+    def importNode (self, node_id, node_name):
+        
+        importedNode = nd.Node0 (node_id, node_name, self.comm)
+        self._node_list.append (importedNode)
+        
+        self.comm.emitAddNodeMSignal (importedNode.getId())
+        
+        return importedNode
     
     def removeNode (self, node0_id):
         
@@ -179,6 +188,8 @@ class Graph ():
         
         return s
     
+    # graph rules
+    
     def setRules (self, text_xml):
         
         self.xml_rules_table = parseString(text_xml)
@@ -212,5 +223,10 @@ class Graph ():
     
     def getRules (self): return self.connections_map
     
-    def export (self, tag_position_dict): return self.graph_exporter.export (self._node_list, tag_position_dict)
-
+    # i/o
+    
+    def exportGraph (self, tag_position_dict):
+        return self.graph_io.exportGraph (self._node_list, tag_position_dict)
+    
+    def importGraph (self, XML_content):
+        self.graph_io.importGraph (XML_content)

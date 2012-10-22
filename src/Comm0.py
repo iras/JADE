@@ -30,11 +30,16 @@ class Comm0 (QObject):
         self.hovered_node_id   = None
         self.hovered_socket_id = None
     
+    # node id counter
     def getNewNodeId (self):
         
         self.id_node_counter += 1
         return self.id_node_counter
     
+    def getNodeId (self): return self.id_node_counter 
+    def setNodeId (self, node_id): self.id_node_counter =  node_id
+    
+    # socket id counter
     def getNewSocketId (self):
         
         self.id_socket_counter += 1
