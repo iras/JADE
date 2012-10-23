@@ -17,7 +17,7 @@ import maya.cmds as cmds
 
 class Tag1 (QGraphicsItem):
     
-    def __init__ (self, color, node_id, helper, parent=None):
+    def __init__ (self, color, node_id, helper, x, y, parent=None):
         
         QGraphicsItem.__init__ (self)
         

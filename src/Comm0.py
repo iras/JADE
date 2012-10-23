@@ -36,8 +36,10 @@ class Comm0 (QObject):
         self.id_node_counter += 1
         return self.id_node_counter
     
-    def getNodeId (self): return self.id_node_counter 
-    def setNodeId (self, node_id): self.id_node_counter =  node_id
+    def updateNodeId (self, queried_node_id):
+        
+        if self.id_node_counter < queried_node_id:
+            self.id_node_counter = queried_node_id
     
     # socket id counter
     def getNewSocketId (self):
@@ -49,8 +51,8 @@ class Comm0 (QObject):
     
     # Model signals
     
-    def emitAddNodeMSignal (self, node_id):
-        self.emit (SIGNAL ('addNode_MSignal(int)'), node_id)
+    def emitAddNodeMSignal (self, node_id, node_x, node_y):
+        self.emit (SIGNAL ('addNode_MSignal(int, float, float)'), node_id, node_x, node_y)
     
     def emitDeleteNodeMSignal (self, node_id):
         self.emit (SIGNAL ('deleteNode_MSignal(int)'), node_id)

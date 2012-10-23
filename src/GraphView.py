@@ -79,11 +79,11 @@ class GraphView ():
         tmp = self.graph.addNode ()
         tmp.setName (name0)
     
-    def addTag (self, node_id):
+    def addTag (self, node_id, fx, fy):
         
         color = QColor (Qt.white).dark (120)
-        tag = Tags0.Tag1 (color, node_id, self.utility)
-        tag.setPos (QPointF (20, 20))
+        tag = Tags0.Tag1 (color, node_id, self.utility, fx, fy)
+        tag.setPos (QPointF (fx+20, fy+20))
         self.utility.getScene().addItem (tag)
         
         comm = self.graph.getComm ()

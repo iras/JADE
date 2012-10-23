@@ -41,7 +41,7 @@ class MainWindow (QWidget):
         
         # wirings
         comm = self.graph_model.getComm ()
-        self.connect (comm, SIGNAL('addNode_MSignal(int)'),        self.graph_view.addTag)
+        self.connect (comm, SIGNAL('addNode_MSignal(int, float, float)'), self.graph_view.addTag)
         self.connect (comm, SIGNAL('deleteNode_MSignal(int)'),     self.graph_view.removeTag)
         self.connect (comm, SIGNAL('addLink_MSignal(int,int)'),    self.graph_view.addWire)
         self.connect (comm, SIGNAL('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)

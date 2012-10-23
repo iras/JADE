@@ -46,7 +46,7 @@
     </outputs>
   </node>
   <node>
-    <class>5_Adder</class>
+    <class>Five_Adder</class>
     <label/>
     <inputs>
       <input>

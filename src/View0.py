@@ -70,13 +70,13 @@ class View (QFrame):
         self.browseRulesBtn.setText ("import available nodes")
         self.browseRulesBtn.setEnabled (True)
         
-        self.graphExportBtn = QPushButton()
-        self.graphExportBtn.setText ("export graph")
-        self.graphExportBtn.setEnabled (True)
+        self.graphSaveBtn = QPushButton()
+        self.graphSaveBtn.setText ("save graph")
+        self.graphSaveBtn.setEnabled (True)
         
-        self.graphImportBtn = QPushButton()
-        self.graphImportBtn.setText ("import graph")
-        self.graphImportBtn.setEnabled (True)
+        self.graphLoadBtn = QPushButton()
+        self.graphLoadBtn.setText ("load graph")
+        self.graphLoadBtn.setEnabled (True)
         
         self.resetButton = QToolButton ()
         self.resetButton.setText ("0")
@@ -89,8 +89,8 @@ class View (QFrame):
         #labelLayout.addWidget (self.removeNodeBtn)
         labelLayout.addWidget (self.printOutBtn)
         labelLayout.addWidget (self.browseRulesBtn)
-        labelLayout.addWidget (self.graphExportBtn)
-        labelLayout.addWidget (self.graphImportBtn)
+        labelLayout.addWidget (self.graphSaveBtn)
+        labelLayout.addWidget (self.graphLoadBtn)
         
         labelLayout.addWidget (self.label)
         labelLayout.addStretch ()
@@ -185,6 +185,6 @@ class View (QFrame):
         #self.connect (self.removeNodeBtn,  SIGNAL ("clicked()"), self.graph_view.removeNodeAndTagPressBtnListener)
         self.connect (self.printOutBtn,    SIGNAL ("clicked()"), self.printOutGraph)
         self.connect (self.browseRulesBtn, SIGNAL ("clicked()"), self.getRulesPath)
-        self.connect (self.graphExportBtn, SIGNAL ("clicked()"), self.exportGraph)
-        self.connect (self.graphImportBtn, SIGNAL ("clicked()"), self.importGraph)
+        self.connect (self.graphSaveBtn,   SIGNAL ("clicked()"), self.exportGraph)
+        self.connect (self.graphLoadBtn,   SIGNAL ("clicked()"), self.importGraph)
         

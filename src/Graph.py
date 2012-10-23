@@ -37,16 +37,18 @@ class Graph ():
         newNode = nd.Node0 (newId, newName, self.comm)
         self._node_list.append (newNode)
         
-        self.comm.emitAddNodeMSignal (newNode.getId())
+        self.comm.emitAddNodeMSignal (newNode.getId(), 0.0, 0.0)
         
         return newNode
     
-    def importNode (self, node_id, node_name):
+    def importNode (self, node_id, node_name, node_x, node_y):
+        
+        self.comm.updateNodeId (node_id) # keep the node id counter up to date.
         
         importedNode = nd.Node0 (node_id, node_name, self.comm)
         self._node_list.append (importedNode)
         
-        self.comm.emitAddNodeMSignal (importedNode.getId())
+        self.comm.emitAddNodeMSignal (importedNode.getId(), node_x, node_y)
         
         return importedNode
     
@@ -89,15 +91,23 @@ class Graph ():
     
     def addInSocket (self, node_id, stype):
         
-        node = self.getNode (node_id)
-        if node!=None:
-            node.addIn (stype)
-    
-    def addOutSocket (self, node_id, stype):
+        tmp_socket = None
         
         node = self.getNode (node_id)
         if node!=None:
-            node.addOut (stype)
+            tmp_socket = node.addIn (stype)
+        
+        return tmp_socket
+    
+    def addOutSocket (self, node_id, stype):
+        
+        tmp_socket = None
+        
+        node = self.getNode (node_id)
+        if node!=None:
+            tmp_socket = node.addOut (stype)
+        
+        return tmp_socket
     
     def getNode (self, node_id):
         
@@ -136,6 +146,16 @@ class Graph ():
         
         self.comm.emitAddLinkMSignal (inSocket.getSId(), outSocket.getSId())
     
+    def importLink (self, id_out_node, type_out_socket, id_in_node, type_in_socket):
+        
+        inSocket = self.getSocketFromNode (id_in_node, type_in_socket) # try n retrieve the appropriate inSocket for the node with id=id_in_node
+        if inSocket == None: inSocket = self.addInSocket (id_in_node, type_in_socket) # if not, add it.
+        
+        outSocket = self.getSocketFromNode (id_out_node, type_out_socket) # try n retrieve the appropriate outSocket for the node with id=id_out_node
+        if outSocket == None: outSocket = self.addOutSocket (id_out_node, type_out_socket) # if not, add it.
+        
+        self.addLink (inSocket, outSocket)
+    
     def removeLink (self, s_in_id, s_out_id):
         
         if self.areSocketsRelated (s_in_id, s_out_id) == True:
@@ -153,7 +173,7 @@ class Graph ():
             if flag1==True and flag2==True:
                 self.comm.emitDeleteLinkMSignal (s_in_id, s_out_id)
     
-    # - - -  miscellanea  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # - - -  misc sockets  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def areSocketsRelated (self, s1_id, s2_id):
         
@@ -184,6 +204,23 @@ class Graph ():
                         s = socket
                         break
             else:
+                break
+        
+        return s
+    
+    def getSocketFromNode (self, node_id, socket_type):
+        
+        node = self.getNode (node_id)
+        s = None
+        
+        for socket in node.getIns ():
+            if socket.getSType()==socket_type:
+                s = socket
+                break
+                
+        for socket in node.getOuts ():
+            if socket.getSType()==socket_type:
+                s = socket
                 break
         
         return s
@@ -229,4 +266,18 @@ class Graph ():
         return self.graph_io.exportGraph (self._node_list, tag_position_dict)
     
     def importGraph (self, XML_content):
-        self.graph_io.importGraph (XML_content)
+        
+        tmp_list = self.graph_io.importGraphData (XML_content)
+        
+        node_list = tmp_list[0]
+        link_list = tmp_list[1]
+        
+        print '\n\nImport Nodes'
+        for item in node_list:
+            print item[0], item[1], item[2], item[3]
+            self.importNode (int(item[1]), item[0], float(item[2]), float(item[3]))
+        
+        print '\n\nImport Links'
+        for item in link_list:
+            self.importLink (int(item[0]), item[1], int(item[2]), item[3])
+            print item[0], item[1], item[2], item[3]
