@@ -26,4 +26,4 @@ class CustomView (QGraphicsView):
         if (event.button()==Qt.RightButton): 
             event.ignore()
         else:
-            QGraphicsView.mousePressEvent(self, event) # <-- added this line.
+            QGraphicsView.mousePressEvent (self, event) # <-- added this line.

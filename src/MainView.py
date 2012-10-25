@@ -19,12 +19,17 @@ import GraphView as grv
 import Utility0 as utility
 
 
-
-#class MainWindow (QObject):
 class MainWindow (QWidget):
-    
+    '''
+    Base widget for the JADE standalone app.
+    Notice the difference with the MainMayaWindow. This class is subclassing QWidget while the Maya one subclasses QObject.
+    '''
     def __init__ (self, graph, parent=None):
+        '''constructor
         
+        @param graph the model
+        @param parent a parent QWidget, or None for root window.
+        '''
         QWidget.__init__ (self, parent)
         
         self.scene = QGraphicsScene()
@@ -65,34 +70,61 @@ class MainWindow (QWidget):
         
         self.scene.addItem (self.helper.getHarpoon ())
         
+        self.alt_pressed = False
+        self.ctl_pressed = False
+                
         self.hovered_tag_id = None
-        self.first_click = False
+    
+    def mousePressEvent (self, e):
+        '''Callback function dealing with pressing a mouse button.
+
+        @param e event
+        '''
+        modif = int (e.modifiers())
+        ctrl  = (modif&0x04000000) != 0
+        shift = (modif&0x02000000) != 0
+        alt   = (modif&0x08000000) != 0
+        
+        if alt:  self.alt_pressed = True
+        else:    self.alt_pressed = False
+        
+        if ctrl: self.ctl_pressed = True
+        else:    self.ctl_pressed = False
+        
+        QWidget.mousePressEvent (self, e)
     
     def keyPressEvent (self, e):
-        
+        '''Callback function dealing with pressing a keyboard key.
+
+        @param e event
+        '''
         if e.key() == Qt.Key_Backspace:
             self.graph_view.removeSelectedItems ()
     
     # - - -    context menu methods   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def ctxMenu (self, pos):
-        
+        '''Callback function dealing with invoking the contextual menu.
+
+        @param pos position
+        '''
         self.hovered_tag_id = self.graph_model.getComm().getHoveredItemId()
         
         self.menu.clear()
         
         if self.hovered_tag_id!=None:
-            if self.first_click==True:
+            if self.ctl_pressed == True:
                 left_list = self.graph_model.getInsTypesLeft (self.hovered_tag_id)
                 if len(left_list)!=0:
                     
                     self.prepareNodeCtxMenu (left_list)
                     self.menu.popup (self.mapToGlobal (pos))
-            else:
-                left_list = self.graph_model.getOutsTypesLeft (self.hovered_tag_id)
-                if len(left_list)!=0:
+            
+            elif self.alt_pressed == True:
+                right_list = self.graph_model.getOutsTypesLeft (self.hovered_tag_id)
+                if len(right_list)!=0:
                     
-                    self.prepareNodeCtxMenu (left_list)
+                    self.prepareNodeCtxMenu (right_list)
                     self.menu.popup (self.mapToGlobal (pos))
         else:
             # ctx menu to establish what node is going to be retrieved
@@ -102,8 +134,10 @@ class MainWindow (QWidget):
             self.menu.popup (self.mapToGlobal (pos))
     
     def prepareGeneralCtxMenu (self, list0):
-        
-        # populate the QMenu dynamically and pass the menu string name to the receiver
+        '''populate the QMenu dynamically with available node infos and pass the menu string name to the receiver.
+
+        @param list0 list of menu items
+        '''
         for i in list0:
             
             tmp = self.menu.addAction(i)
@@ -111,31 +145,36 @@ class MainWindow (QWidget):
             self.connect (tmp, QtCore.SIGNAL('triggered()'), receiver)
     
     def addTag (self, name0):
-        
+        '''adds a Tag0 instance by name.
+
+        @param name0 string
+        '''
         tmp = self.graph_model.addNode ()
         tmp.setName (name0)
     
     def prepareNodeCtxMenu (self, list0):
-                
-        # populate the QMenu dynamically and pass the menu string name to the receiver
+        '''populates the QMenu dynamically with available socket names and pass the menu string name to the receiver. Also, it generates closures as callbacks for each item.
+
+        @param list0 list of menu items.
+        '''
         for i in list0:
             tmp = self.menu.addAction(i)
             receiver = lambda value=i: self.addSocketAction (value)
             self.connect (tmp, QtCore.SIGNAL('triggered()'), receiver)
     
     def addSocketAction (self, value):
-        
-        if self.first_click==True:
+        '''adds a socket name based on the key modifier pressed.
+
+        @param value
+        '''
+        if self.ctl_pressed == True:
             
-            self.first_click=False
             tag = self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
-            
             # the event released by adding an InSocket signal will trigger the Tag0's method appendInHook() as a result.
             self.graph_model.addInSocket (self.hovered_tag_id, value)
-        else:
+        
+        elif self.alt_pressed == True:
             
-            self.first_click=True
             tag = self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
-            
             # the event released by adding an InSocket signal will trigger the Tag0's method appendOutHook as a result.
             self.graph_model.addOutSocket (self.hovered_tag_id, value)

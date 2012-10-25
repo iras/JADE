@@ -15,8 +15,7 @@ from PyQt4.QtGui  import *
 
 class Comm0 (QObject):
     """
-    This class allows QtGui.QGraphicsItem to send and receive signals (like a mediator)
-    besides being a utility helper.
+    This class allows QtGui.QGraphicsItem to send and receive signals besides being a utility helper.
     """
     
     def __init__(self, parent = None):
@@ -80,11 +79,7 @@ class Comm0 (QObject):
     def emitDeleteOutSocketMSignal (self, node_id, outSocket_id):
         self.emit (SIGNAL ('deleteOutSocket_MSignal(int,int)'), node_id, outSocket_id)
     
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    
-    def emitCtxMenuSignal (self, pos):
-        self.emit (SIGNAL ('customContextMenuRequested(QPoint)'), pos)
-    
+
     
     # View Signals
     
@@ -92,6 +87,8 @@ class Comm0 (QObject):
         
         #self.emit (SIGNAL ('SelectTag_VSignal(int)'), node_id)
     
+    def emitCtxMenuSignal (self, pos):
+        self.emit (SIGNAL ('customContextMenuRequested(QPoint)'), pos)
     
     # misc
     

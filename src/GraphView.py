@@ -208,7 +208,7 @@ class GraphView ():
     # - -   import / export   - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def delegateExport (self):
-        
+        print 'delegateExport'
         # create a dictionary which associates a node's id with its x,y position.
         tag_position_dict = {}
         for tag in self._tag_list:
@@ -217,5 +217,5 @@ class GraphView ():
         return self.graph.exportGraph (tag_position_dict)
     
     def delegateImport (self, XML_content):
-        
+        print 'delegateImport'
         self.graph.importGraph (XML_content)

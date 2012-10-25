@@ -51,7 +51,6 @@ class MainMayaWindow (QObject):
         self.scene.addItem (self.helper.getHarpoon ())
         
         self.hovered_tag_id = None
-        self.first_click = False
     
     def setupUi (self, MainWindow):
         
@@ -117,12 +116,12 @@ class MainMayaWindow (QObject):
         pass
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
+    '''
     def keyPressEvent (self, e):    # ...can't use this one within Maya : REMOVE it.
         
         if e.key() == Qt.Key_Backspace:
             self.graph_view.removeSelectedItems ()
-    
+    '''
     # - - -    context menus methods   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def ctxMenu (self):

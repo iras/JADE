@@ -43,9 +43,9 @@ class View (QFrame):
         zoomOutIcon.setIconSize (iconSize)
         
         self.zoomSlider = QSlider ()
-        self.zoomSlider.setMinimum (230)
+        self.zoomSlider.setMinimum (200)
         self.zoomSlider.setMaximum (280)
-        self.zoomSlider.setValue (250)
+        self.zoomSlider.setValue (240)
         self.zoomSlider.setTickPosition (QSlider.TicksRight)
         
         # Zoom slider layout
@@ -66,9 +66,9 @@ class View (QFrame):
         self.printOutBtn.setText ("print graph")
         self.printOutBtn.setEnabled (True)
         
-        self.browseRulesBtn = QPushButton()
-        self.browseRulesBtn.setText ("import available nodes")
-        self.browseRulesBtn.setEnabled (True)
+        self.loadNodesDescrpBtn = QPushButton()
+        self.loadNodesDescrpBtn.setText ("load Nodes Description")
+        self.loadNodesDescrpBtn.setEnabled (True)
         
         self.graphSaveBtn = QPushButton()
         self.graphSaveBtn.setText ("save graph")
@@ -88,7 +88,7 @@ class View (QFrame):
         #labelLayout.addWidget (self.addNodeBtn)
         #labelLayout.addWidget (self.removeNodeBtn)
         labelLayout.addWidget (self.printOutBtn)
-        labelLayout.addWidget (self.browseRulesBtn)
+        labelLayout.addWidget (self.loadNodesDescrpBtn)
         labelLayout.addWidget (self.graphSaveBtn)
         labelLayout.addWidget (self.graphLoadBtn)
         
@@ -141,19 +141,15 @@ class View (QFrame):
         qqq = QPainter (self.printer)
         self.graphicsView.render(qqq)
     
-    def getRulesPath (self):
-        
-        fd = QtGui.QFileDialog (self)
-        
-        aa = fd.getOpenFileName()
-        if aa!=QString(u''): # it can be equal to QString(u'') when the user presses the Escape key, so in that circumstance, nothing is returned.
+    def importNodesDescription (self):
+                
+        aa = QFileDialog (self).getOpenFileName()
+        if aa != QString (u''): # it can be equal to QString(u'') when the user presses the Escape key, so in that circumstance, nothing is returned.
             self.graph_view.setRules (open(aa).read())
     
     def exportGraph (self):
         
-        fd = QtGui.QFileDialog (self)
-        
-        aa = fd.getSaveFileName (self, QString ("Export file"))
+        aa = QFileDialog (self).getSaveFileName ()
         if aa != QString (u''): # it can be equal to QString(u'') when the user presses the Escape key, so in that circumstance, nothing is returned.
             file = open (aa, 'w')
             file.write (self.graph_view.delegateExport ())
@@ -161,10 +157,8 @@ class View (QFrame):
             print '\n*** file exported.\n'
     
     def importGraph (self):
-        
-        fd = QtGui.QFileDialog (self)
-        
-        aa = fd.getOpenFileName (self, QString ("Import file"))
+                
+        aa = QFileDialog (self).getOpenFileName ()
         if aa != QString (u''): # it can be equal to QString(u'') when the user presses the Escape key, so in that circumstance, nothing is returned.
             file = open (aa, 'r')
             XML_content = file.read()
@@ -181,10 +175,10 @@ class View (QFrame):
         
         self.graph_view = graph_view
         
-        #self.connect (self.addNodeBtn,     SIGNAL ("clicked()"), self.graph_view.addNodeAndTagPressBtnListener)
-        #self.connect (self.removeNodeBtn,  SIGNAL ("clicked()"), self.graph_view.removeNodeAndTagPressBtnListener)
-        self.connect (self.printOutBtn,    SIGNAL ("clicked()"), self.printOutGraph)
-        self.connect (self.browseRulesBtn, SIGNAL ("clicked()"), self.getRulesPath)
-        self.connect (self.graphSaveBtn,   SIGNAL ("clicked()"), self.exportGraph)
-        self.connect (self.graphLoadBtn,   SIGNAL ("clicked()"), self.importGraph)
+        #self.connect (self.addNodeBtn,       SIGNAL ("clicked()"), self.graph_view.addNodeAndTagPressBtnListener)
+        #self.connect (self.removeNodeBtn,    SIGNAL ("clicked()"), self.graph_view.removeNodeAndTagPressBtnListener)
+        self.connect (self.printOutBtn,       SIGNAL ("clicked()"), self.printOutGraph)
+        self.connect (self.loadNodesDescrpBtn,SIGNAL ("clicked()"), self.importNodesDescription)
+        self.connect (self.graphSaveBtn,      SIGNAL ("clicked()"), self.exportGraph)
+        self.connect (self.graphLoadBtn,      SIGNAL ("clicked()"), self.importGraph)
         
