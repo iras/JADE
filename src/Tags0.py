@@ -12,6 +12,7 @@ from PyQt4 import QtGui
 import Comm0
 import Hook0 as hk
 import Canvas0 as cs
+import Canvas1 as cs1
 
 import maya.cmds as cmds
 
@@ -56,6 +57,9 @@ class Tag1 (QGraphicsItem):
         
         self.canvas = cs.Canvas (self)
         self.canvas.setParentItem (self)
+        
+        self.canvas_bottom = cs1.CanvasProps (self)
+        self.canvas_bottom.setParentItem (self)
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
@@ -183,7 +187,8 @@ class Tag1 (QGraphicsItem):
     
     def makeCanvasThinner (self):
         if self.canvas_height_in_units > 0:
-            self.canvas.makeThinner (self.canvas_height_in_units)
+            self.canvas.makeThinner   (self.canvas_height_in_units)
+            self.canvas_bottom.moveUp (self.canvas_height_in_units)
             self.canvas_height_in_units-=1
     
     def isInsNotLessThanOuts (self):        
@@ -250,6 +255,7 @@ class Tag1 (QGraphicsItem):
     def makeCanvasThicker (self):
         
         self.canvas.makeThicker (self.canvas_height_in_units)
+        self.canvas_bottom.moveDown (self.canvas_height_in_units)
         self.canvas_height_in_units+=1
     
     def addInHook (self, socket_id, pos):

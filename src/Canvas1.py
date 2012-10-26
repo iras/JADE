@@ -12,7 +12,7 @@ from PyQt4 import QtGui
 #import GText as gt
 
 
-class Canvas (QGraphicsItem):
+class CanvasProps (QGraphicsItem):
 
 
     def __init__(self, parent=None, scene=None):
@@ -35,10 +35,10 @@ class Canvas (QGraphicsItem):
         self.anim = QtGui.QGraphicsItemAnimation ()
         self.anim.setItem (self)
         self.anim.setTimeLine (self.timeline)
-        self.parent.helper.connect (self.timeline, QtCore.SIGNAL("finished()"), self.makeFurtherThinner)
+        self.parent.helper.connect (self.timeline, QtCore.SIGNAL("finished()"), self.moveFurtherUp)
         self.anim_active = False
         
-        self.SCALING = 0.25
+        self.FACTOR = 4.0
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
@@ -83,52 +83,52 @@ class Canvas (QGraphicsItem):
         painter.setBrush (QBrush (fillColor.dark (level)))
         
         #painter.drawRoundRect (QRect (0, 0, 80, 34+self.height), 20)
-        painter.drawRect (QRect (0, 0, 120, 20))
+        painter.drawRect (QRect (0, 21, 120, 20))
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def makeThicker (self, canvas_height_in_units):
-        
-        self.anim_active   = True
-        self.thinning_flag = False
+    def moveDown (self, canvas_height_in_units):
+                
+        self.anim_active  = True
+        self.upwards_flag = False
         
         self.canvas_height = canvas_height_in_units
         
         self.timeline.stop ()
         
-        self.anim.setScaleAt (0, 1, 1+(self.canvas_height+1)*self.SCALING)
-        self.anim.setScaleAt (1, 1, 1+(self.canvas_height+2)*self.SCALING)
+        self.anim.setPosAt (0, QPointF(0, 1+(self.canvas_height+1)*self.FACTOR))
+        self.anim.setPosAt (1, QPointF(0, 1+(self.canvas_height+2)*self.FACTOR))
         
         self.timeline.start ()
         self.update ()
     
-    def makeThinner (self, canvas_height_in_units):
+    def moveUp (self, canvas_height_in_units):
         
         if self.anim_active == False:
             
-            self.anim_active   = True
-            self.thinning_flag = True
+            self.anim_active  = True
+            self.upwards_flag = True
             
             self.canvas_height = canvas_height_in_units
             
             self.timeline.stop ()
             
-            self.anim.setScaleAt (0, 1, 1+(self.canvas_height+1)*self.SCALING)
-            self.anim.setScaleAt (1, 1, 1+(self.canvas_height)  *self.SCALING)
+            self.anim.setPosAt (0, QPointF(0, 1+(self.canvas_height+1)*self.FACTOR))
+            self.anim.setPosAt (1, QPointF(0, 1+(self.canvas_height)  *self.FACTOR))
             
             self.timeline.start ()
             self.update ()
     
-    # this method double-checks whether the canvas needs to be further thinner as a
+    # this method double-checks whether the canvas needs to be further up as a
     # result of receiving other asynchronous "delete link" SIGNALs while moving up.
-    def makeFurtherThinner (self):
+    def moveFurtherUp (self):
         
         self.anim_active = False
         
-        if self.thinning_flag==True:
+        if self.upwards_flag==True:
             
             if self.parent.getMaxLen() < self.canvas_height:
-                self.makeThinner (self.canvas_height-1)
+                self.moveUp (self.canvas_height-1)
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -152,7 +152,3 @@ class Canvas (QGraphicsItem):
     def mouseReleaseEvent (self, e):
         
         QGraphicsItem.mouseReleaseEvent (self, e)
-    
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-    def setMaxPosInLists (self, pos): self.max_pos_in_list=pos

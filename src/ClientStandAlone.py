@@ -14,9 +14,9 @@ import MainView
 import Graph as gr
 
 
-# PyQt automatically swaps the key Ctrl with the Meta (Command) key when in Mac OS X. The line below should stop the swapping BUT it doesn't seem to work although it gets set to True correctly.
+# PyQt automatically swaps the key Ctrl with the Meta (Command) key when in Mac OS X. The line below should stop the swapping BUT it doesn't seem to work on the MacBookPro (Lion) although the attribute gets set to True correctly.
 QCoreApplication.setAttribute (Qt.AA_MacDontSwapCtrlAndMeta, True)
-#print QCoreApplication.testAttribute (Qt.AA_MacDontSwapCtrlAndMeta) # test the line above, and it actually verifies that the AA_MacDontSwapCtrlAndMeta is set to True although the MacBookPro (Lion)'s CTRL button remains inactive.
+#print QCoreApplication.testAttribute (Qt.AA_MacDontSwapCtrlAndMeta) # test the line above.
 
 
 def main (argv):

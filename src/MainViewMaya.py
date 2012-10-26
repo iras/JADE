@@ -28,7 +28,10 @@ except AttributeError:
 
 
 class MainMayaWindow (QObject):
-    
+    '''
+    Base QObject for the JADE Maya scripted plugin.
+    Notice the difference with the MainMWindow. This class is subclassing QObject while the Standalone one subclasses QWidget.
+    '''
     def __init__ (self, graph, parent=None):
         
         super (MainMayaWindow, self).__init__(parent)
