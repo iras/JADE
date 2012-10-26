@@ -47,19 +47,17 @@ class Tag1 (QGraphicsItem):
         self.height = 0
         self.hook_height = 0
         
-        self._text_item = QGraphicsTextItem ('text '+str(self.node_id), self)
-        #self._text_item.setTextInteractionFlags (Qt.TextEditable)
-        self._text_item.setPos (QPointF (20, 20))
-        self._text_item.setFont (QFont ("Geneva", 10, QFont.Bold, False))
-        self._text_item.setTextWidth(50)
-        self._text_item.setToolTip(self._text_item.toPlainText ())
-        #self._text_item.setHtml("<h2 align=\"center\">hello</h2><h2 align=\"center\">world 1234345345</h2>123");
-        
         self.canvas = cs.Canvas (self)
         self.canvas.setParentItem (self)
         
         self.canvas_bottom = cs1.CanvasProps (self)
         self.canvas_bottom.setParentItem (self)
+        self.canvas_bottom.setTitle (self.node_model.getName())
+        self.canvas_bottom.setCanvasHeightInUnits (4)
+        self.canvas_bottom.addProp (QString('value'))
+        self.canvas_bottom.addProp (QString('default'))
+        self.canvas_bottom.addProp (QString('type'))
+        self.canvas_bottom.addProp (QString('required'))
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
@@ -313,9 +311,7 @@ class Tag1 (QGraphicsItem):
         
         # records the node_id in the helper's attribute.
         self.comm.setHoveredItemId (self.node_id)
-        
-        self._text_item.setToolTip (self._text_item.toPlainText ())
-        
+                
         QGraphicsItem.hoverEnterEvent (self, e)
     
     def hoverLeaveEvent (self, e):

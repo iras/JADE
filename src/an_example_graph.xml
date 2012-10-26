@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<macro label="">
+	<nodes>
+		<State01Closed id="1" x="-500.6144104" y="-293.594390869"/>
+		<State01Closed id="2" x="-261.431632996" y="-492.889282227"/>
+		<IntegerMatcher id="3" x="-183.145874023" y="298.112136841"/>
+		<Five_Adder id="4" x="-136.680480957" y="482.863265991"/>
+		<State01Closed id="5" x="821.918823242" y="-410.664054871"/>
+		<IntegerMatcher id="6" x="823.726356746" y="-507.502119628"/>
+		<Five_Adder id="7" x="138.173629759" y="404.783347237"/>
+	</nodes>
+	<links>
+		<link>
+			<out id="1" connector="triggered"/>
+			<in id="2" connector="input2"/>
+		</link>
+		<link>
+			<out id="3" connector="isLessThan"/>
+			<in id="2" connector="input2"/>
+		</link>
+		<link>
+			<out id="1" connector="triggered"/>
+			<in id="3" connector="input"/>
+		</link>
+		<link>
+			<out id="3" connector="isLessThan"/>
+			<in id="4" connector="input2"/>
+		</link>
+		<link>
+			<out id="2" connector="triggered"/>
+			<in id="4" connector="input2"/>
+		</link>
+		<link>
+			<out id="1" connector="triggered"/>
+			<in id="4" connector="input2"/>
+		</link>
+		<link>
+			<out id="4" connector="sum"/>
+			<in id="5" connector="input2"/>
+		</link>
+		<link>
+			<out id="3" connector="isLessThan"/>
+			<in id="5" connector="input2"/>
+		</link>
+		<link>
+			<out id="1" connector="triggered"/>
+			<in id="5" connector="input2"/>
+		</link>
+		<link>
+			<out id="2" connector="triggered"/>
+			<in id="5" connector="input2"/>
+		</link>
+		<link>
+			<out id="4" connector="sum"/>
+			<in id="6" connector="input"/>
+		</link>
+		<link>
+			<out id="3" connector="isLessThan"/>
+			<in id="6" connector="input"/>
+		</link>
+		<link>
+			<out id="1" connector="triggered"/>
+			<in id="6" connector="input"/>
+		</link>
+		<link>
+			<out id="2" connector="triggered"/>
+			<in id="6" connector="input"/>
+		</link>
+		<link>
+			<out id="4" connector="sum"/>
+			<in id="7" connector="input2"/>
+		</link>
+		<link>
+			<out id="3" connector="isLessThan"/>
+			<in id="7" connector="input2"/>
+		</link>
+		<link>
+			<out id="2" connector="triggered"/>
+			<in id="7" connector="input1"/>
+		</link>
+		<link>
+			<out id="3" connector="isLessThan"/>
+			<in id="7" connector="input1"/>
+		</link>
+		<link>
+			<out id="1" connector="triggered"/>
+			<in id="7" connector="input5"/>
+		</link>
+		<link>
+			<out id="3" connector="isLessThan"/>
+			<in id="7" connector="input5"/>
+		</link>
+		<link>
+			<out id="3" connector="isLessThan"/>
+			<in id="7" connector="input3"/>
+		</link>
+	</links>
+</macro>

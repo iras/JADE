@@ -27,7 +27,7 @@ class Canvas (QGraphicsItem):
         
         self.pen_color = QPen (Qt.black, 2)
         
-        self.color = QColor (Qt.white).dark (120)
+        self.color = QColor (Qt.white).dark (110)
         
         # init Canvas Animation Tweening
         self.timeline = QtCore.QTimeLine (200)

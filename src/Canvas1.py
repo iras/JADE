@@ -27,7 +27,7 @@ class CanvasProps (QGraphicsItem):
         
         self.pen_color = QPen (Qt.black, 2)
         
-        self.color = QColor (Qt.white).dark (120)
+        self.color = QColor (Qt.white).dark (150)
         
         # init Canvas Animation Tweening
         self.timeline = QtCore.QTimeLine (200)
@@ -38,7 +38,21 @@ class CanvasProps (QGraphicsItem):
         self.parent.helper.connect (self.timeline, QtCore.SIGNAL("finished()"), self.moveFurtherUp)
         self.anim_active = False
         
+        #self._nodename = QGraphicsTextItem ('text '+str(self.node_id), self)
+        self._nodename = QGraphicsTextItem ('', self)
+        self._nodename.setPos (QPointF (18, 20))
+        self._nodename.setDefaultTextColor (QColor (Qt.white).light (255))
+        self._nodename.setFont (QFont ("Helvetica", 11, QFont.Bold, False))
+        self._nodename.setTextWidth(120)
+        self._nodename.setToolTip (self._nodename.toPlainText ())
+        #self._nodename.setHtml("<h2 align=\"center\">hello</h2><h2 align=\"center\">world 1234345345</h2>123");
+        
+        self.props_list = []
+        self.props_values_list = []
+        
         self.FACTOR = 4.0
+        
+        self._canvas_height = 0
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
@@ -83,7 +97,33 @@ class CanvasProps (QGraphicsItem):
         painter.setBrush (QBrush (fillColor.dark (level)))
         
         #painter.drawRoundRect (QRect (0, 0, 80, 34+self.height), 20)
-        painter.drawRect (QRect (0, 21, 120, 20))
+        painter.drawRect (QRect (0, 20, 120, 30+9*self._canvas_height))
+    
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    def addProp (self, name_prop):
+        
+        i = len (self.props_list)
+        self.props_list.append (QGraphicsTextItem (name_prop + ' : ', self))
+        self.props_values_list.append (QGraphicsTextItem ('', self))
+        
+        # (1) adding the prop's name.
+        self.props_list[i].setPos (QPointF (7, 35+i*10))
+        self.props_list[i].setDefaultTextColor (QColor (Qt.white).light (255))
+        self.props_list[i].setFont (QFont ("Helvetica", 9, QFont.StyleItalic, False))
+        self.props_list[i].setTextWidth (55)
+        self.props_list[i].setToolTip (self.props_list[i].toPlainText ())
+        
+        # (2) adding the prop's value.
+        self.props_values_list[i].setTextInteractionFlags (Qt.TextEditable)
+        self.props_values_list[i].setPos (QPointF (55, 35+i*10))
+        self.props_values_list[i].setDefaultTextColor (QColor (Qt.white).light (255))
+        self.props_values_list[i].setFont (QFont ("Helvetica", 9, QFont.StyleNormal, False))
+        self.props_values_list[i].setTextWidth (55)
+        
+    def setTitle (self, title): self._nodename.setPlainText (title)
+    
+    def setCanvasHeightInUnits (self, ch): self._canvas_height = ch
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -134,6 +174,7 @@ class CanvasProps (QGraphicsItem):
     
     def hoverEnterEvent (self, e):
         
+        self._nodename.setToolTip (self._nodename.toPlainText ())
         QGraphicsItem.hoverEnterEvent (self, e)
     
     def hoverLeaveEvent (self, e):
