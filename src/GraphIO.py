@@ -28,26 +28,32 @@ class IO (object):
         macro_name = ''
         
         tmp = '<?xml version="1.0" encoding="UTF-8"?>\n<macro label="' + macro_name + '">\n'
-        if len (node_list):
+        if len (node_list) > 0:
             
             tmp += '\t<nodes>\n'
             
             # (1) list out all the nodes and append them to the temp string.
             for node in node_list:
-                tmp += '\t\t<' + node.getName() + ' id="' + str(node.getId()) + '" x="' + str(tag_position_dict[str(node.getId())].x()) + '" y="' + str(tag_position_dict[str(node.getId())].y()) + '"/>\n'
+                tmp += '\t\t<' + node.getName() + ' id="' + str(node.getId()) + '" x="' + str(tag_position_dict[str(node.getId())].x()) + '" y="' + str(tag_position_dict[str(node.getId())].y()) + '"'
+                # append props to the string if any.
+                if len (node.getProps()) > 0:
+                    for prop in node.getProps():
+                        tmp += ' ' + str(prop[0]) + '="' + str(prop[2]) + '"'
+                tmp += '/>\n'
             
             tmp += '\t</nodes>\n\t<links>\n'
             
             # (2) list out all the links and append them to the temp string. The InSockets will be only considered when
             #     going through the node_list since for each of them a correspondent OutSocket will be always found.
-            for node in node_list:
-                for socket in node.getIns():
-                    for link in socket.getPluggedIns():
-                        tmp += '\t\t<link>\n'
-                        tmp += '\t\t\t<out id="' +  str(link.getNode().getId()) + '" connector="' + link.getSType()   + '"/>\n'
-                        tmp += '\t\t\t<in id="' + str(socket.getNode().getId()) + '" connector="' + socket.getSType() + '"/>\n'
-                        tmp += '\t\t</link>\n'
-                    
+            if len (node_list) > 0:
+                for node in node_list:
+                    for socket in node.getIns():
+                        for link in socket.getPluggedIns():
+                            tmp += '\t\t<link>\n'
+                            tmp += '\t\t\t<out id="' +  str(link.getNode().getId()) + '" connector="' + link.getSType()   + '"/>\n'
+                            tmp += '\t\t\t<in id="' + str(socket.getNode().getId()) + '" connector="' + socket.getSType() + '"/>\n'
+                            tmp += '\t\t</link>\n'
+            
             tmp += '\t</links>\n'
         
         tmp += '</macro>\n'  

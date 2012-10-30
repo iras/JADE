@@ -60,10 +60,6 @@ class Tag1 (QGraphicsItem):
             for prop in self.node_model.getProps():
                 self.canvas_bottom.addProp (QString(prop[0]), QString(prop[2]))
     
-    def listenToChangedPropsValues (self, name_text, value_text):
-        
-        print 'listened to ' + str(name_text), str(value_text)
-    
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
     def shape (self):
@@ -294,6 +290,16 @@ class Tag1 (QGraphicsItem):
         return hook
     
     # - - -  listeners  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    def listenToChangedPropsValues (self, name_prop, value_prop):
+        '''Callback function dealing with changes of props' values.
+        It's actually called by the anonymous function (lambda) registered to
+        the SIGNAL 'textChanged' in the method CanvasProps.addProp (...).
+        
+        @param name_prop name of the prop.
+        @param value_prop value of the prop.
+        '''
+        self.node_model.updateProp (str(name_prop), str(value_prop))
     
     def mousePressEvent (self, e):
         

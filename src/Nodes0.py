@@ -8,9 +8,9 @@ import Sockets as sk
 
 class Node0 ():
 
-    def __init__(self, id, name, comm):
+    def __init__(self, id0, name, comm):
         
-        self._id   = id
+        self._id   = id0 # id0 has been used instead of id since the latter is a built-in variable.
         self._name = str(name)
         self.comm  = comm
         
@@ -18,10 +18,20 @@ class Node0 ():
         self._ins  = []
         self._outs = []
         
-        self.props_textItem_name_list = []
+        # list of props. Each element of the list is a 3-list. [prop name, prop type, prop value]
+        self._props_list = []
     
     def disposeNode (self):   # SURPLUS - WHAT TO DO WITH THIS ?
         pass
+    
+    def updateProp (self, name_prop, value_prop):
+        
+        print 'update node '+str(self._id)
+        if len(self._props_list) > 0:
+            for prop in self._props_list:
+                if prop[0] == name_prop:
+                    prop[2] = value_prop
+                    break
     
     # - - -  sockets methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -185,9 +195,11 @@ class Node0 ():
     def getIns  (self): return self._ins
     def getOuts (self): return self._outs
     
-    def getProps (self): return self.props_textItem_name_list
+    def getProps (self): return self._props_list
     
     def setName (self, name0): self._name = name0
+    
+    # the following lists are copied, not just referenced.
     
     def setIns  (self, ls):
         self._ins = []
@@ -198,5 +210,12 @@ class Node0 ():
         self._outs.extend (ls)
     
     def setProps (self, ls):
-        self.props_textItem_name_list = []
-        self.props_textItem_name_list.extend (ls)
+        # ls is a list of lists in this case. So, copying a list of lists is slightly different,
+        self._props_list = []
+        
+        if len(ls) > 0:
+            for item in ls:
+                self._props_list.append ([item[0], item[1], item[2]])
+            
+            
+            
