@@ -58,7 +58,7 @@ class Tag1 (QGraphicsItem):
         self.canvas_bottom.setCanvasHeightInUnits (num_props)
         if num_props > 0:
             for prop in self.node_model.getProps():
-                self.canvas_bottom.addProp (QString(prop[0]), QString(prop[1]))
+                self.canvas_bottom.addProp (QString(prop[0]), QString(prop[2]))
     
     def listenToChangedPropsValues (self, name_text, value_text):
         

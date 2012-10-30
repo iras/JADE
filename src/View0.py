@@ -145,7 +145,7 @@ class View (QFrame):
                 
         aa = QFileDialog (self).getOpenFileName()
         if aa != QString (u''): # it can be equal to QString(u'') when the user presses the Escape key, so in that circumstance, nothing is returned.
-            self.graph_view.setRules (open(aa).read())
+            self.graph_view.setNodesDescription (open(aa).read())
     
     def exportGraph (self):
         

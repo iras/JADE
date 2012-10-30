@@ -22,9 +22,9 @@ class TestSocket (unittest.TestCase):
     def setUp (self):
         
         self.test_graph = gf.Graph ()
-        self.node1 = self.test_graph.addNode ()
-        self.node2 = self.test_graph.addNode ()
-        self.node3 = self.test_graph.addNode ()
+        self.node1 = self.test_graph.addNode ('node_1')
+        self.node2 = self.test_graph.addNode ('node_2')
+        self.node3 = self.test_graph.addNode ('node_3')
         
         self.i1 = self.node1.addIn  ('type1')
         self.i2 = self.node1.addIn  ('type2')

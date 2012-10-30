@@ -18,8 +18,8 @@ class Node0 ():
         self._ins  = []
         self._outs = []
         
-        self.props_textItem_name_list = [['required','2'],['type','b']]
-        
+        self.props_textItem_name_list = []
+    
     def disposeNode (self):   # SURPLUS - WHAT TO DO WITH THIS ?
         pass
     

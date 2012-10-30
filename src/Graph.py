@@ -19,7 +19,7 @@ class Graph ():
         
         # signal global operator
         self.comm = Comm0.Comm0 ()
-        self.connections_map = {}
+        self.node_details_map = {}
         
         self._node_list = []
         
@@ -29,12 +29,10 @@ class Graph ():
     
     # - - -  nodes methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def addNode (self):
-        
-        newId   = self.comm.getNewNodeId()
-        newName = 'node_'+str(newId)
-        
-        newNode = nd.Node0 (newId, newName, self.comm)
+    def addNode (self, node_name):
+                
+        newNode = nd.Node0 (self.comm.getNewNodeId(), node_name, self.comm)
+        self.initProps (newNode)
         self._node_list.append (newNode)
         
         self.comm.emitAddNodeMSignal (newNode.getId(), 0.0, 0.0)
@@ -46,6 +44,7 @@ class Graph ():
         self.comm.updateNodeId (node_id) # keep the node id counter up to date.
         
         importedNode = nd.Node0 (node_id, node_name, self.comm)
+        self.initProps (importedNode)
         self._node_list.append (importedNode)
         
         self.comm.emitAddNodeMSignal (importedNode.getId(), node_x, node_y)
@@ -76,14 +75,12 @@ class Graph ():
     
     def duplicateNode (self, node0):
         
-        node1 = self.addNode()
-        
-        node1.setName (node0.getName ())
-        
+        node1 = self.addNode (node0.getName ())
+                
         node1.setIns  (node0.getIns ())
         node1.setOuts (node0.getOuts())
         
-        node1.setAttributes (node0.getAttributes ())
+        node1.setProps (node0.getProps ())
     
         return node1
     
@@ -126,7 +123,7 @@ class Graph ():
         for socket in node.getIns ():
             tmp_list.append (socket.getSType())
         
-        return list (set(self.connections_map[node.getName()][0]) - set(tmp_list))
+        return list (set(self.node_details_map[node.getName()][0]) - set(tmp_list))
     
     def getOutsTypesLeft (self, node_id):
         
@@ -135,7 +132,7 @@ class Graph ():
         for socket in node.getOuts ():
             tmp_list.append (socket.getSType())
         
-        return list (set(self.connections_map[node.getName()][1]) - set(tmp_list))
+        return list (set(self.node_details_map[node.getName()][1]) - set(tmp_list))
     
     # - - -  links methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -172,6 +169,12 @@ class Graph ():
             
             if flag1==True and flag2==True:
                 self.comm.emitDeleteLinkMSignal (s_in_id, s_out_id)
+    
+    # - - -  misc props  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    def initProps (self, node):
+        
+        node.setProps (self.node_details_map [node.getName()][2])
     
     # - - -  misc sockets  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -217,7 +220,7 @@ class Graph ():
             if socket.getSType()==socket_type:
                 s = socket
                 break
-                
+        
         for socket in node.getOuts ():
             if socket.getSType()==socket_type:
                 s = socket
@@ -225,16 +228,16 @@ class Graph ():
         
         return s
     
-    # graph rules
+    # graph nodes description  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def setRules (self, text_xml):
+    def setNodesDescription (self, text_xml):
         
         self.xml_rules_table = parseString(text_xml)
         
         self.node_rules_XMLList = self.xml_rules_table.getElementsByTagName ('node')
         
         for item in self.node_rules_XMLList:
-                        
+            
             node_name = item.getElementsByTagName ('class')[0].firstChild.data
             tmp_ls = node_name.split('.')
             node_name = str(tmp_ls[-1])
@@ -251,16 +254,23 @@ class Graph ():
                 if item_output.getElementsByTagName ('type')[0].firstChild.data == 'Connector':
                     outputs_ls.append (str(item_output.getElementsByTagName ('name')[0].firstChild.data))
             
-            self.connections_map[node_name] = [list(inputs_ls), list(outputs_ls)]
+            props_ls = []
+            self.props_XMLList  = item.getElementsByTagName ('prop')
+            for item_prop in self.props_XMLList:
+                props_ls.append ([str(item_prop.getElementsByTagName ('name')[0].firstChild.data),
+                                  str(item_prop.getElementsByTagName ('type')[0].firstChild.data),
+                                  str(item_prop.getElementsByTagName ('default')[0].firstChild.data)])
+                        
+            self.node_details_map [node_name] = [list(inputs_ls), list(outputs_ls), list(props_ls)]
         
         # print map
         import pprint
         pp = pprint.PrettyPrinter(indent=4)
-        pp.pprint (self.connections_map)
+        pp.pprint (self.node_details_map)
     
-    def getRules (self): return self.connections_map
+    def getNodesDecription (self): return self.node_details_map
     
-    # i/o
+    # i/o - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def exportGraph (self, tag_position_dict):
         return self.graph_io.exportGraph (self._node_list, tag_position_dict)
@@ -275,7 +285,8 @@ class Graph ():
         print '\n\nImport Nodes'
         for item in node_list:
             print item[0], item[1], item[2], item[3]
-            self.importNode (int(item[1]), item[0], float(item[2]), float(item[3]))
+            tmp = self.importNode (int(item[1]), item[0], float(item[2]), float(item[3]))
+            self.initProps (tmp)
         
         print '\n\nImport Links'
         for item in link_list:

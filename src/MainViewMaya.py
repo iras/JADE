@@ -136,7 +136,7 @@ class MainMayaWindow (QObject):
         if self.hovered_tag_id==None:
             # ctx menu to establish what node is going to be retrieved
             tmp_ls = []
-            [tmp_ls.append(key) for key in self.graph_model.getRules()]
+            [tmp_ls.append(key) for key in self.graph_model.getNodesDecription()]
             self.prepareGeneralCtxMenu (tmp_ls)
     
     def prepareGeneralCtxMenu (self, list0):
@@ -147,8 +147,7 @@ class MainMayaWindow (QObject):
     
     def addTag (self, name0):
         
-        tmp = self.graph_model.addNode ()
-        tmp.setName (name0)
+        self.graph_model.addNode (name0)
     
     def ctxMenuAddOuts (self):
         

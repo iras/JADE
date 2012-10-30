@@ -2,156 +2,136 @@
 <available_nodes>
   <node>
     <class>IntegerMatcher</class>
-    <label/>
     <props>
       <prop>
         <name>value</name>
         <type>float</type>
-        <required>true</required>
+        <default>0</default>
       </prop>
     </props>
     <inputs>
       <input>
         <name>input</name>
         <type>Connector</type>
-        <label/>
       </input>
     </inputs>
     <outputs>
       <output>
         <name>isGreaterThan</name>
         <type>Connector</type>
-        <label/>
       </output>
       <output>
         <name>isEqualTo</name>
         <type>Connector</type>
-        <label/>
       </output>
       <output>
         <name>isLessThan</name>
         <type>Connector</type>
-        <label/>
       </output>
       <output>
       	<name>isUndefined</name>
       	<type>Connector</type>
-      	<label></label>
       </output>
       <output>
       	<name>isUndefined2</name>
       	<type>Connector</type>
-      	<label></label>
       </output>
     </outputs>
   </node>
   <node>
     <class>Five_Adder</class>
-    <label/>
     <inputs>
       <input>
         <name>input1</name>
         <type>Connector</type>
-        <label/>
       </input>
-	  <input>
+	   <input>
         <name>input2</name>
         <type>Connector</type>
-        <label/>
       </input>
-	  <input>
+	    <input>
         <name>input3</name>
         <type>Connector</type>
-        <label/>
       </input>
-	  <input>
-		<name>input4</name>
-		<type>Connector</type>
-		<label></label>
-	  </input>
-	  <input>
-		<name>input5</name>
-		<type>Connector</type>
-		<label></label>
-	  </input>
+	    <input>
+		    <name>input4</name>
+		    <type>Connector</type>
+	    </input>
+	    <input>
+		    <name>input5</name>
+		    <type>Connector</type>
+	    </input>
     </inputs>
     <outputs>
       <output>
         <name>check</name>
         <type>Connector</type>
-        <label/>
       </output>
-	  <output>
+	    <output>
         <name>sum</name>
         <type>Connector</type>
-        <label/>
       </output>
     </outputs>
   </node>
   <node>
     <class>State01Closed</class>
-    <label/>
     <props>
       <prop>
         <name>value</name>
         <type>String</type>
-        <required>true</required>
+        <default>close</default>
+      </prop>
+      <prop>
+        <name>value2</name>
+        <type>String</type>
+        <default>EXTRA</default>
       </prop>
     </props>
     <inputs>
       <input>
         <name>input1</name>
         <type>Connector</type>
-        <label/>
       </input>
-	  <input>
+	    <input>
         <name>input2</name>
         <type>Connector</type>
-        <label/>
       </input>
-	  <input>
+	    <input>
         <name>aux_input</name>
         <type>Connector</type>
-        <label/>
       </input>
     </inputs>
     <outputs>
       <output>
         <name>triggered</name>
         <type>Connector</type>
-        <label/>
       </output>
     </outputs>
   </node>
   <node>
     <class>TempState</class>
-    <label/>
     <props>
       <prop>
         <name>view</name>
         <type>String</type>
         <default>''</default>
-        <required>false</required>
       </prop>
       <prop>
         <name>text</name>
         <type>String</type>
         <default>''</default>
-        <required>false</required>
       </prop>
     </props>
     <inputs>
       <input>
         <name>input</name>
         <type>Connector</type>
-        <label/>
       </input>
     </inputs>
     <outputs>
       <output>
         <name>output</name>
         <type>Connector</type>
-        <label/>
       </output>
     </outputs>
   </node>

@@ -47,8 +47,8 @@ class MainWindow (QWidget):
         # wirings
         comm = self.graph_model.getComm ()
         self.connect (comm, SIGNAL('addNode_MSignal(int, float, float)'), self.graph_view.addTag)
-        self.connect (comm, SIGNAL('deleteNode_MSignal(int)'),     self.graph_view.removeTag)
-        self.connect (comm, SIGNAL('addLink_MSignal(int,int)'),    self.graph_view.addWire)
+        self.connect (comm, SIGNAL('deleteNode_MSignal(int)'), self.graph_view.removeTag)
+        self.connect (comm, SIGNAL('addLink_MSignal(int,int)'), self.graph_view.addWire)
         self.connect (comm, SIGNAL('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
         
         self.hSplit = QSplitter ()
@@ -82,8 +82,8 @@ class MainWindow (QWidget):
         '''
         modif = int (e.modifiers())
         ctrl  = (modif&0x04000000) != 0
-        shift = (modif&0x02000000) != 0
         alt   = (modif&0x08000000) != 0
+        #shift = (modif&0x02000000) != 0
         
         if alt:  self.alt_pressed = True
         else:    self.alt_pressed = False
@@ -129,7 +129,7 @@ class MainWindow (QWidget):
         else:
             # ctx menu to establish what node is going to be retrieved
             tmp_ls = []
-            [tmp_ls.append(key) for key in self.graph_model.getRules()]
+            [tmp_ls.append(key) for key in self.graph_model.getNodesDecription()]
             self.prepareGeneralCtxMenu (tmp_ls)
             self.menu.popup (self.mapToGlobal (pos))
     
@@ -149,8 +149,7 @@ class MainWindow (QWidget):
 
         @param name0 string
         '''
-        tmp = self.graph_model.addNode ()
-        tmp.setName (name0)
+        self.graph_model.addNode (name0)
     
     def prepareNodeCtxMenu (self, list0):
         '''populates the QMenu dynamically with available socket names and pass the menu string name to the receiver. Also, it generates closures as callbacks for each item.

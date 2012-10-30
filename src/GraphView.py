@@ -76,8 +76,7 @@ class GraphView ():
     
     def addNodeAndTag (self, name0):
         
-        tmp = self.graph.addNode ()
-        tmp.setName (name0)
+        self.graph.addNode (name0)
     
     def addTag (self, node_id, fx, fy):
         
@@ -149,7 +148,7 @@ class GraphView ():
     
     # - - Getters / Setters- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def setRules (self, textfile) : self.graph.setRules (textfile)
+    def setNodesDescription (self, textfile) : self.graph.setNodesDescription (textfile)
         
     def getTag (self, node_id):
         

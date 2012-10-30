@@ -20,9 +20,9 @@ class TestNode (unittest.TestCase):
     def setUp (self):
         
         self.test_graph = gf.Graph ()
-        self.node1 = self.test_graph.addNode ()
-        self.node2 = self.test_graph.addNode ()
-        self.node3 = self.test_graph.addNode ()
+        self.node1 = self.test_graph.addNode ('node_1')
+        self.node2 = self.test_graph.addNode ('node_2')
+        self.node3 = self.test_graph.addNode ('node_3')
         
         self.receivedNId = 0
         self.receivedSId = 0
