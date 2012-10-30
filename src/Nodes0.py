@@ -18,7 +18,7 @@ class Node0 ():
         self._ins  = []
         self._outs = []
         
-        self._attributes = []
+        self.props_textItem_name_list = [['required','2'],['type','b']]
         
     def disposeNode (self):   # SURPLUS - WHAT TO DO WITH THIS ?
         pass
@@ -185,8 +185,7 @@ class Node0 ():
     def getIns  (self): return self._ins
     def getOuts (self): return self._outs
     
-    def getAttributes (self): return self._attributes
-    
+    def getProps (self): return self.props_textItem_name_list
     
     def setName (self, name0): self._name = name0
     
@@ -198,6 +197,6 @@ class Node0 ():
         self._outs = []
         self._outs.extend (ls)
     
-    def setAttributes (self, ls):
-        self._attributes = []
-        self._attributes.extend (ls)
+    def setProps (self, ls):
+        self.props_textItem_name_list = []
+        self.props_textItem_name_list.extend (ls)

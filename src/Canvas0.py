@@ -19,8 +19,8 @@ class Canvas (QGraphicsItem):
         
         QGraphicsItem.__init__ (self)
         
-        self.helper = None
         self.parent = parent
+        self.helper = self.parent.getHelper()
         
         #self.setFlags (QGraphicsItem.ItemIsSelectable)
         self.setAcceptsHoverEvents (True)
@@ -35,7 +35,7 @@ class Canvas (QGraphicsItem):
         self.anim = QtGui.QGraphicsItemAnimation ()
         self.anim.setItem (self)
         self.anim.setTimeLine (self.timeline)
-        self.parent.helper.connect (self.timeline, QtCore.SIGNAL("finished()"), self.makeFurtherThinner)
+        self.helper.connect (self.timeline, QtCore.SIGNAL("finished()"), self.makeFurtherThinner)
         self.anim_active = False
         
         self.SCALING = 0.25

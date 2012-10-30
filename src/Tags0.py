@@ -53,11 +53,16 @@ class Tag1 (QGraphicsItem):
         self.canvas_bottom = cs1.CanvasProps (self)
         self.canvas_bottom.setParentItem (self)
         self.canvas_bottom.setTitle (self.node_model.getName())
-        self.canvas_bottom.setCanvasHeightInUnits (4)
-        self.canvas_bottom.addProp (QString('value'))
-        self.canvas_bottom.addProp (QString('default'))
-        self.canvas_bottom.addProp (QString('type'))
-        self.canvas_bottom.addProp (QString('required'))
+        # populates the props (each one with name and value)
+        num_props = len(self.node_model.getProps())
+        self.canvas_bottom.setCanvasHeightInUnits (num_props)
+        if num_props > 0:
+            for prop in self.node_model.getProps():
+                self.canvas_bottom.addProp (QString(prop[0]), QString(prop[1]))
+    
+    def listenToChangedPropsValues (self, name_text, value_text):
+        
+        print 'listened to ' + str(name_text), str(value_text)
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
@@ -311,7 +316,7 @@ class Tag1 (QGraphicsItem):
         
         # records the node_id in the helper's attribute.
         self.comm.setHoveredItemId (self.node_id)
-                
+        
         QGraphicsItem.hoverEnterEvent (self, e)
     
     def hoverLeaveEvent (self, e):
@@ -332,3 +337,4 @@ class Tag1 (QGraphicsItem):
     def getComm (self): return self.comm
     def getInHooks  (self): return self.inHooks
     def getOutHooks (self): return self.outHooks
+    def getHelper (self): return self.helper

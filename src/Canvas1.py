@@ -12,6 +12,34 @@ from PyQt4 import QtGui
 #import GText as gt
 
 
+
+class CustomFloatingText (QGraphicsTextItem):
+    '''
+    Re-implementation of the class QGraphicsTextItem in order to provide it with convenient the QLineEdit's textChanged Event.
+    '''
+    def __init__(self, text, parent=None):
+        
+        QGraphicsTextItem.__init__ (self, text, parent)
+        
+    def keyPressEvent (self, event):
+        '''Re-implementation of the QGraphicsTextItem's method  keyPressEvent in order to provide QGraphicsTextItem with the QLineEdit's textChanged Event.
+
+        @param event event
+        '''
+        self.emit (SIGNAL ('textChanged(QString)'), QString(self.toPlainText()))
+        QGraphicsTextItem.keyPressEvent(self, event)
+    
+    def focusOutEvent (self, event):
+        
+        '''Re-implementation of the QGraphicsTextItem's method focusOutEvent in order to provide QGraphicsTextItem with the QLineEdit's textChanged Event.
+
+        @param event event
+        '''
+        self.emit (SIGNAL ('textChanged(QString)'), QString(self.toPlainText()))
+        QGraphicsTextItem.focusOutEvent(self, event)
+
+
+
 class CanvasProps (QGraphicsItem):
 
 
@@ -19,8 +47,8 @@ class CanvasProps (QGraphicsItem):
         
         QGraphicsItem.__init__ (self)
         
-        self.helper = None
         self.parent = parent
+        self.helper = self.parent.getHelper()
         
         #self.setFlags (QGraphicsItem.ItemIsSelectable)
         self.setAcceptsHoverEvents (True)
@@ -35,7 +63,7 @@ class CanvasProps (QGraphicsItem):
         self.anim = QtGui.QGraphicsItemAnimation ()
         self.anim.setItem (self)
         self.anim.setTimeLine (self.timeline)
-        self.parent.helper.connect (self.timeline, QtCore.SIGNAL("finished()"), self.moveFurtherUp)
+        self.helper.connect (self.timeline, QtCore.SIGNAL("finished()"), self.moveFurtherUp)
         self.anim_active = False
         
         #self._nodename = QGraphicsTextItem ('text '+str(self.node_id), self)
@@ -47,8 +75,8 @@ class CanvasProps (QGraphicsItem):
         self._nodename.setToolTip (self._nodename.toPlainText ())
         #self._nodename.setHtml("<h2 align=\"center\">hello</h2><h2 align=\"center\">world 1234345345</h2>123");
         
-        self.props_list = []
-        self.props_values_list = []
+        self.props_textItem_name_list = []
+        self.props_textItem_value_list = []
         
         self.FACTOR = 4.0
         
@@ -101,30 +129,43 @@ class CanvasProps (QGraphicsItem):
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def addProp (self, name_prop):
+    def addProp (self, prop_name, prop_value):
         
-        i = len (self.props_list)
-        self.props_list.append (QGraphicsTextItem (name_prop + ' : ', self))
-        self.props_values_list.append (QGraphicsTextItem ('', self))
+        i = len (self.props_textItem_name_list)
+        self.props_textItem_name_list.append  (QGraphicsTextItem (prop_name + ' : ', self))
+        self.props_textItem_value_list.append (CustomFloatingText (prop_value, self))
         
         # (1) adding the prop's name.
-        self.props_list[i].setPos (QPointF (7, 35+i*10))
-        self.props_list[i].setDefaultTextColor (QColor (Qt.white).light (255))
-        self.props_list[i].setFont (QFont ("Helvetica", 9, QFont.StyleItalic, False))
-        self.props_list[i].setTextWidth (55)
-        self.props_list[i].setToolTip (self.props_list[i].toPlainText ())
+        self.props_textItem_name_list[i].setPos (QPointF (7, 35+i*10))
+        self.props_textItem_name_list[i].setDefaultTextColor (QColor (Qt.white).light (255))
+        self.props_textItem_name_list[i].setFont (QFont ("Helvetica", 9, QFont.StyleItalic, False))
+        self.props_textItem_name_list[i].setTextWidth (55)
+        self.props_textItem_name_list[i].setToolTip (self.props_textItem_name_list[i].toPlainText ())
         
         # (2) adding the prop's value.
-        self.props_values_list[i].setTextInteractionFlags (Qt.TextEditable)
-        self.props_values_list[i].setPos (QPointF (55, 35+i*10))
-        self.props_values_list[i].setDefaultTextColor (QColor (Qt.white).light (255))
-        self.props_values_list[i].setFont (QFont ("Helvetica", 9, QFont.StyleNormal, False))
-        self.props_values_list[i].setTextWidth (55)
+        self.props_textItem_value_list[i].setTextInteractionFlags (Qt.TextEditable)
+        self.props_textItem_value_list[i].setPos (QPointF (55, 35+i*10))
+        self.props_textItem_value_list[i].setDefaultTextColor (QColor (Qt.white).light (255))
+        self.props_textItem_value_list[i].setFont (QFont ("Helvetica", 9, QFont.StyleNormal, False))
+        self.props_textItem_value_list[i].setTextWidth (55)
         
+        receiver = lambda value=i: self.parent.listenToChangedPropsValues (self.props_textItem_name_list[i].toPlainText(), value)
+        self.helper.connect (self.props_textItem_value_list[i], SIGNAL ("textChanged(QString)"), receiver)
+    
+    def getProps (self):
+        
+        tmp_list = []
+        
+        l = len (self.props_textItem_name_list)
+        for i in range (0, l):
+            tmp_list[i] = [self.props_textItem_name_list[i].toPlainText(), self.props_textItem_value_list[i].toPlainText()]
+        
+        return tmp_list
+    
     def setTitle (self, title): self._nodename.setPlainText (title)
     
     def setCanvasHeightInUnits (self, ch): self._canvas_height = ch
-    
+        
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def moveDown (self, canvas_height_in_units):
