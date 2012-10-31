@@ -9,7 +9,27 @@ from PyQt4.QtGui import *
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 
-import CustomView as cvw
+
+
+class CustomGraphicsView (QGraphicsView):
+    '''
+    Re-implementation of the class QGraphicsView in order to deal with differences in how Qt and Maya deal with pop-up menus.
+    '''
+    def __init__(self, scene=None):
+        
+        QGraphicsView.__init__ (self)
+    
+    def mousePressEvent(self, event):
+        '''Re-implementation of the QGraphicsView's method mousePressEvent in order to differentiate how the pop-up menu is dealt with by Maya and by Qt.
+        More specifically, this distinction with events needs to be made for the Maya integration, otherwise the cmds.popupmenu wouldn't work in the
+        QGraphicsView as it would override the Maya cmds.popupmenu's signals.
+        
+        @param event event
+        '''
+        if (event.button()==Qt.RightButton): 
+            event.ignore()
+        else:
+            QGraphicsView.mousePressEvent (self, event) # <-- added this line.
 
 
 class View (QFrame):
@@ -20,7 +40,7 @@ class View (QFrame):
         
         self.setFrameStyle (QFrame.Sunken | QFrame.StyledPanel)
         
-        self.graphicsView = cvw.CustomView ()
+        self.graphicsView = CustomGraphicsView ()
         self.graphicsView.setRenderHint (QPainter.Antialiasing, True)
         self.graphicsView.setDragMode (QGraphicsView.RubberBandDrag)
         self.graphicsView.setViewportUpdateMode (QGraphicsView.SmartViewportUpdate)

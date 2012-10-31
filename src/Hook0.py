@@ -1,15 +1,25 @@
-"""
+'''
 Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
 
 See the file license.txt for copying permission.
-"""
+'''
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 
-import GText as gt
+
+class GText (QGraphicsTextItem):
+    
+    def __init__(self, str0='', parent=None, scene=None):
+        
+        QGraphicsTextItem.__init__ (self, str0, parent, scene)
+    
+    def boundingRect (self):
+        
+        # this is needed as the QGraphicsTextItem couldn't catch its hook's signal otherwise.
+        return QRectF (0, 0, 0, 0)
 
 
 class HookBox0 (QGraphicsItem):
@@ -44,7 +54,7 @@ class HookBox0 (QGraphicsItem):
         
         tx = 8
         
-        self._text_item = gt.GText (self.hookName, self)
+        self._text_item = GText (self.hookName, self)
         self._text_item.setEnabled (False)
         
         if self.hookType=='out' :

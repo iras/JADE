@@ -27,10 +27,15 @@ class Graph ():
         
     def getComm (self): return self.comm
     
-    # - - -  nodes methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # - - -  node methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def addNode (self, node_name):
-                
+        '''This method creates a generic node.
+        
+        @param node_name string
+        
+        @return node instance of class Node0
+        '''
         newNode = nd.Node0 (self.comm.getNewNodeId(), node_name, self.comm)
         self.initProps (newNode)
         self._node_list.append (newNode)
@@ -39,12 +44,23 @@ class Graph ():
         
         return newNode
     
-    def importNode (self, node_id, node_name, node_x, node_y):
+    def importNode (self, node_id, node_name, node_x, node_y, props_list):
+        '''This method creates a node from given data and it's used exclusively when importing a file.
         
+        @param node_id int
+        @param node_name string
+        @param x float
+        @param y float
+        @param props_list list of props, each entry is a 2-list [prop_name, prop_value]
+        
+        @return node instance of class Node0
+        '''
         self.comm.updateNodeId (node_id) # keep the node id counter up to date.
         
         importedNode = nd.Node0 (node_id, node_name, self.comm)
-        self.initProps (importedNode)
+        self.initProps   (importedNode)
+        self.importProps (importedNode, props_list)
+        
         self._node_list.append (importedNode)
         
         self.comm.emitAddNodeMSignal (importedNode.getId(), node_x, node_y)
@@ -52,14 +68,17 @@ class Graph ():
         return importedNode
     
     def removeNode (self, node0_id):
+        '''This method removes a specific node.
         
-        # node removal code
+        @param node0_id int
+        
+        @return tmp boolean
+        '''
         tmp = False
         for node in self._node_list:
             if node.getId()==node0_id:
                 
                 # unplug connections first
-                
                 for item in reversed(node.getIns()) : node.removeIn (item)
                 for item in reversed(node.getOuts()): node.removeOut(item)
                 
@@ -74,7 +93,12 @@ class Graph ():
         return tmp
     
     def duplicateNode (self, node0):
+        '''This method duplicates a specific node.
         
+        @param node0 instance of class Node0
+        
+        @return node1 instance of class Node0
+        '''
         node1 = self.addNode (node0.getName ())
                 
         node1.setIns  (node0.getIns ())
@@ -173,8 +197,21 @@ class Graph ():
     # - - -  misc props  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def initProps (self, node):
+        '''This method initiates the node's props values to the default values found in the dictionary self.node_details_map.
         
+        @param node XML-format node
+        '''
         node.setProps (self.node_details_map [node.getName()][2])
+    
+    def importProps (self, node, new_props_list):
+        '''This method updates the node's props values to the ones found in the given new_props_list.
+        
+        @param node XML-format node
+        @param new_props_list list of 2_lists [prop_name, prop_value]
+        '''
+        if len (new_props_list) > 0:
+            for prop in new_props_list:
+                node.updateProp (str(prop[0]), str(prop[1]))
     
     # - - -  misc sockets  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -231,7 +268,12 @@ class Graph ():
     # graph nodes description  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def setNodesDescription (self, text_xml):
+        '''This method configures the types of nodes the user is able to handle in the JADE editor.
+        That means that modifying the node types is possible. The nodes description can be found in
+        the XML file "available_nodes.xml"
         
+        @param text_xml string
+        '''
         self.xml_rules_table = parseString(text_xml)
         
         self.node_rules_XMLList = self.xml_rules_table.getElementsByTagName ('node')
@@ -260,7 +302,7 @@ class Graph ():
                 props_ls.append ([str(item_prop.getElementsByTagName ('name')[0].firstChild.data),
                                   str(item_prop.getElementsByTagName ('type')[0].firstChild.data),
                                   str(item_prop.getElementsByTagName ('default')[0].firstChild.data)])
-                        
+            
             self.node_details_map [node_name] = [list(inputs_ls), list(outputs_ls), list(props_ls)]
         
         # print map
@@ -273,6 +315,7 @@ class Graph ():
     # i/o - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def exportGraph (self, tag_position_dict):
+        
         return self.graph_io.exportGraph (self._node_list, tag_position_dict)
     
     def importGraph (self, XML_content):
@@ -285,7 +328,7 @@ class Graph ():
         print '\n\nImport Nodes'
         for item in node_list:
             print item[0], item[1], item[2], item[3]
-            tmp = self.importNode (int(item[1]), item[0], float(item[2]), float(item[3]))
+            tmp = self.importNode (int(item[1]), item[0], float(item[2]), float(item[3]), item[4])
             self.initProps (tmp)
         
         print '\n\nImport Links'

@@ -8,7 +8,7 @@ from xml.dom import minidom
 
 class IO (object):
     '''
-    This class manages graph importing and exporting a JADE graph to a file.
+    This class manages graph importing and graph exporting to a file.
     '''
     
     def __init__(self):
@@ -70,6 +70,23 @@ class IO (object):
         @return list of 2 lists:
         '''
         
+        def extractProperProps (xml_node):
+            '''
+            this closure returns the rest of the attributes (proper props) + relative values in a list of 2-lists.
+            
+            @param node a XML-format node.
+            @return list list of 2-lists.
+            '''
+            tmp_list = []
+            
+            if len(xml_node.attributes.keys()) > 3:
+                for a in xml_node.attributes.keys():
+                    if str(a) != 'id' and str(a) != 'x' and str(a) != 'y':
+                        tmp_list.append ([str(a), xml_node.attributes[str(a)].value])
+            
+            return tmp_list
+        
+        
         node_list = []
         link_list = []
         
@@ -86,7 +103,8 @@ class IO (object):
             for i in range (0, len(self.nodes_XMLList[0].childNodes)):
                 node = self.nodes_XMLList[0].childNodes[i]
                 if node.nodeType == 1:  # the if-statement skips over the TEXT_NODEs and accepts only ELEMENT_NODEs, in other words the for-statement is running into nodes containing whitespace between the tags.
-                    node_list.append ([node.nodeName, node.attributes["id"].value, node.attributes["x"].value, node.attributes["y"].value])
+                    #print 'ATTR '+str(node.attributes.keys())+' ' + str(node.attributes.values())
+                    node_list.append ([node.nodeName, node.attributes["id"].value, node.attributes["x"].value, node.attributes["y"].value, extractProperProps (node)])
         
         # (2) list out the links off the XML data.
         if len(self.links_XMLList) > 0:
@@ -105,4 +123,4 @@ class IO (object):
                             t.append(link.attributes["connector"].value)
                             link_list.append (t)
         
-        return [node_list, link_list]        
+        return [node_list, link_list]

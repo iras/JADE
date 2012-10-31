@@ -216,6 +216,3 @@ class Node0 ():
         if len(ls) > 0:
             for item in ls:
                 self._props_list.append ([item[0], item[1], item[2]])
-            
-            
-            

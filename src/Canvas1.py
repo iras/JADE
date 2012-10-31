@@ -9,8 +9,6 @@ from PyQt4.QtGui  import *
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 
-#import GText as gt
-
 
 
 class CustomFloatingText (QGraphicsTextItem):
