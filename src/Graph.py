@@ -1,8 +1,8 @@
-"""
+'''
 Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
 
 See the file license.txt for copying permission.
-"""
+'''
 
 from xml.dom import minidom
 from xml.dom.minidom import parseString
@@ -328,8 +328,7 @@ class Graph ():
         print '\n\nImport Nodes'
         for item in node_list:
             print item[0], item[1], item[2], item[3]
-            tmp = self.importNode (int(item[1]), item[0], float(item[2]), float(item[3]), item[4])
-            self.initProps (tmp)
+            self.importNode (int(item[1]), item[0], float(item[2]), float(item[3]), item[4])
         
         print '\n\nImport Links'
         for item in link_list:

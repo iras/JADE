@@ -210,7 +210,7 @@ class Node0 ():
         self._outs.extend (ls)
     
     def setProps (self, ls):
-        # ls is a list of lists in this case. So, copying a list of lists is slightly different,
+        # ls is a list of lists in this case. So, copying a list of lists is slightly different from just extending an empty list with the source one.
         self._props_list = []
         
         if len(ls) > 0:
