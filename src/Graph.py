@@ -7,16 +7,21 @@ See the file license.txt for copying permission.
 from xml.dom import minidom
 from xml.dom.minidom import parseString
 
-import Nodes0 as nd
 import Comm0
+import Nodes0 as nd
 import GraphIO as gio
 
 
 
 class Graph ():
-
+    '''
+    Base model class for the JADE app. The other specific sub-models are the class: Nodes0 and Socket which sub-classes into InSocket and OutSocket.
+    
+    This class is unit tested, cfr. textGraph.py
+    '''
     def __init__(self):
-        
+        '''constructor
+        '''
         # signal global operator
         self.comm = Comm0.Comm0 ()
         self.node_details_map = {}
@@ -25,7 +30,12 @@ class Graph ():
         
         self.graph_io = gio.IO()
         
-    def getComm (self): return self.comm
+    def getComm (self):
+        '''Getter.
+                
+        @return self.comm instance of class Comm0
+        '''
+        return self.comm
     
     # - - -  node methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -108,10 +118,21 @@ class Graph ():
     
         return node1
     
-    def getNodeList (self): return self._node_list
+    def getNodeList (self):
+        '''Getter.
+                
+        @return self._node_list list
+        '''
+        return self._node_list
     
     def addInSocket (self, node_id, stype):
+        '''This method adds a new InSocket's instance given the node id and the socket type.
         
+        @param node_id int
+        @param stype string
+        
+        @return socket instance of class InSocket
+        '''
         tmp_socket = None
         
         node = self.getNode (node_id)
@@ -121,7 +142,13 @@ class Graph ():
         return tmp_socket
     
     def addOutSocket (self, node_id, stype):
+        '''This method adds a new OutSocket's instance given the node id and the socket type.
         
+        @param node_id int
+        @param stype string
+        
+        @return socket instance of class OutSocket
+        '''
         tmp_socket = None
         
         node = self.getNode (node_id)
@@ -131,7 +158,12 @@ class Graph ():
         return tmp_socket
     
     def getNode (self, node_id):
+        '''This method retrieves a specific instance of the class Node0 given the node_id.
         
+        @param node_id int
+        
+        @return node1 instance of class Node0
+        '''
         tmp = None
         for item in self._node_list:
             if item.getId()==node_id:
@@ -141,7 +173,12 @@ class Graph ():
         return tmp
     
     def getInsTypesLeft (self, node_id):
+        '''This method retrieves lists out the types of InSocket still available for a specific node, given the node id.
         
+        @param node_id int
+        
+        @return list list of string
+        '''
         tmp_list = []
         node = self.getNode (node_id)
         for socket in node.getIns ():
@@ -150,7 +187,12 @@ class Graph ():
         return list (set(self.node_details_map[node.getName()][0]) - set(tmp_list))
     
     def getOutsTypesLeft (self, node_id):
+        '''This method retrieves lists out the types of OutSocket still available for a specific node, given the node id.
         
+        @param node_id int
+        
+        @return list list of string
+        '''
         tmp_list = []
         node = self.getNode (node_id)
         for socket in node.getOuts ():
@@ -161,14 +203,24 @@ class Graph ():
     # - - -  links methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def addLink (self, inSocket, outSocket):
+        '''This method adds a link between a pair of Sockets (an InSocket and an OutSocket). A signal 'addLink_MSignal' is consequently given off.
         
+        @param inSocket instance of the class InSocket
+        @param outSocket instance of the class OutSocket
+        '''
         inSocket.addPluggedIn   (outSocket)
         outSocket.addPluggedOut (inSocket)
         
         self.comm.emitAddLinkMSignal (inSocket.getSId(), outSocket.getSId())
     
     def importLink (self, id_out_node, type_out_socket, id_in_node, type_in_socket):
+        '''This method imports a link between a pair of Sockets (an InSocket and an OutSocket).
         
+        @param id_out_node int
+        @param type_out_socket string
+        @param id_in_node int
+        @param type_in_socket string
+        '''
         inSocket = self.getSocketFromNode (id_in_node, type_in_socket) # try n retrieve the appropriate inSocket for the node with id=id_in_node
         if inSocket == None: inSocket = self.addInSocket (id_in_node, type_in_socket) # if not, add it.
         
@@ -178,7 +230,11 @@ class Graph ():
         self.addLink (inSocket, outSocket)
     
     def removeLink (self, s_in_id, s_out_id):
+        '''This method removes an existing link between a pair of Sockets (an InSocket and an OutSocket). A signal 'deleteLink_MSignal' is consequently given off.
         
+        @param s_in_id int
+        @param s_out_id int
+        '''
         if self.areSocketsRelated (s_in_id, s_out_id) == True:
             
             flag1 = False
@@ -193,6 +249,23 @@ class Graph ():
             
             if flag1==True and flag2==True:
                 self.comm.emitDeleteLinkMSignal (s_in_id, s_out_id)
+    
+    def areSocketsRelated (self, s1_id, s2_id):
+        '''This method queries about whether two sockets are related (a link between them is already in place).
+        
+        @param s1_id int
+        @param s2_id int
+        
+        @return flag boolean
+        '''
+        flag = False
+        
+        s1 = self.getSocket (s1_id)
+        s2 = self.getSocket (s2_id)
+        
+        if s1.isPluggedWith(s2) or s2.isPluggedWith(s1): flag=True
+        
+        return flag
     
     # - - -  misc props  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -215,19 +288,13 @@ class Graph ():
     
     # - - -  misc sockets  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def areSocketsRelated (self, s1_id, s2_id):
-        
-        flag = False
-        
-        s1 = self.getSocket (s1_id)
-        s2 = self.getSocket (s2_id)
-        
-        if s1.isPluggedWith(s2) or s2.isPluggedWith(s1): flag=True
-        
-        return flag
-    
     def getSocket (self, sid):
+        '''This method retrieves an instance of the class Socket given its socket id.
         
+        @param sid int
+        
+        @return s instance of class Socket (either InSocket or OutSocket)
+        '''
         s = None
         
         for node in self._node_list:
@@ -249,7 +316,13 @@ class Graph ():
         return s
     
     def getSocketFromNode (self, node_id, socket_type):
+        '''This method retrieves an instance of the class Socket given the id of the node it belongs to and the socket type.
         
+        @param node_id int
+        @param socket_type string
+        
+        @return s instance of class Socket (either InSocket or OutSocket)
+        '''
         node = self.getNode (node_id)
         s = None
         
@@ -310,16 +383,29 @@ class Graph ():
         pp = pprint.PrettyPrinter(indent=4)
         pp.pprint (self.node_details_map)
     
-    def getNodesDecription (self): return self.node_details_map
+    def getNodesDecription (self):
+        '''Getter.
+                
+        @return self.node_details_map dictionary
+        '''
+        return self.node_details_map
     
     # i/o - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def exportGraph (self, tag_position_dict):
+        '''This method exports the graph given the dictionary of tag's positions.
         
+        @param tag_position_dict dictionary
+        
+        @return graph_XML_string string 
+        '''
         return self.graph_io.exportGraph (self._node_list, tag_position_dict)
     
     def importGraph (self, XML_content):
-        
+        '''This method imports a graph given the string XML_content passed in.
+                
+        @param XML_content string 
+        '''
         tmp_list = self.graph_io.importGraphData (XML_content)
         
         node_list = tmp_list[0]

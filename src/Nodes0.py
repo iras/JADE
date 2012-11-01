@@ -7,9 +7,18 @@ See the file license.txt for copying permission.
 import Sockets as sk
 
 class Node0 ():
-
+    '''
+    sub-model class.
+    
+    This class is unit tested, cfr. textNodes.py
+    '''
     def __init__(self, id0, name, comm):
+        '''constructor
         
+        @param id0 int
+        @param name string
+        @param comm instance of class Comm0
+        '''
         self._id   = id0 # id0 has been used instead of id since the latter is a built-in variable.
         self._name = str(name)
         self.comm  = comm
@@ -25,7 +34,11 @@ class Node0 ():
         pass
     
     def updateProp (self, name_prop, value_prop):
+        '''This method updates the value of a specific prop belonging to this Node0 instance.
         
+        @param name_prop string
+        @param value_prop string
+        '''
         print 'update node '+str(self._id)
         if len(self._props_list) > 0:
             for prop in self._props_list:
