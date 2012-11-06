@@ -39,4 +39,4 @@ ui.setupUi (MainWindow)
 #MainWindow.show ()
 if (cmds.dockControl('myDock', q=1, ex=1)): cmds.deleteUI ('myDock')
 allowedAreas = ['right', 'left']
-myDock = cmds.dockControl('myDock', aa=allowedAreas, a='right', content='MainWindow', label='JADE panel', w=600)
+myDock = cmds.dockControl('myDock', aa=allowedAreas, a='right', content='MainWindow', label='JADE panel', w=800)

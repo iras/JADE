@@ -39,7 +39,7 @@ class Graph ():
     
     # - - -  node methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def addNode (self, node_name):
+    def addNode (self, node_name, node_x, node_y):
         '''This method creates a generic node.
         
         @param node_name string
@@ -50,7 +50,7 @@ class Graph ():
         self.initProps (newNode)
         self._node_list.append (newNode)
         
-        self.comm.emitAddNodeMSignal (newNode.getId(), 0.0, 0.0)
+        self.comm.emitAddNodeMSignal (newNode.getId(), node_x, node_y)
         
         return newNode
     
@@ -109,13 +109,13 @@ class Graph ():
         
         @return node1 instance of class Node0
         '''
-        node1 = self.addNode (node0.getName ())
+        node1 = self.addNode (node0.getName (), 0.0, 0.0)
                 
         node1.setIns  (node0.getIns ())
         node1.setOuts (node0.getOuts())
         
         node1.setProps (node0.getProps ())
-    
+        
         return node1
     
     def getNodeList (self):
@@ -251,7 +251,7 @@ class Graph ():
                 self.comm.emitDeleteLinkMSignal (s_in_id, s_out_id)
     
     def areSocketsRelated (self, s1_id, s2_id):
-        '''This method queries about whether two sockets are related (a link between them is already in place).
+        '''This method queries whether two sockets are related (a link between them is already in place).
         
         @param s1_id int
         @param s2_id int
@@ -385,7 +385,7 @@ class Graph ():
     
     def getNodesDecription (self):
         '''Getter.
-                
+        
         @return self.node_details_map dictionary
         '''
         return self.node_details_map

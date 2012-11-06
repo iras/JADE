@@ -32,6 +32,7 @@ class CustomGraphicsView (QGraphicsView):
             QGraphicsView.mousePressEvent (self, event) # <-- added this line.
 
 
+
 class View (QFrame):
 
     def __init__ (self, name, parent=None):
@@ -134,7 +135,7 @@ class View (QFrame):
         
         self.printer = QPrinter (QPrinter.HighResolution)
     
-    def view (self): return self.graphicsView
+    def getGraphicsView (self): return self.graphicsView
     
     def resetView (self):
         
@@ -186,8 +187,10 @@ class View (QFrame):
             self.graph_view.delegateImport (XML_content)
             print '\n*** file imported.\n'
     
+    # zoom slider
     def zoomIn  (self) : self.zoomSlider.setValue (self.zoomSlider.value() + 1)
     def zoomOut (self) : self.zoomSlider.setValue (self.zoomSlider.value() - 1)
+    def getZoomSlider (self): return self.zoomSlider
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

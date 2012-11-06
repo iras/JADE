@@ -11,12 +11,6 @@ class IO (object):
     This class manages graph importing and graph exporting to a file.
     '''
     
-    def __init__(self):
-        '''
-        Constructor
-        '''
-        pass
-    
     def exportGraph (self, node_list, tag_position_dict):
         '''
         this method exports the graph in a XML-format file, dividing the graph into 2 blocks : nodes and links.

@@ -49,7 +49,12 @@ class Node0 ():
     # - - -  sockets methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def addIn  (self, stype):
+        '''This method adds an inSocket specific to this Node0's instance by providing the socket's type
         
+        @param stype string
+        
+        @return inSocket instance of class inSocket
+        '''
         inSocket = None
         
         # check out that it's not already there as there can only be one type of inSocket down an in_rail.
@@ -69,7 +74,12 @@ class Node0 ():
         return inSocket
     
     def addOut (self, stype):
+        '''This method adds an OutSocket specific to this Node0's instance by providing the socket's type
         
+        @param stype string
+        
+        @return OutSocket instance of class OutSocket
+        '''
         outSocket = None
         
         # check out that it's not already there as there can only be one type of outSocket down an out_rail.
@@ -88,9 +98,11 @@ class Node0 ():
         
         return outSocket
     
-    # removeIn (InSocket) : Boolean
     def removeIn (self, inSocket):
+        '''This method removes an inSocket specific to this Node0's instance by providing the socket's instance itself.
         
+        @param inSocket instance of class inSocket
+        '''
         for socket in self._ins:
             if socket==inSocket:
                 
@@ -113,9 +125,11 @@ class Node0 ():
                 
                 break
     
-    # removeOut (OutSocket) : Boolean
     def removeOut (self, outSocket):
+        '''This method removes an OutSocket specific to this Node0's instance by providing the socket's instance itself.
         
+        @param outSocket instance of class outSocket
+        '''
         for socket in self._outs:
             if socket==outSocket:
                 
@@ -176,9 +190,13 @@ class Node0 ():
         
         return tmp
     
-    # hasIn (inSocket) : 2-list [Boolean, int]
     def hasIn (self, inSocket):
+        '''This method queries whether this Node0's instance owns the inSocket specified in the arguments provided.
         
+        @param inSocket instance of class inSocket
+        
+        @return list0 2-list [boolean, int]
+        '''
         try:
             tmp = self._ins.index (inSocket)
         except ValueError:
@@ -188,9 +206,13 @@ class Node0 ():
         if list0[1]!=-1: list0[0]=True
         return list0
     
-    # hasOut (outSocket) : 2-list [Boolean, int]
     def hasOut (self, outSocket):
+        '''This method queries whether this Node0's instance owns the outSocket specified in the arguments provided.
         
+        @param outSocket instance of class outSocket
+        
+        @return list0 2-list [boolean, int]
+        '''
         try:
             tmp = self._outs.index (outSocket)
         except ValueError:
@@ -202,28 +224,72 @@ class Node0 ():
     
     # - - getters / setters - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def getId   (self): return self._id
-    def getName (self): return self._name
+    def getId (self):
+        '''Getter.
+        
+        @return self._id int
+        '''
+        return self._id
     
-    def getIns  (self): return self._ins
-    def getOuts (self): return self._outs
+    def getName (self):
+        '''Getter.
+        
+        @return self._name string
+        '''
+        return self._name
     
-    def getProps (self): return self._props_list
+    def getIns  (self):
+        '''Getter.
+        
+        @return self._ins list
+        '''
+        return self._ins
     
-    def setName (self, name0): self._name = name0
+    def getOuts (self):
+        '''Getter.
+        
+        @return self._ins list
+        '''
+        return self._outs
+    
+    def getProps (self):
+        '''Getter.
+        
+        @return self._ins list
+        '''
+        return self._props_list
+    
+    def setName (self, name0):
+        '''Setter.
+        
+        @param name0 string
+        '''
+        self._name = name0
     
     # the following lists are copied, not just referenced.
     
     def setIns  (self, ls):
+        '''Setter. The list is copied, not just referenced.
+        
+        @param ls list
+        '''
         self._ins = []
         self._ins.extend (ls)
     
     def setOuts (self, ls):
+        '''Setter. The list is copied, not just referenced.
+        
+        @param ls list
+        '''
         self._outs = []
         self._outs.extend (ls)
     
     def setProps (self, ls):
-        # ls is a list of lists in this case. So, copying a list of lists is slightly different from just extending an empty list with the source one.
+        '''Setter. The list is copied, not just referenced. Just notice that ls is a list of lists, in this case.
+        So, copying a list of lists is slightly different from just extending an empty list with the source one.
+        
+        @param ls list
+        '''
         self._props_list = []
         
         if len(ls) > 0:

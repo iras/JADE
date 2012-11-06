@@ -37,7 +37,10 @@ class MainMayaWindow (QObject):
         super (MainMayaWindow, self).__init__(parent)
         QObject.__init__(self) # initiation indispensable for sending and receiving signals!
         
+        # define scene and constrain its workspace
         self.scene = QGraphicsScene()
+        qrect = QRectF(-1000, -1000, 2000, 2000)
+        self.scene.setSceneRect(qrect)
         
         self.graph_model = graph
         self.helper = utility.Helper (self, self.scene, self.graph_model)
@@ -58,7 +61,7 @@ class MainMayaWindow (QObject):
     def setupUi (self, MainWindow):
         
         MainWindow.setObjectName(_fromUtf8 ("MainWindow"))
-        MainWindow.resize(494, 1396)
+        MainWindow.resize(800, 1396)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -72,7 +75,7 @@ class MainMayaWindow (QObject):
         MainWindow.setDockOptions(QtGui.QMainWindow.AllowTabbedDocks|QtGui.QMainWindow.AnimatedDocks)
         
         self.verticalLayoutWidget = QtGui.QWidget(MainWindow)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 600, 1000))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 800, 1000))
         self.verticalLayoutWidget.setObjectName(_fromUtf8("verticalLayoutWidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setMargin(0)
@@ -96,8 +99,11 @@ class MainMayaWindow (QObject):
         vSplit.addWidget (self.hSplit)
         
         view.setClientAndWireViewItems (self.graph_view)
-        view.view().setScene (self.scene)
+        view.getGraphicsView().setScene (self.scene)
         self.hSplit.addWidget (view)
+        
+        self.graphicsView = view.getGraphicsView ()
+        self.node_coords = QPoint (0,0)
         
         layout = QHBoxLayout (self.scrollAreaWidgetContents_3)
         layout.addWidget (vSplit)
@@ -114,6 +120,12 @@ class MainMayaWindow (QObject):
         self.menu        = cmds.popupMenu ('JADEmenu',        parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenu()', aob=True)
         self.menuAddOuts = cmds.popupMenu ('JADEmenuAddOuts', parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenuAddOuts()', aob=True, alt=True)
         self.menuAddIns  = cmds.popupMenu ('JADEmenuAddIns',  parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenuAddIns()',  aob=True, ctl=True)
+        
+        # this class property is used to keep track of the mouse position.
+        self._mouse = QtGui.QCursor
+        
+        # view's zoom slider (we need this to correct the bias added to sort the mouse position when the zoom changes - ONLY in Maya)
+        self._zoom_slider = view.getZoomSlider()
     
     def retranslateUi (self, MainWindow):
         pass
@@ -141,13 +153,23 @@ class MainMayaWindow (QObject):
     
     def prepareGeneralCtxMenu (self, list0):
         
+        self.node_coords = self.graphicsView.mapToScene (self._mouse.pos())
+        
         # populate the QMenu dynamically and pass the menu string name to the receiver
         for i in list0:
             cmds.menuItem (parent=self.menu, label=str(i), c='ClientMaya.ui.addTag ("'+str(i)+'")')
     
     def addTag (self, name0):
         
-        self.graph_model.addNode (name0)
+        # the following piece-wise linear interpolation is a workaround only present in the Maya JADE mapping tool since the self.graphicsView.mapToScene() doesn't seem to work as the standalone's one.
+        if self._zoom_slider.value() > 199 and self._zoom_slider.value() < 241:
+            x_bias = -22.5*(self._zoom_slider.value()-200) + 2100
+            y_bias = -3.75*(self._zoom_slider.value()-200) + 400
+        elif self._zoom_slider.value() > 240 and self._zoom_slider.value() < 281:
+            x_bias = -12.5*(self._zoom_slider.value()-240) + 1200
+            y_bias = -2.5* (self._zoom_slider.value()-240) + 250
+                
+        self.graph_model.addNode (name0, self.node_coords.x() - x_bias, self.node_coords.y() - y_bias)
     
     def ctxMenuAddOuts (self):
         

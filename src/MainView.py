@@ -32,7 +32,10 @@ class MainWindow (QWidget):
         '''
         QWidget.__init__ (self, parent)
         
+        # define scene and constrain its workspace
         self.scene = QGraphicsScene()
+        qrect = QRectF(-1000, -1000, 2000, 2000)
+        self.scene.setSceneRect(qrect)
         
         self.graph_model = graph
         self.helper = utility.Helper (self, self.scene, self.graph_model)
@@ -59,8 +62,11 @@ class MainWindow (QWidget):
         
         view = View0.View ("Main view")
         view.setClientAndWireViewItems (self.graph_view)
-        view.view().setScene (self.scene)
+        view.getGraphicsView().setScene (self.scene)
         self.hSplit.addWidget (view)
+        
+        self.graphicsView = view.getGraphicsView ()
+        self.node_coords = QPoint (0,0)
         
         layout = QHBoxLayout ()
         layout.addWidget (vSplit)
@@ -77,7 +83,7 @@ class MainWindow (QWidget):
     
     def mousePressEvent (self, e):
         '''Callback function dealing with pressing a mouse button.
-
+        
         @param e event
         '''
         modif = int (e.modifiers())
@@ -95,7 +101,7 @@ class MainWindow (QWidget):
     
     def keyPressEvent (self, e):
         '''Callback function dealing with pressing a keyboard key.
-
+        
         @param e event
         '''
         if e.key() == Qt.Key_Backspace:
@@ -105,7 +111,7 @@ class MainWindow (QWidget):
     
     def ctxMenu (self, pos):
         '''Callback function dealing with invoking the contextual menu.
-
+        
         @param pos position
         '''
         self.hovered_tag_id = self.graph_model.getComm().getHoveredItemId()
@@ -132,10 +138,11 @@ class MainWindow (QWidget):
             [tmp_ls.append(key) for key in self.graph_model.getNodesDecription()]
             self.prepareGeneralCtxMenu (tmp_ls)
             self.menu.popup (self.mapToGlobal (pos))
+            self.node_coords = self.graphicsView.mapToScene (pos)
     
     def prepareGeneralCtxMenu (self, list0):
         '''populate the QMenu dynamically with available node infos and pass the menu string name to the receiver.
-
+        
         @param list0 list of menu items
         '''
         for i in list0:
@@ -145,15 +152,15 @@ class MainWindow (QWidget):
             self.connect (tmp, QtCore.SIGNAL('triggered()'), receiver)
     
     def addTag (self, name0):
-        '''adds a Tag0 instance by name.
-
+        '''adds a Tag0 instance by name. the constants added to the are needed to make the tag pop up near the mouse pointer.
+        
         @param name0 string
         '''
-        self.graph_model.addNode (name0)
+        self.graph_model.addNode (name0, self.node_coords.x() - 50, self.node_coords.y() - 80)
     
     def prepareNodeCtxMenu (self, list0):
         '''populates the QMenu dynamically with available socket names and pass the menu string name to the receiver. Also, it generates closures as callbacks for each item.
-
+        
         @param list0 list of menu items.
         '''
         for i in list0:
@@ -163,7 +170,7 @@ class MainWindow (QWidget):
     
     def addSocketAction (self, value):
         '''adds a socket name based on the key modifier pressed.
-
+        
         @param value
         '''
         if self.ctl_pressed == True:
