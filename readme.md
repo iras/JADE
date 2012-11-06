@@ -19,12 +19,14 @@ The code is documented and EpyDoc (cfr. http://epydoc.sourceforge.net/)
 
 
 Known Issues:
-(1) two nodes can occasionally stay both selected after making a link, sometimes. The workaround is to click on the background
+(1) two nodes can occasionally stay both selected after making a link. The workaround is to click on the background
 to reset the selection.
 
 
 Version 0.4 wish list:
 (0) sorting the known issues.
 (1) adding undo functionality.
+(2) merging two imported graphs in a unique file.
+(3) tube-like connections instead of straight lines.
 
 
