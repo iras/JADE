@@ -403,7 +403,7 @@ class Graph ():
     
     def importGraph (self, XML_content):
         '''This method imports a graph given the string XML_content passed in.
-                
+        
         @param XML_content string 
         '''
         tmp_list = self.graph_io.importGraphData (XML_content)

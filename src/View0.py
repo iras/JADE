@@ -41,6 +41,9 @@ class View (QFrame):
         
         self.setFrameStyle (QFrame.Sunken | QFrame.StyledPanel)
         
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        
         self.graphicsView = CustomGraphicsView ()
         self.graphicsView.setRenderHint (QPainter.Antialiasing, True)
         self.graphicsView.setDragMode (QGraphicsView.RubberBandDrag)
@@ -77,26 +80,32 @@ class View (QFrame):
         
         #self.addNodeBtn = QPushButton ()
         #self.addNodeBtn.setText ("add node")
+        #self.addNodeBtn.setFont(font)
         #self.addNodeBtn.setEnabled (True)
         
         #self.removeNodeBtn = QPushButton ()
         #self.removeNodeBtn.setText ("remove node")
+        #self.addNodeBtn.setFont(font)
         #self.removeNodeBtn.setEnabled (True)
         
         self.printOutBtn = QPushButton()
         self.printOutBtn.setText ("print graph")
+        self.printOutBtn.setFont(font)
         self.printOutBtn.setEnabled (True)
         
         self.loadNodesDescrpBtn = QPushButton()
         self.loadNodesDescrpBtn.setText ("load Nodes Description")
+        self.loadNodesDescrpBtn.setFont(font)
         self.loadNodesDescrpBtn.setEnabled (True)
         
         self.graphSaveBtn = QPushButton()
         self.graphSaveBtn.setText ("save graph")
+        self.graphSaveBtn.setFont(font)
         self.graphSaveBtn.setEnabled (True)
         
         self.graphLoadBtn = QPushButton()
         self.graphLoadBtn.setText ("load graph")
+        self.graphLoadBtn.setFont(font)
         self.graphLoadBtn.setEnabled (True)
         
         self.resetButton = QToolButton ()
@@ -106,6 +115,7 @@ class View (QFrame):
         # Label layout
         labelLayout = QHBoxLayout ()
         self.label = QLabel (name)
+        self.label.setFont(font)
         #labelLayout.addWidget (self.addNodeBtn)
         #labelLayout.addWidget (self.removeNodeBtn)
         labelLayout.addWidget (self.printOutBtn)
