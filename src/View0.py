@@ -9,7 +9,10 @@ from PyQt4.QtGui import *
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 
-
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    _fromUtf8 = lambda s: s
 
 class CustomGraphicsView (QGraphicsView):
     '''
@@ -48,11 +51,68 @@ class View (QFrame):
         self.graphicsView.setRenderHint (QPainter.Antialiasing, True)
         self.graphicsView.setDragMode (QGraphicsView.RubberBandDrag)
         self.graphicsView.setViewportUpdateMode (QGraphicsView.SmartViewportUpdate)
-        
         #self.graphicsView.setMouseTracking(True)
         
+        # toolbox definition
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Expanding)
+        self.setObjectName(_fromUtf8("Form"))
+        self.resize (400, 300)
+        self.toolBox = QtGui.QToolBox(self)
+        self.toolBox.setGeometry(QtCore.QRect(0, 0, 131, 301))
+        self.toolBox.setFont(font)
+        self.toolBox.setObjectName(_fromUtf8("toolBox"))
+        self.groupCluster = QtGui.QWidget()
+        self.groupCluster.setGeometry(QtCore.QRect(0, 0, 91, 241))
+        self.groupCluster.setObjectName(_fromUtf8("groupCluster"))
+        self.groupLineEdit = QtGui.QLineEdit(self.groupCluster)
+        self.groupLineEdit.setGeometry(QtCore.QRect(2, 20, 71, 16))
+        self.groupLineEdit.setObjectName(_fromUtf8("groupLineEdit"))
+        self.label = QtGui.QLabel(self.groupCluster)
+        self.label.setGeometry(QtCore.QRect(4, 6, 62, 16))
+        self.label.setFont(font)
+        self.label.setObjectName(_fromUtf8("label"))
+        self.label_2 = QtGui.QLabel(self.groupCluster)
+        self.label_2.setGeometry(QtCore.QRect(4, 40, 62, 16))
+        self.label_2.setFont(font)
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.groupLineEdit_2 = QtGui.QLineEdit(self.groupCluster)
+        self.groupLineEdit_2.setGeometry(QtCore.QRect(2, 54, 71, 16))
+        self.groupLineEdit_2.setObjectName(_fromUtf8("groupLineEdit_2"))
+        self.pushButton = QtGui.QPushButton(self.groupCluster)
+        self.pushButton.setGeometry(QtCore.QRect(2, 90, 71, 16))
+        self.pushButton.setFont(font)
+        self.pushButton.setObjectName(_fromUtf8("pushButton"))
+        self.toolBox.addItem(self.groupCluster, _fromUtf8(""))
+        self.Cluster1 = QtGui.QWidget()
+        self.Cluster1.setGeometry(QtCore.QRect(0, 0, 131, 241))
+        self.Cluster1.setObjectName(_fromUtf8("Cluster1"))
+        self.label_3 = QtGui.QLabel(self.Cluster1)
+        self.label_3.setGeometry(QtCore.QRect(4, 6, 62, 16))
+        self.label_3.setFont(font)
+        self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.groupLineEdit_3 = QtGui.QLineEdit(self.Cluster1)
+        self.groupLineEdit_3.setGeometry(QtCore.QRect(2, 20, 71, 16))
+        self.groupLineEdit_3.setObjectName(_fromUtf8("groupLineEdit_3"))
+        self.pushButton_2 = QtGui.QPushButton(self.Cluster1)
+        self.pushButton_2.setGeometry(QtCore.QRect(2, 50, 71, 16))
+        self.pushButton_2.setFont(font)
+        self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
+        self.toolBox.addItem(self.Cluster1, _fromUtf8(""))
+        # toolbox basic values
+        self.setWindowTitle(QtGui.QApplication.translate("Form", "Form", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("Form", "name group", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("Form", "group id", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButton.setText(QtGui.QApplication.translate("Form", "add cluster", None, QtGui.QApplication.UnicodeUTF8))
+        self.toolBox.setItemText(self.toolBox.indexOf(self.groupCluster), QtGui.QApplication.translate("Form", "Group", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_3.setText(QtGui.QApplication.translate("Form", "name cluster", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButton_2.setText(QtGui.QApplication.translate("Form", "delete", None, QtGui.QApplication.UnicodeUTF8))
+        self.toolBox.setItemText(self.toolBox.indexOf(self.Cluster1), QtGui.QApplication.translate("Form", "C_1", None, QtGui.QApplication.UnicodeUTF8))
+        self.toolBox.setCurrentIndex(1)
+        QtCore.QMetaObject.connectSlotsByName(self)
+        self.toolBox.setSizePolicy (sizePolicy)
+        
         size = self.style ().pixelMetric (QStyle.PM_ToolBarIconSize)
-        iconSize = QSize (size, size)
+        iconSize = QSize (16, 16) #QSize (size, size)
         
         zoomInIcon = QToolButton ()
         zoomInIcon.setAutoRepeat (True)
@@ -118,19 +178,20 @@ class View (QFrame):
         self.label.setFont(font)
         #labelLayout.addWidget (self.addNodeBtn)
         #labelLayout.addWidget (self.removeNodeBtn)
-        labelLayout.addWidget (self.printOutBtn)
         labelLayout.addWidget (self.loadNodesDescrpBtn)
         labelLayout.addWidget (self.graphSaveBtn)
         labelLayout.addWidget (self.graphLoadBtn)
+        labelLayout.addWidget (self.printOutBtn)
+        labelLayout.addWidget (self.resetButton)
         
         labelLayout.addWidget (self.label)
         labelLayout.addStretch ()
         
         topLayout = QGridLayout ()
-        topLayout.addLayout (labelLayout, 0, 0)
-        topLayout.addWidget (self.graphicsView, 1, 0)
-        topLayout.addLayout (zoomSliderLayout, 1, 1)
-        topLayout.addWidget (self.resetButton, 2, 1)
+        topLayout.addLayout (labelLayout, 0, 1)
+        topLayout.addWidget (self.toolBox, 1, 0)
+        topLayout.addWidget (self.graphicsView, 1, 1)
+        topLayout.addLayout (zoomSliderLayout, 1, 2)
         self.setLayout (topLayout)
         
         self.connect (self.resetButton, SIGNAL ("clicked()"), self.resetView)
@@ -201,7 +262,8 @@ class View (QFrame):
     def zoomIn  (self) : self.zoomSlider.setValue (self.zoomSlider.value() + 1)
     def zoomOut (self) : self.zoomSlider.setValue (self.zoomSlider.value() - 1)
     def getZoomSlider (self): return self.zoomSlider
-
+    
+    def setToolboxCSSColorScheme (self, css): self.toolBox.setStyleSheet (css)
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     def setClientAndWireViewItems (self, graph_view):
