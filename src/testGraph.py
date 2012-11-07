@@ -22,9 +22,9 @@ class TestGraph (unittest.TestCase):
         
         self.test_graph = gf.Graph ()
         
-        QObject.connect (self.test_graph.getComm (), SIGNAL('addNode_MSignal(int)'),        self.addNode_MSignalListener)
-        QObject.connect (self.test_graph.getComm (), SIGNAL('deleteNode_MSignal(int)'),     self.addInSocket_MSignalListener)
-        QObject.connect (self.test_graph.getComm (), SIGNAL('addLink_MSignal(int,int)'),    self.addLink_MSignalListener)
+        QObject.connect (self.test_graph.getComm (), SIGNAL('addNode_MSignal(int, float, float)'), self.addNode_MSignalListener)
+        QObject.connect (self.test_graph.getComm (), SIGNAL('deleteNode_MSignal(int)'), self.addInSocket_MSignalListener)
+        QObject.connect (self.test_graph.getComm (), SIGNAL('addLink_MSignal(int,int)'), self.addLink_MSignalListener)
         QObject.connect (self.test_graph.getComm (), SIGNAL('deleteLink_MSignal(int,int)'), self.removeLink_MSignalListener)
         
         self.receivedNId = 0
@@ -33,11 +33,11 @@ class TestGraph (unittest.TestCase):
         self.isAddLink_MSignalReceived    = False
         self.isRemoveLink_MSignalReceived = False
         
-        map = {'stateBegun'    :[['type0_s', 'type1_s', 'type2_s', 'type3_s'],['type1_s'],[]],
-               'triggerFire'   :[['type0_s', 'type4_s'],['type1_s', 'type2_s', 'type3_s'],[]],
-               'stopAction'    :[['type1_s', 'type2_s'],[],[]],
-               'restoreAction' :[[],['type1_s', 'type2_s'],[]]}
-        self.test_graph.connections_map = map
+        map = {'stateBegun'    :[['type0_s', 'type1_s', 'type2_s', 'type3_s'],['type1_s'],[],[]],
+               'triggerFire'   :[['type0_s', 'type4_s'],['type1_s', 'type2_s', 'type3_s'],[],[]],
+               'stopAction'    :[['type1_s', 'type2_s'],[],[],[]],
+               'restoreAction' :[[],['type1_s', 'type2_s'],[],[]]}
+        self.test_graph.node_details_map = map
     
     def tearDown(self):
         pass
@@ -66,21 +66,21 @@ class TestGraph (unittest.TestCase):
     
     def testAddNode (self):
         
-        self.node1 = self.test_graph.addNode ('node_1')
+        self.node1 = self.test_graph.addNode ('stateBegun', 0.0, 0.0)
         self.assertEqual (len(self.test_graph.getNodeList ()), 1, 'Wrong no. of nodes in the list.')
         self.assertTrue  (isinstance (self.node1, nd.Node0), 'Not the right type returned.')
         self.assertEqual (self.isAddNode_MSignalReceived, True, 'Didn''t get SIGNAL addInSocket_MSignal(int)')
     
     def testAddMultipleNodes (self):
         
-        self.node1 = self.test_graph.addNode ('node_1')
-        self.node2 = self.test_graph.addNode ('node_2')
-        self.node3 = self.test_graph.addNode ('node_3')
+        self.node1 = self.test_graph.addNode ('stateBegun', 0.0, 0.0)
+        self.node2 = self.test_graph.addNode ('stateBegun', 100.0, 0.0)
+        self.node3 = self.test_graph.addNode ('stateBegun', 200.0, 0.0)
         self.assertEqual (len(self.test_graph.getNodeList ()), 3, 'Wrong no. of nodes in the list.')
     
     def testRemoveNode (self):
         
-        self.node1 = self.test_graph.addNode ('node_1')
+        self.node1 = self.test_graph.addNode ('stateBegun', 0.0, 0.0)
         result = self.test_graph.removeNode (self.node1.getId())
         self.assertEqual (len(self.test_graph.getNodeList ()), 0, 'Wrong no. of nodes in the list.')
         self.assertTrue  (result, 'The returned value isn''t True')
@@ -90,9 +90,9 @@ class TestGraph (unittest.TestCase):
     
     def testRemoveMultipleNodes (self):
         
-        self.node1 = self.test_graph.addNode ('node_1')
-        self.node2 = self.test_graph.addNode ('node_2')
-        self.node3 = self.test_graph.addNode ('node_3')
+        self.node1 = self.test_graph.addNode ('stateBegun', 0.0, 0.0)
+        self.node2 = self.test_graph.addNode ('stateBegun', 100.0, 0.0)
+        self.node3 = self.test_graph.addNode ('stateBegun', 200.0, 0.0)
         
         self.test_graph.removeNode (self.node2.getId())
         self.assertEqual (len(self.test_graph.getNodeList ()), 2, 'Wrong no. of nodes in the list.')
@@ -105,11 +105,11 @@ class TestGraph (unittest.TestCase):
     
     def testDuplicateNode (self):
         
-        self.node1 = self.test_graph.addNode ('node_1')
-        self.node2 = self.test_graph.addNode ('node_2')
-        self.node3 = self.test_graph.addNode ('node_3')
-        self.node4 = self.test_graph.addNode ('node_4')
-        self.node5 = self.test_graph.addNode ('node_5')
+        self.node1 = self.test_graph.addNode ('stateBegun', 100.0, 0.0)
+        self.node2 = self.test_graph.addNode ('stateBegun', 200.0, 0.0)
+        self.node3 = self.test_graph.addNode ('stateBegun', 300.0, 0.0)
+        self.node4 = self.test_graph.addNode ('stateBegun', 400.0, 0.0)
+        self.node5 = self.test_graph.addNode ('stateBegun', 500.0, 0.0)
         
         # going to duplicate node1
         # add sockets - in and out
@@ -138,8 +138,8 @@ class TestGraph (unittest.TestCase):
         
     def testAddLink (self):
         
-        self.node1 = self.test_graph.addNode ('node_1')
-        self.node2 = self.test_graph.addNode ('node_2')
+        self.node1 = self.test_graph.addNode ('stateBegun', 100.0, 0.0)
+        self.node2 = self.test_graph.addNode ('stateBegun', 200.0, 0.0)
         
         n1sin1  = self.node1.addIn ('type0')
         n2sout1 = self.node2.addOut('type0')
@@ -149,8 +149,8 @@ class TestGraph (unittest.TestCase):
     
     def testRemoveLink (self):
         
-        self.node1 = self.test_graph.addNode ('node_1')
-        self.node2 = self.test_graph.addNode ('node_2')
+        self.node1 = self.test_graph.addNode ('stateBegun', 0.0, 0.0)
+        self.node2 = self.test_graph.addNode ('stateBegun', 100.0, 0.0)
         
         n1sin1  = self.node1.addIn ('type0')
         n2sout1 = self.node2.addOut('type0')
@@ -162,8 +162,8 @@ class TestGraph (unittest.TestCase):
     
     def testGetNode (self):
         
-        self.node1 = self.test_graph.addNode ('node_1')
-        self.node2 = self.test_graph.addNode ('node_2')
+        self.node1 = self.test_graph.addNode ('stateBegun', 0.0, 0.0)
+        self.node2 = self.test_graph.addNode ('stateBegun', 100.0, 0.0)
         
         self.assertEqual (self.test_graph.getNode(self.node2.getId()), self.node2, 'didn''t get the right node')
         self.assertEqual (self.test_graph.getNode(self.node1.getId()), self.node1, 'didn''t get the right node')
@@ -171,7 +171,7 @@ class TestGraph (unittest.TestCase):
     
     def testGetInsTypesLeft (self):
         
-        self.node1 = self.test_graph.addNode ('node_1')
+        self.node1 = self.test_graph.addNode ('stateBegun', 0.0, 0.0)
         self.node1.setName ('stateBegun')
         
         n1sin1  = self.node1.addIn ('type3_s')
@@ -185,7 +185,7 @@ class TestGraph (unittest.TestCase):
 
     def testGetOutsTypesLeft (self):
         
-        self.node1 = self.test_graph.addNode ('node_1')
+        self.node1 = self.test_graph.addNode ('stateBegun', 0.0, 0.0)
         self.node1.setName ('triggerFire')
         
         n1sout1  = self.node1.addOut ('type3_s')
@@ -200,11 +200,11 @@ class TestGraph (unittest.TestCase):
     
     def testGetSocket (self):
         
-        self.node1 = self.test_graph.addNode ('node_1')
-        self.node2 = self.test_graph.addNode ('node_2')
-        self.node3 = self.test_graph.addNode ('node_3')
-        self.node4 = self.test_graph.addNode ('node_4')
-        self.node5 = self.test_graph.addNode ('node_5')
+        self.node1 = self.test_graph.addNode ('stateBegun', 100.0, 0.0)
+        self.node2 = self.test_graph.addNode ('stateBegun', 200.0, 0.0)
+        self.node3 = self.test_graph.addNode ('stateBegun', 300.0, 0.0)
+        self.node4 = self.test_graph.addNode ('stateBegun', 400.0, 0.0)
+        self.node5 = self.test_graph.addNode ('stateBegun', 500.0, 0.0)
         
         # going to duplicate node1
         # add sockets - in and out
@@ -225,11 +225,11 @@ class TestGraph (unittest.TestCase):
     
     def testAreSocketsRelated (self):
         
-        self.node1 = self.test_graph.addNode ('node_1')
-        self.node2 = self.test_graph.addNode ('node_2')
-        self.node3 = self.test_graph.addNode ('node_3')
-        self.node4 = self.test_graph.addNode ('node_4')
-        self.node5 = self.test_graph.addNode ('node_5')
+        self.node1 = self.test_graph.addNode ('stateBegun', 100.0, 0.0)
+        self.node2 = self.test_graph.addNode ('stateBegun', 200.0, 0.0)
+        self.node3 = self.test_graph.addNode ('stateBegun', 300.0, 0.0)
+        self.node4 = self.test_graph.addNode ('stateBegun', 400.0, 0.0)
+        self.node5 = self.test_graph.addNode ('stateBegun', 500.0, 0.0)
         
         # going to duplicate node1
         # add sockets - in and out
