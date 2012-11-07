@@ -100,7 +100,7 @@ class MainMayaWindow (QObject):
         
         view.setClientAndWireViewItems (self.graph_view)
         view.getGraphicsView().setScene (self.scene)
-        view.setToolboxCSSColorScheme ('background-color: rgb(68,68,68);color: rgb(200,200,200)')
+        view.setToolboxCSSColorScheme ('background-color: rgb(68,68,68);color: rgb(200,200,200)') # this needs to be done since the toolbox's background didn't have a uniform colour otherwise.
         self.hSplit.addWidget (view)
         
         self.graphicsView = view.getGraphicsView ()
