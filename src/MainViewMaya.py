@@ -35,14 +35,18 @@ class MainMayaWindow (QObject):
     This class handles the Maya way to deal with the contextual pop-up menu.
     '''
     def __init__ (self, graph, parent=None):
+        '''constructor
         
+        @param graph the model
+        @param parent a parent QObject, or None for root window.
+        '''
         super (MainMayaWindow, self).__init__(parent)
         QObject.__init__(self) # initiation indispensable for sending and receiving signals!
         
         # define scene and constrain its workspace
-        self.scene = QGraphicsScene()
-        qrect = QRectF(-1000, -1000, 2000, 2000)
-        self.scene.setSceneRect(qrect)
+        self.scene = QGraphicsScene ()
+        qrect = QRectF (-1000, -1000, 2000, 2000)
+        self.scene.setSceneRect (qrect)
         
         self.graph_model = graph
         self.helper = utility.Helper (self, self.scene, self.graph_model)

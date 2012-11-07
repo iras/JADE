@@ -91,10 +91,10 @@ class View (QFrame):
         self.label_2.setText (QtGui.QApplication.translate ("Form", "group id", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton.setText (QtGui.QApplication.translate ("Form", "add cluster", None, QtGui.QApplication.UnicodeUTF8))
         self._toolBox.setSizePolicy (sizePolicy)
+        self.connect (self.pushButton, SIGNAL ("clicked()"), self.addclusterPage)
         
         # adding the first cluster - a cluster is always present.
         self._cluster_page = []
-        self.addclusterPage ()
         self.addclusterPage ()
         
         size = self.style ().pixelMetric (QStyle.PM_ToolBarIconSize)
@@ -193,7 +193,7 @@ class View (QFrame):
         
         self.printer = QPrinter (QPrinter.HighResolution)
     
-    def addclusterPage (self):
+    def addclusterPage (self, event=None):
         
         tmp_w = QWidget ()
         tmp_l = QLabel (tmp_w)
