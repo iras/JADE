@@ -1,8 +1,8 @@
-"""
+'''
 Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
 
 See the file license.txt for copying permission.
-"""
+'''
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui  import *
@@ -14,7 +14,6 @@ import Hook0 as hk
 import Canvas0 as cs
 import Canvas1 as cs1
 
-import maya.cmds as cmds
 
 class Tag1 (QGraphicsItem):
     
@@ -71,43 +70,6 @@ class Tag1 (QGraphicsItem):
     def paint (self, painter, option, unused_widget):
         
         pass
-        
-        """
-        if option.state & QStyle.State_Selected:
-            fillColor = self.color.dark (150)
-        else:
-            fillColor = self.color
-        
-        if option.state & QStyle.State_MouseOver:
-            fillColor = fillColor.light (125)
-        
-        if option.levelOfDetail < 0.2:
-            
-            if option.levelOfDetail < 0.125:
-                painter.fillRect (QRectF (0, 0, 110, 70), fillColor)
-                return
-            
-            painter.setPen   (QPen (Qt.black, 0))
-            painter.setBrush (fillColor)
-            painter.drawRect (0, 0, 120, self.canvas_height_in_units*10 + 20)
-            return
-        
-        oldPen = painter.pen ()
-        pen = oldPen
-        width = 0
-        if option.state & QStyle.State_Selected:
-            width += 2
-        
-        pen.setWidth (width)
-        if option.state & QStyle.State_Sunken:
-            level = 120
-        else:
-            level = 100
-        painter.setBrush (QBrush (fillColor.dark (level)))
-        
-        #painter.drawRoundRect (QRect (0, 0, 80, 34+self.height), 20)
-        painter.drawRect (QRect (0, 0, 120, self.canvas_height_in_units*10 + 20))
-        """
     
     def remove (self): self.setVisible (False)
     
@@ -334,8 +296,6 @@ class Tag1 (QGraphicsItem):
         if not self.helper.isTimerEnded():
             self.setSelected (True)
             print "Tag1.hoverLeaveEvent : open PICKER"
-            #self.menu = cmds.popupMenu ('JADEmenu', parent='JADEInnerView', button=1, pmc = 'ClientMaya.ui.ctxMenu()', aob=True)
-            #cmds.control (self.helper.getMenu(), edit=True, visible=True)
     
     # - - -  getters/setters  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     

@@ -23,6 +23,8 @@ class MainWindow (QWidget):
     '''
     Base widget for the JADE standalone app.
     Notice the difference with the MainMayaWindow. This class is subclassing QWidget while the Maya one subclasses QObject.
+    
+    This class handles the Qt contextual menu.
     '''
     def __init__ (self, graph, parent=None):
         '''constructor

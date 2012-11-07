@@ -31,6 +31,8 @@ class MainMayaWindow (QObject):
     '''
     Base QObject for the JADE Maya scripted plugin.
     Notice the difference with the MainMWindow. This class is subclassing QObject while the Standalone one subclasses QWidget.
+    
+    This class handles the Maya way to deal with the contextual pop-up menu.
     '''
     def __init__ (self, graph, parent=None):
         
@@ -131,13 +133,6 @@ class MainMayaWindow (QObject):
     def retranslateUi (self, MainWindow):
         pass
     
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    '''
-    def keyPressEvent (self, e):    # ...can't use this one within Maya : REMOVE it.
-        
-        if e.key() == Qt.Key_Backspace:
-            self.graph_view.removeSelectedItems ()
-    '''
     # - - -    context menus methods   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def ctxMenu (self):
@@ -162,7 +157,7 @@ class MainMayaWindow (QObject):
     
     def addTag (self, name0):
         
-        # the following piece-wise linear interpolation is a workaround only present in the Maya JADE mapping tool since the self.graphicsView.mapToScene() doesn't seem to work as the standalone's one.
+        # the piece-wise linear interpolation below is a workaround only present in the Maya JADE mapping tool since the self.graphicsView.mapToScene() doesn't seem to work as the standalone's one.
         if self._zoom_slider.value() > 199 and self._zoom_slider.value() < 241:
             x_bias = -22.5*(self._zoom_slider.value()-200) + 2100
             y_bias = -3.75*(self._zoom_slider.value()-200) + 400
