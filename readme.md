@@ -7,7 +7,7 @@ It is available both as a standalone version (through ClientStandAlone.py) and a
 customising the physical path). JADE model (graph.py, node.py, socket.py) is unit tested and documented (EpyDoc,
 cfr. http://epydoc.sourceforge.net/)
 
-## HOT TO USE IT
+## HOW TO USE IT
 On running the client, please load the XML file description (available nodes) first, then mouse right-click
 on the graphics view to create the tags, one by one. Right clicking on a tag (plus Ctrl or Alt pressed at once)
 will allow hook creation and by click-and-dragging the dash line from a hook over to another one will allow link creation.
