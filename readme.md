@@ -26,7 +26,7 @@ The buttons save and load are pretty self-explanatory.
 to reset the selection.
 
 
-## Version 0.4 wish list:
+## Version 0.4 wishlist:
 (0) sorting the known issues.
 (1) adding undo functionality.
 (2) merging two imported graphs in a unique file.
