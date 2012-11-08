@@ -6,7 +6,7 @@ It is available both as a standalone version (through ClientStandAlone.py) and a
 (through ClientMaya.py, that needs to be called from within Maya by the Python script MayaLauncherPythonScript after
 customising the physical path).
 
-The codebase encompasses both the standalone and the Maya client. And, except for two initial classes, all the rest of the
+The codebase encompasses both the standalone and the Maya client. And, except for two initial view classes, all the rest of the
 classes is shared between the clients. JADE model (graph.py, node.py, socket.py) is unit tested and documented (EpyDoc,
 cfr. http://epydoc.sourceforge.net/)
 
