@@ -90,7 +90,7 @@ class MainMayaWindow (QObject):
         self.scrollAreaWidgetContents_3 = QtGui.QWidget()
         self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 350, 350))
         self.scrollAreaWidgetContents_3.setObjectName(_fromUtf8("scrollAreaWidgetContents_3"))
-        view = View0.View ("JADEview", self.scrollAreaWidgetContents_3)
+        view = View0.View ("JADEview", self.graph_view, self.scrollAreaWidgetContents_3)
         view.setObjectName(_fromUtf8("JADEview"))  # real ui name
         view.graphicsView.setObjectName(_fromUtf8("JADEInnerView"))
         self.scrollArea.setWidget(self.scrollAreaWidgetContents_3)
@@ -102,7 +102,7 @@ class MainMayaWindow (QObject):
         vSplit.setOrientation (Qt.Vertical)
         vSplit.addWidget (self.hSplit)
         
-        view.setClientAndWireViewItems (self.graph_view)
+        view.wireViewItemsUp ()
         view.getGraphicsView().setScene (self.scene)
         view.setToolboxCSSColorScheme ('background-color: rgb(68,68,68);color: rgb(200,200,200)') # this needs to be done since the toolbox's background didn't have a uniform colour otherwise.
         self.hSplit.addWidget (view)

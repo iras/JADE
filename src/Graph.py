@@ -12,6 +12,7 @@ from xml.dom.minidom import parseString
 import Comm0
 import Nodes0 as nd
 import GraphIO as gio
+import Cluster0 as cs
 
 
 
@@ -19,7 +20,7 @@ class Graph ():
     '''
     Base model class for the JADE app. The other specific sub-models are the class: Nodes0 and Socket which sub-classes into InSocket and OutSocket.
     
-    This class is unit tested, cfr. textGraph.py
+    This class is unit tested, cfr. testGraph.py
     '''
     def __init__(self):
         '''constructor
@@ -28,6 +29,7 @@ class Graph ():
         self.comm = Comm0.Comm0 ()
         self.node_details_map = {}
         
+        self._cluster_list = []
         self._node_list = []
         
         self.graph_io = gio.IO()
@@ -39,6 +41,18 @@ class Graph ():
         '''
         return self.comm
     
+    # - - -  cluster methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    def addCluster (self, cluster_index):  # TODO : unit test this method
+        
+        new_cluster = cs.Cluster0 (cluster_index, '', self.comm)
+        
+        self._cluster_list.append (new_cluster)
+        
+        self.comm.emitAddClusterMSignal (cluster_index)
+        
+        return new_cluster
+    
     # - - -  node methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def addNode (self, node_name, node_x, node_y):
@@ -48,13 +62,13 @@ class Graph ():
         
         @return node instance of class Node0
         '''
-        newNode = nd.Node0 (self.comm.getNewNodeId(), node_name, self.comm)
-        self.initProps (newNode)
-        self._node_list.append (newNode)
+        new_node = nd.Node0 (self.comm.getNewNodeId(), node_name, self.comm)
+        self.initProps (new_node)
+        self._node_list.append (new_node)
         
-        self.comm.emitAddNodeMSignal (newNode.getId(), node_x, node_y)
+        self.comm.emitAddNodeMSignal (new_node.getId(), node_x, node_y)
         
-        return newNode
+        return new_node
     
     def importNode (self, node_id, node_name, node_x, node_y, props_list):
         '''This method creates a node from given data and it's used exclusively when importing a file.
@@ -79,16 +93,16 @@ class Graph ():
         
         return importedNode
     
-    def removeNode (self, node0_id):
+    def removeNode (self, node_id):
         '''This method removes a specific node.
         
-        @param node0_id int
+        @param node_id int
         
         @return tmp boolean
         '''
         tmp = False
         for node in self._node_list:
-            if node.getId()==node0_id:
+            if node.getId()==node_id:
                 
                 # unplug connections first
                 for item in reversed(node.getIns()) : node.removeIn (item)
@@ -100,7 +114,7 @@ class Graph ():
                 break
         
         # signal the Link0 instances that a node has gone so those connections need to go too.
-        self.comm.emitDeleteNodeMSignal (node0_id)
+        self.comm.emitDeleteNodeMSignal (node_id)
         
         return tmp
     

@@ -23,6 +23,7 @@ class GraphView ():
         self._wire_list = []
         
         self.graph   = graph
+        self.comm    = self.graph.getComm()
         self.utility = utility
     
     def removeSelectedItems (self):
@@ -37,16 +38,30 @@ class GraphView ():
         # remove tags
         pass
     
-    # - Listeners from key pressing - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # - - -  Cluster-page related methods  - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def addNodeAndTagPressBtnListener (self): self.addNodeAndTag('test')
+    def delegateClusterAddition (self, cluster_index):
+        
+        self.graph.addCluster (cluster_index)
+    
+    def delegateClusterRemoval (self, cluster_index):
+        
+        pass
+    
+    def delegateCreationClusterId (self):
+        
+        return self.comm.getNewClusterId()
+    
+    # - - -  Listeners from key pressing   - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    def addNodeAndTagPressBtnListener (self): self.addNodeAndTag('test')    # IS THIS METHOD STILL NEEDED ????
     
     def removeNodeAndTagPressBtnListener (self):
         
         for tag in self.getListSelectedTags ():
             self.removeNodeAndTag (tag.getId())
     
-    def addLinkAndWirePressBtnListener (self):               # IS THIS METHOD STILL NEEDED ????
+    def addLinkAndWirePressBtnListener (self):    # IS THIS METHOD STILL NEEDED ????
         
         lh = self.getListSelectedHooks ()
         if len(lh)==2 and not self.graph.areSocketsRelated (lh[0].getSocketId(), lh[1].getSocketId()):
@@ -68,9 +83,9 @@ class GraphView ():
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def addNodeAndTag (self, name0):
+    def addNodeAndTag (self, name0):   # IS THIS METHOD STILL NEEDED ????
         
-        self.graph.addNode (name0)
+        self.graph.addNode (name0, 0.0, 0.0)
     
     def addTag (self, node_id, fx, fy):
         
@@ -79,11 +94,10 @@ class GraphView ():
         tag.setPos (QPointF (fx+20, fy+20))
         self.utility.getScene().addItem (tag)
         
-        comm = self.graph.getComm ()
-        self.utility.connect (comm, SIGNAL('addInSocket_MSignal    (int,int)'), tag.appendInHook)
-        self.utility.connect (comm, SIGNAL('addOutSocket_MSignal   (int,int)'), tag.appendOutHook)
-        self.utility.connect (comm, SIGNAL('deleteInSocket_MSignal (int,int)'), tag.removeInHook)
-        self.utility.connect (comm, SIGNAL('deleteOutSocket_MSignal(int,int)'), tag.removeOutHook)
+        self.utility.connect (self.comm, SIGNAL('addInSocket_MSignal    (int,int)'), tag.appendInHook)
+        self.utility.connect (self.comm, SIGNAL('addOutSocket_MSignal   (int,int)'), tag.appendOutHook)
+        self.utility.connect (self.comm, SIGNAL('deleteInSocket_MSignal (int,int)'), tag.removeInHook)
+        self.utility.connect (self.comm, SIGNAL('deleteOutSocket_MSignal(int,int)'), tag.removeOutHook)
         
         self._tag_list.append (tag)
         
@@ -128,7 +142,7 @@ class GraphView ():
         hook_out = self.getHook (s_out_id)
         wire_sin_sout = Wires0.Wire0 (hook_in, hook_out)
         self.utility.getScene().addItem (wire_sin_sout)
-        self.utility.connect (self.graph.getComm(), SIGNAL ('deleteLink_MSignal(int,int)'), wire_sin_sout.switchOffLink)
+        self.utility.connect (self.comm, SIGNAL ('deleteLink_MSignal(int,int)'), wire_sin_sout.switchOffLink)
         self._wire_list.append (wire_sin_sout)
         
         # update the two tags in order to draw the link's line.
@@ -175,7 +189,7 @@ class GraphView ():
                 break
         
         return hook
-    
+        
     # - -  misc  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def getListSelectedTags (self):

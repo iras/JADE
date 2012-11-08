@@ -37,10 +37,12 @@ class CustomGraphicsView (QGraphicsView):
 
 class View (QFrame):
 
-    def __init__ (self, name, parent=None):
+    def __init__ (self, name, graph_view, parent=None):
         
         QFrame.__init__(self, parent)
         
+        self.graph_view = graph_view
+
         self.setFrameStyle (QFrame.Sunken | QFrame.StyledPanel)
         
         self.font = QtGui.QFont()
@@ -91,7 +93,6 @@ class View (QFrame):
         
         # adding the first cluster - a cluster is always present.
         self._cluster_page = []
-        self.cluster_page_index = 0
         self.connect (self.pushButton, SIGNAL ("clicked()"), self.addClusterPage)  # connect the 'add cluster' button to the method generating new cluster pages.
         self.addClusterPage ()
         
@@ -152,8 +153,8 @@ class View (QFrame):
         self.label = QLabel (name)
         self.label.setFont (self.font)
         labelLayout.addWidget (self.loadNodesDescrpBtn)
-        labelLayout.addWidget (self.graphSaveBtn)
         labelLayout.addWidget (self.graphLoadBtn)
+        labelLayout.addWidget (self.graphSaveBtn)
         labelLayout.addWidget (self.printOutBtn)
         #labelLayout.addWidget (self.label)
         labelLayout.addStretch ()
@@ -181,37 +182,37 @@ class View (QFrame):
     
     def addClusterPage (self, event=None):
         
-        self.cluster_page_index += 1
+        new_cluster_id = self.graph_view.delegateCreationClusterId ()
         
         tmp_w = QWidget ()
         tmp_l = QLabel (tmp_w)
         tmp_e = QLineEdit (tmp_w)
         tmp_b = QPushButton (tmp_w)
-        self._cluster_page.append ([self.cluster_page_index, tmp_w, tmp_l, tmp_e, tmp_b])
+        self._cluster_page.append ([new_cluster_id, tmp_w, tmp_l, tmp_e, tmp_b])
         
         tmp_w.setGeometry (QtCore.QRect (0, 0, 131, 241))
-        tmp_w.setObjectName ('Cluster_'+str(self.cluster_page_index))
+        tmp_w.setObjectName ('Cluster_'+str(new_cluster_id))
         
         tmp_l.setGeometry (QtCore.QRect (4, 6, 62, 16))
         tmp_l.setFont (self.font)
-        tmp_l.setObjectName ('label_'+str(self.cluster_page_index))
+        tmp_l.setObjectName ('label_'+str(new_cluster_id))
         
         tmp_e.setGeometry (QtCore.QRect (2, 20, 71, 16))
-        tmp_e.setObjectName ('groupLineEdit_'+str(self.cluster_page_index))
+        tmp_e.setObjectName ('groupLineEdit_'+str(new_cluster_id))
         
         tmp_b.setGeometry(QtCore.QRect (2, 50, 71, 16))
         tmp_b.setFont (self.font)
-        tmp_b.setObjectName ('pushButton_'+str(self.cluster_page_index))
+        tmp_b.setObjectName ('pushButton_'+str(new_cluster_id))
         
-        self._toolBox.addItem (tmp_w, 'cluster_page_'+str(self.cluster_page_index))
-        self._toolBox.setItemText (self._toolBox.indexOf (tmp_w), QtGui.QApplication.translate ('Form', 'C_'+str(self.cluster_page_index), None, QtGui.QApplication.UnicodeUTF8))
+        self._toolBox.addItem (tmp_w, 'cluster_page_'+str(new_cluster_id))
+        self._toolBox.setItemText (self._toolBox.indexOf (tmp_w), QtGui.QApplication.translate ('Form', 'C_'+str(new_cluster_id), None, QtGui.QApplication.UnicodeUTF8))
         tmp_l.setText (QtGui.QApplication.translate ("Form", "name cluster", None, QtGui.QApplication.UnicodeUTF8))
         tmp_b.setText (QtGui.QApplication.translate ("Form", "delete", None, QtGui.QApplication.UnicodeUTF8))
-        self._toolBox.setCurrentIndex (self.cluster_page_index)
+        self._toolBox.setCurrentIndex (new_cluster_id)
         QtCore.QMetaObject.connectSlotsByName (self)
         
         # hook up the delete button (use a closure)
-        receiver = lambda : self.removeClusterPage (self.cluster_page_index)
+        receiver = lambda : self.removeClusterPage (new_cluster_id)
         self.connect (tmp_b, SIGNAL ("clicked()"), receiver)  # connect the 'add cluster' button to the method generating new cluster pages.
     
     def removeClusterPage (self, index_cluster):
@@ -281,10 +282,8 @@ class View (QFrame):
     def setToolboxCSSColorScheme (self, css): self._toolBox.setStyleSheet (css)
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    def setClientAndWireViewItems (self, graph_view):
-        
-        self.graph_view = graph_view
-        
+    def wireViewItemsUp (self):
+                
         self.connect (self.printOutBtn,       SIGNAL ("clicked()"), self.printOutGraph)
         self.connect (self.loadNodesDescrpBtn,SIGNAL ("clicked()"), self.importNodesDescription)
         self.connect (self.graphSaveBtn,      SIGNAL ("clicked()"), self.exportGraph)

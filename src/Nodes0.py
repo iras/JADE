@@ -12,7 +12,7 @@ class Node0 ():
     '''
     sub-model class.
     
-    This class is unit tested, cfr. textNodes.py
+    This class is unit tested, cfr. testNodes.py
     '''
     def __init__(self, id0, name, comm):
         '''constructor

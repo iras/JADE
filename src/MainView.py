@@ -60,8 +60,8 @@ class MainWindow (QWidget):
         vSplit.setOrientation (Qt.Vertical)
         vSplit.addWidget (self.hSplit)
         
-        view = View0.View ("Main view")
-        view.setClientAndWireViewItems (self.graph_view)
+        view = View0.View ('Main view', self.graph_view)
+        view.wireViewItemsUp ()
         view.getGraphicsView().setScene (self.scene)
         self.hSplit.addWidget (view)
         

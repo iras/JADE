@@ -10,7 +10,7 @@ class Socket ():
     '''
     sub-model abstract class.
     
-    This class (and its subclasses) is unit tested, cfr. textSockets.py
+    This class (and its subclasses) is unit tested, cfr. testSockets.py
     '''
     def __init__(self, sid, type0, node):
         '''constructor

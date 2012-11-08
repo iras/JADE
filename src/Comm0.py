@@ -25,11 +25,18 @@ class Comm0 (QObject):
         super (Comm0, self).__init__ (parent)
         QObject.__init__ (self)
         
+        self.id_cluster_counter= 0
         self.id_node_counter   = 0
         self.id_socket_counter = 0
         
         self.hovered_node_id   = None
         self.hovered_socket_id = None
+    
+    # cluster id counter
+    def getNewClusterId (self):
+        
+        self.id_cluster_counter += 1
+        return self.id_cluster_counter
     
     # node id counter
     def getNewNodeId (self):
@@ -52,6 +59,14 @@ class Comm0 (QObject):
     
     # Model signals
     
+    def emitAddClusterMSignal (self, cluster_id):
+        self.emit (SIGNAL ('addCluster_MSignal(int)'), cluster_id)
+    
+    def emitDeleteClusterMSignal (self, cluster_id):
+        self.emit (SIGNAL ('deleteCluster_MSignal(int)'), cluster_id)
+    
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     
     def emitAddNodeMSignal (self, node_id, node_x, node_y):
         self.emit (SIGNAL ('addNode_MSignal(int, float, float)'), node_id, node_x, node_y)
     
