@@ -10,7 +10,7 @@ The codebase encompasses both the standalone and the Maya client. And, except fo
 classes is shared between the clients. JADE model (graph.py, node.py, socket.py) is unit tested and documented (EpyDoc,
 cfr. http://epydoc.sourceforge.net/)
 
-## HOW TO USE IT
+## How to use it
 On running the client, please load the XML file description (available nodes) first, then mouse right-click
 on the graphics view to create the tags, one by one. Right clicking on a tag (plus Ctrl or Alt pressed at once)
 will allow hook creation and by click-and-dragging the dash line from a hook over to another one will allow link creation.
