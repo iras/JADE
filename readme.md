@@ -15,7 +15,7 @@ will allow hook creation and by click-and-dragging the dash line from a hook ove
 The buttons save and load are pretty self-explanatory.
 
 Maya client : this client needs calling from within Maya by means of the additional Python script "MayaLauncherPythonScript" after
-customising the physical path. Such script will reside in a Maya Script Editor's Python page and needs to be run from Maya.
+customising the physical path in it. Such script will reside in a Maya Script Editor's Python page and needs to be run from Maya.
 
 
 
