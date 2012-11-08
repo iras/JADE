@@ -1,4 +1,4 @@
-## JADE Mapping Tool
+# JADE Mapping Tool
 ver 0.3
 
 JADE is a simple cross-platform dependency mapping tool written in Python 2.6 and using the library PyQt4.
