@@ -3,7 +3,7 @@ ver 0.3
 
 JADE is a simple cross-platform dependency mapping tool written in Python 2.6 and using the library PyQt4.
 It is available both as a standalone version (through ClientStandAlone.py) and as Maya local dependency mapping tool
-(through ClientMaya.py, that needs calling from within Maya by the Python script MayaLauncherPythonScript after
+(through ClientMaya.py, that needs calling from within Maya by means of the Python script "MayaLauncherPythonScript" after
 customising the physical path).
 
 The codebase encompasses both the standalone and the Maya client. And, except for two initial view classes, all the rest of the
