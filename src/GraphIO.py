@@ -1,8 +1,11 @@
 '''
-Created on Oct 19, 2012
+Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
 
-@author: macbookpro
+See the file license.txt for copying permission.
+
+JADE mapping tool
 '''
+
 from xml.dom import minidom
 
 

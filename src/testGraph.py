@@ -1,8 +1,10 @@
-"""
+'''
 Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
 
 See the file license.txt for copying permission.
-"""
+
+JADE mapping tool
+'''
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *

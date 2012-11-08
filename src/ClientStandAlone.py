@@ -5,6 +5,7 @@ See the file license.txt for copying permission.
 
 JADE mapping tool - Standalone client
 '''
+
 from PyQt4.QtCore import Qt, QCoreApplication
 from PyQt4.QtGui import QApplication
 

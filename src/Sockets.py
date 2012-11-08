@@ -2,6 +2,8 @@
 Copyright (c) 2012 Ivano Ras, ivano.ras@gmail.com
 
 See the file license.txt for copying permission.
+
+JADE mapping tool
 '''
 
 class Socket ():
