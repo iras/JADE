@@ -141,7 +141,7 @@ class MainWindow (QWidget):
             self.node_coords = self.graphicsView.mapToScene (pos)
     
     def prepareGeneralCtxMenu (self, list0):
-        '''populate the QMenu dynamically with available node infos and pass the menu string name to the receiver.
+        '''populates the QMenu dynamically with available node infos and pass the menu string name to the receiver.
         
         @param list0 list of menu items
         '''

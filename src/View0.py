@@ -62,6 +62,7 @@ class View (QFrame):
         self._toolBox.setGeometry(QtCore.QRect (0, 0, 131, 301))
         self._toolBox.setFont (self.font)
         self._toolBox.setObjectName ('_toolBox')
+        self._toolBox.setCursor (Qt.PointingHandCursor)
         self.groupCluster = QtGui.QWidget ()
         self.groupCluster.setGeometry (QtCore.QRect(0, 0, 91, 241))
         self.groupCluster.setObjectName ('groupCluster')
@@ -93,25 +94,30 @@ class View (QFrame):
         
         # adding the first cluster - a cluster is always present.
         self._cluster_page = []
-        self.connect (self.pushButton, SIGNAL ("clicked()"), self.addClusterPage)  # connect the 'add cluster' button to the method generating new cluster pages.
-        self.addClusterPage ()
+        self.connect (self.pushButton, SIGNAL ("clicked()"), self.addCluster)  # connect the 'add-cluster' button to the method that taps into the model for cluster addition.
+        self.connect (self.graph_view.getComm(), SIGNAL ("addCluster_MSignal(int)"), self.addClusterPage)
+        self.connect (self.graph_view.getComm(), SIGNAL ("deleteCluster_MSignal(int)"), self.removeClusterPage)
+        self.addCluster () # add the first cluster. At least one cluster needs to be always present.
         
         #size = self.style ().pixelMetric (QStyle.PM_ToolBarIconSize)
         iconSize = QSize (16, 16) #QSize (size, size)
         
         zoomInIcon = QToolButton ()
+        zoomInIcon.setCursor (Qt.PointingHandCursor)
         zoomInIcon.setAutoRepeat (True)
         zoomInIcon.setAutoRepeatInterval (33)
         zoomInIcon.setAutoRepeatDelay (0)
         zoomInIcon.setIconSize (iconSize)
         
         zoomOutIcon = QToolButton ()
+        zoomOutIcon.setCursor (Qt.PointingHandCursor)
         zoomOutIcon.setAutoRepeat (True)
         zoomOutIcon.setAutoRepeatInterval (33)
         zoomOutIcon.setAutoRepeatDelay (0)
         zoomOutIcon.setIconSize (iconSize)
         
         self.zoomSlider = QSlider ()
+        self.zoomSlider.setCursor (Qt.PointingHandCursor)
         self.zoomSlider.setMinimum (200)
         self.zoomSlider.setMaximum (280)
         self.zoomSlider.setValue   (240)
@@ -180,9 +186,11 @@ class View (QFrame):
         
         self.printer = QPrinter (QPrinter.HighResolution)
     
-    def addClusterPage (self, event=None):
+    def addCluster (self):
         
-        new_cluster_id = self.graph_view.delegateCreationClusterId ()
+        self.graph_view.delegateClusterAddition ()
+    
+    def addClusterPage (self, new_cluster_id):
         
         tmp_w = QWidget ()
         tmp_l = QLabel (tmp_w)
@@ -212,13 +220,19 @@ class View (QFrame):
         QtCore.QMetaObject.connectSlotsByName (self)
         
         # hook up the delete button (use a closure)
-        receiver = lambda : self.removeClusterPage (new_cluster_id)
+        receiver = lambda : self.removeCluster (new_cluster_id)
         self.connect (tmp_b, SIGNAL ("clicked()"), receiver)  # connect the 'add cluster' button to the method generating new cluster pages.
     
-    def removeClusterPage (self, index_cluster):
+    def removeCluster (self, cluster_id):
+        
+        self.graph_view.delegateClusterRemoval (cluster_id)
+    
+    def removeClusterPage (self, cluster_id):
+        
+        print 'signal caught : ' + str (cluster_id)
         
         for item in self._cluster_page:
-            if int(item[0]) == index_cluster:
+            if int(item[0]) == cluster_id:
                 self._toolBox.removeItem (self._toolBox.currentIndex())
                 break
     

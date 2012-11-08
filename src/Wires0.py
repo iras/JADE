@@ -45,16 +45,18 @@ class Wire0 (QGraphicsLineItem):
         self.setAcceptHoverEvents (True)
         self.setActive(True)
         
-        self.wire_pen = QPen(Qt.gray, 2, Qt.SolidLine) # Qt.SolidLine
+        self.wire_pen = QPen(Qt.gray, 2, Qt.DotLine) # Qt.SolidLine
+        
+        self.const = 3
     
     def paint (self, painter, option, unused_widget):
         
         painter.setPen (self.wire_pen)
         
-        self.xo = self.s_in.getAbsPos().x()  + 3
-        self.yo = self.s_in.getAbsPos().y()  + 3
-        self.xf = self.s_out.getAbsPos().x() + 3
-        self.yf = self.s_out.getAbsPos().y() + 3
+        self.xo = self.s_in.getAbsPos().x()  + self.const
+        self.yo = self.s_in.getAbsPos().y()  + self.const
+        self.xf = self.s_out.getAbsPos().x() + self.const
+        self.yf = self.s_out.getAbsPos().y() + self.const
         
         # QGraphicsLineItem uses the line and the pen width to provide a reasonable implementation of
         # QGraphicsLineItem.boundingRect(), QGraphicsLineItem.shape() and QGraphicsLineItem.contains()

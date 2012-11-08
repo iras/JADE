@@ -40,17 +40,13 @@ class GraphView ():
     
     # - - -  Cluster-page related methods  - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def delegateClusterAddition (self, cluster_index):
+    def delegateClusterAddition (self):
         
-        self.graph.addCluster (cluster_index)
+        self.graph.addCluster ()
     
     def delegateClusterRemoval (self, cluster_index):
         
-        pass
-    
-    def delegateCreationClusterId (self):
-        
-        return self.comm.getNewClusterId()
+        self.graph.removeCluster (cluster_index)
     
     # - - -  Listeners from key pressing   - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -189,6 +185,10 @@ class GraphView ():
                 break
         
         return hook
+    
+    def getComm (self):
+        
+        return self.comm
         
     # - -  misc  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

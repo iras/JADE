@@ -43,9 +43,11 @@ class Graph ():
     
     # - - -  cluster methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def addCluster (self, cluster_index):  # TODO : unit test this method
+    def addCluster (self):  # TODO : Unit Test this method
         
-        new_cluster = cs.Cluster0 (cluster_index, '', self.comm)
+        cluster_index = self.comm.getNewClusterId()
+        
+        new_cluster = cs.Cluster0 (cluster_index, '', self, self.comm)
         
         self._cluster_list.append (new_cluster)
         
@@ -53,6 +55,20 @@ class Graph ():
         
         return new_cluster
     
+    def removeCluster (self, cluster_id):  # TODO : Unit Test this method
+        
+        qq = len (self._cluster_list)
+        for i in range (qq-1, -1, -1):
+            if self._cluster_list[i].getId() == cluster_id:
+                
+                # remove all its nodes first.
+                self._cluster_list[i].removeAllNodesFromCluster ()
+                
+                del self._cluster_list[i]
+                break
+        
+        self.comm.emitDeleteClusterMSignal (cluster_id)
+        
     # - - -  node methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def addNode (self, node_name, node_x, node_y):
@@ -102,7 +118,7 @@ class Graph ():
         '''
         tmp = False
         for node in self._node_list:
-            if node.getId()==node_id:
+            if node.getId() == node_id:
                 
                 # unplug connections first
                 for item in reversed(node.getIns()) : node.removeIn (item)

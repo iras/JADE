@@ -97,7 +97,7 @@ class CanvasProps (QGraphicsItem):
             fillColor = self.color
         
         if option.state & QStyle.State_MouseOver:
-            fillColor = fillColor.light (125)
+            fillColor = fillColor.light (120)
         
         if option.levelOfDetail < 0.2:
             
@@ -113,6 +113,7 @@ class CanvasProps (QGraphicsItem):
         oldPen = painter.pen ()
         pen = oldPen
         width = 0
+        
         if option.state & QStyle.State_Selected:
             width += 2
         
@@ -121,8 +122,8 @@ class CanvasProps (QGraphicsItem):
             level = 120
         else:
             level = 100
-        painter.setBrush (QBrush (fillColor.dark (level)))
         
+        painter.setBrush (QBrush (fillColor.dark (level)))
         #painter.drawRoundRect (QRect (0, 0, 80, 34+self.height), 20)
         painter.drawRect (QRect (0, 20, 120, 30+9*self._canvas_height))
     

@@ -41,6 +41,11 @@ class Canvas (QGraphicsItem):
         self.anim_active = False
         
         self.SCALING = 0.25
+        
+        self.linearGradient = QLinearGradient (0, 0, 150, 120);
+        self.linearGradient.setColorAt (0.0, Qt.white);
+        self.linearGradient.setColorAt (0.3, Qt.cyan);
+        self.linearGradient.setColorAt (1.0, Qt.black);
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     
@@ -82,8 +87,8 @@ class Canvas (QGraphicsItem):
             level = 120
         else:
             level = 100
-        painter.setBrush (QBrush (fillColor.dark (level)))
         
+        painter.setBrush (QBrush (self.linearGradient))
         #painter.drawRoundRect (QRect (0, 0, 80, 34+self.height), 20)
         painter.drawRect (QRect (0, 0, 120, 20))
     
