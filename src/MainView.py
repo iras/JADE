@@ -150,7 +150,7 @@ class MainWindow (QWidget):
         
         @param name0 string
         '''
-        new_node = self.graph_model.addNode (name0, self.node_coords.x() - 50, self.node_coords.y() - 80)
+        new_node = self.graph_model.addNode (name0, self.node_coords.x() - 100, self.node_coords.y() - 70)
         self._view.updateCurrentClusterNodeList (new_node)
     
     def prepareNodeCtxMenu (self, list0):

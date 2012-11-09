@@ -59,7 +59,7 @@ class View (QFrame):
         # toolbox definition + group page definition
         sizePolicy = QtGui.QSizePolicy (QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Expanding)
         self.setObjectName ('Form')
-        self.resize (400, 300)
+        self.resize (900, 1000)
         self._toolBox = QtGui.QToolBox (self)
         self._toolBox.setGeometry(QtCore.QRect (0, 0, 131, 301))
         self._toolBox.setFont (self.font)
