@@ -13,16 +13,10 @@ from PyQt4 import QtGui
 
 import maya.cmds as cmds
 
-import View0
-
 import GraphView as grv
 import Utility0 as utility
+import View0
 
-
-try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-    _fromUtf8 = lambda s: s
 
 
 class MainMayaWindow (QObject):
@@ -30,7 +24,7 @@ class MainMayaWindow (QObject):
     Base QObject for the JADE Maya scripted plugin.
     Notice the difference with the MainMWindow. This class is subclassing QObject while the Standalone one subclasses QWidget.
     
-    This class handles the Maya way to deal with the contextual pop-up menu.
+    This class handles the Maya way to deal with the contextual pop-up menu. Additionally, this class shares some of the responsibilities with graph.py.
     '''
     def __init__ (self, graph, parent=None):
         '''constructor
@@ -52,11 +46,11 @@ class MainMayaWindow (QObject):
         self.helper.setGraphView (self.graph_view)
         
         # wirings
-        comm = self.graph_model.getComm ()
-        self.connect (comm, SIGNAL('addNode_MSignal(int, float, float)'), self.graph_view.addTag)
-        self.connect (comm, SIGNAL('deleteNode_MSignal(int)'),     self.graph_view.removeTag)
-        self.connect (comm, SIGNAL('addLink_MSignal(int,int)'),    self.graph_view.addWire)
-        self.connect (comm, SIGNAL('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
+        self.comm = self.graph_model.getComm ()
+        self.connect (self.comm, SIGNAL('deleteNode_MSignal(int)'), self.graph_view.removeTag)
+        self.connect (self.comm, SIGNAL('addLink_MSignal(int,int)'), self.graph_view.addWire)
+        self.connect (self.comm, SIGNAL('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
+        self.connect (self.comm, SIGNAL('addNode_MSignal(int, float, float)'), self.graph_view.addTag)
         
         self.scene.addItem (self.helper.getHarpoon ())
         
@@ -64,11 +58,11 @@ class MainMayaWindow (QObject):
     
     def setupUi (self, MainWindow):
         
-        MainWindow.setObjectName(_fromUtf8 ("MainWindow"))
-        MainWindow.resize(800, 1396)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
+        MainWindow.setObjectName ('MainWindow')
+        MainWindow.resize (800, 1396)
+        sizePolicy = QtGui.QSizePolicy (QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch (0)
+        sizePolicy.setVerticalStretch (0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
@@ -80,21 +74,21 @@ class MainMayaWindow (QObject):
         
         self.scrollAreaWidgetContents_3 = QtGui.QWidget(MainWindow)
         self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(10, 10, 800, 1000))
-        self.scrollAreaWidgetContents_3.setObjectName(_fromUtf8("scrollAreaWidgetContents_3"))
-        view = View0.View ("JADEview", self.graph_view, self.scrollAreaWidgetContents_3)
-        view.setObjectName(_fromUtf8("JADEview"))  # real ui name
-        view.graphicsView.setObjectName(_fromUtf8("JADEInnerView"))
+        self.scrollAreaWidgetContents_3.setObjectName ('scrollAreaWidgetContents_3')
+        self._view = View0.View ("JADEview", self.graph_view, self.scrollAreaWidgetContents_3)
+        self._view.setObjectName ('JADEview')  # real ui name
+        self._view.graphicsView.setObjectName ('JADEInnerView')
         
-        view.wireViewItemsUp ()
-        view.getGraphicsView().setScene (self.scene)
-        view.setToolboxCSSColorScheme ('background-color: rgb(68,68,68);color: rgb(200,200,200)') # this needs to be done since the toolbox's background didn't have a uniform colour otherwise.
+        self._view.wireViewItemsUp ()
+        self._view.getGraphicsView().setScene (self.scene)
+        self._view.setToolboxCSSColorScheme ('background-color: rgb(68,68,68);color: rgb(200,200,200)') # this needs to be done since the toolbox's background didn't have a uniform colour otherwise.
         
-        self.graphicsView = view.getGraphicsView ()
+        self.graphicsView = self._view.getGraphicsView ()
         self.node_coords = QPoint (0,0)
         
         layout = QHBoxLayout (self.scrollAreaWidgetContents_3)
         layout.setContentsMargins(QMargins(0,0,0,0));
-        layout.addWidget (view)
+        layout.addWidget (self._view)
         
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -112,8 +106,8 @@ class MainMayaWindow (QObject):
         # this class property is used to keep track of the mouse position.
         self._mouse = QtGui.QCursor
         
-        # view's zoom slider (we need this to correct the bias added to sort the mouse position when the zoom changes - ONLY in Maya)
-        self._zoom_slider = view.getZoomSlider()
+        # self._view's zoom slider (we need this to correct the bias added to sort the mouse position when the zoom changes - ONLY in Maya)
+        self._zoom_slider = self._view.getZoomSlider()
     
     def retranslateUi (self, MainWindow):
         pass
@@ -122,7 +116,7 @@ class MainMayaWindow (QObject):
     
     def ctxMenu (self):
         
-        self.hovered_tag_id = self.graph_model.getComm().getHoveredItemId()
+        self.hovered_tag_id = self.comm.getHoveredItemId()
         
         cmds.popupMenu ('JADEmenu', edit=True, dai=True) # clear all the menu items out.
         
@@ -149,12 +143,13 @@ class MainMayaWindow (QObject):
         elif self._zoom_slider.value() > 240 and self._zoom_slider.value() < 281:
             x_bias = -12.5*(self._zoom_slider.value()-240) + 1200
             y_bias = -2.5* (self._zoom_slider.value()-240) + 250
-                
-        self.graph_model.addNode (name0, self.node_coords.x() - x_bias, self.node_coords.y() - y_bias)
+        
+        new_node = self.graph_model.addNode (name0, self.node_coords.x() - x_bias, self.node_coords.y() - y_bias)
+        self._view.updateCurrentClusterNodeList (new_node)
     
     def ctxMenuAddOuts (self):
         
-        self.hovered_tag_id = self.graph_model.getComm().getHoveredItemId()
+        self.hovered_tag_id = self.comm.getHoveredItemId()
         
         cmds.popupMenu ('JADEmenuAddOuts', edit=True, dai=True) # clear all the menu items out.
         
@@ -166,7 +161,7 @@ class MainMayaWindow (QObject):
     
     def ctxMenuAddIns (self):
         
-        self.hovered_tag_id = self.graph_model.getComm().getHoveredItemId()
+        self.hovered_tag_id = self.comm.getHoveredItemId()
         
         cmds.popupMenu ('JADEmenuAddIns', edit=True, dai=True) # clear all the menu items out.
         

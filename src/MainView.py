@@ -22,7 +22,7 @@ class MainWindow (QWidget):
     Base widget for the JADE standalone app.
     Notice the difference with the MainMayaWindow. This class is subclassing QWidget while the Maya one subclasses QObject.
     
-    This class handles the Qt contextual menu.
+    This class handles the Qt contextual menu. Additionally, this class shares some of the responsibilities with graph.py.
     '''
     def __init__ (self, graph, parent=None):
         '''constructor
@@ -48,22 +48,22 @@ class MainWindow (QWidget):
         self.connect (self, SIGNAL('customContextMenuRequested(QPoint)'), self.ctxMenu)
         
         # wirings
-        comm = self.graph_model.getComm ()
-        self.connect (comm, SIGNAL('addNode_MSignal(int, float, float)'), self.graph_view.addTag)
-        self.connect (comm, SIGNAL('deleteNode_MSignal(int)'), self.graph_view.removeTag)
-        self.connect (comm, SIGNAL('addLink_MSignal(int,int)'), self.graph_view.addWire)
-        self.connect (comm, SIGNAL('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
+        self.comm = self.graph_model.getComm ()
+        self.connect (self.comm, SIGNAL('deleteNode_MSignal(int)'), self.graph_view.removeTag)
+        self.connect (self.comm, SIGNAL('addLink_MSignal(int,int)'), self.graph_view.addWire)
+        self.connect (self.comm, SIGNAL('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
+        self.connect (self.comm, SIGNAL('addNode_MSignal(int, float, float)'), self.graph_view.addTag)
         
-        view = View0.View ('Main view', self.graph_view)
-        view.wireViewItemsUp ()
-        view.getGraphicsView().setScene (self.scene)
+        self._view = View0.View ('Main view', self.graph_view)
+        self._view.wireViewItemsUp ()
+        self._view.getGraphicsView().setScene (self.scene)
         
-        self.graphicsView = view.getGraphicsView ()
+        self.graphicsView = self._view.getGraphicsView ()
         self.node_coords = QPoint (0,0)
         
         layout = QHBoxLayout ()
         layout.setContentsMargins(QMargins(0,0,0,0));
-        layout.addWidget (view)
+        layout.addWidget (self._view)
         self.setLayout (layout)
         
         self.setWindowTitle("Just Another DEpendency mapping tool")
@@ -108,7 +108,7 @@ class MainWindow (QWidget):
         
         @param pos position
         '''
-        self.hovered_tag_id = self.graph_model.getComm().getHoveredItemId()
+        self.hovered_tag_id = self.comm.getHoveredItemId()
         
         self.menu.clear()
         
@@ -150,7 +150,8 @@ class MainWindow (QWidget):
         
         @param name0 string
         '''
-        self.graph_model.addNode (name0, self.node_coords.x() - 50, self.node_coords.y() - 80)
+        new_node = self.graph_model.addNode (name0, self.node_coords.x() - 50, self.node_coords.y() - 80)
+        self._view.updateCurrentClusterNodeList (new_node)
     
     def prepareNodeCtxMenu (self, list0):
         '''populates the QMenu dynamically with available socket names and pass the menu string name to the receiver. Also, it generates closures as callbacks for each item.

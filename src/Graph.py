@@ -45,10 +45,8 @@ class Graph ():
     
     def addCluster (self):  # TODO : Unit Test this method
         
-        cluster_index = self.comm.getNewClusterId()
-        
+        cluster_index = self.comm.getNewClusterId ()
         new_cluster = cs.Cluster0 (cluster_index, '', self, self.comm)
-        
         self._cluster_list.append (new_cluster)
         
         self.comm.emitAddClusterMSignal (cluster_index)
@@ -68,7 +66,15 @@ class Graph ():
                 break
         
         self.comm.emitDeleteClusterMSignal (cluster_id)
+    
+    def updateCluster (self, cluster_id, node):
         
+        for cluster in self._cluster_list:
+            if cluster.getId() == cluster_id:
+                cluster.addNodeToCluster (node)
+        
+        print ' ###### hello you, cluster '+str(cluster_id)+' now updated'
+    
     # - - -  node methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def addNode (self, node_name, node_x, node_y):

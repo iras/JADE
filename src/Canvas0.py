@@ -30,6 +30,7 @@ class Canvas (QGraphicsItem):
         self.pen_color = QPen (Qt.black, 2)
         
         self.color = QColor (Qt.white).dark (110)
+        self.jade_colour = QColor (0, 235, 120, 195)
         
         # init Canvas Animation Tweening
         self.timeline = QtCore.QTimeLine (200)
@@ -44,7 +45,7 @@ class Canvas (QGraphicsItem):
         
         self.linearGradient = QLinearGradient (0, 0, 150, 120);
         self.linearGradient.setColorAt (0.0, Qt.white);
-        self.linearGradient.setColorAt (0.3, Qt.cyan);
+        self.linearGradient.setColorAt (0.3, self.jade_colour);
         self.linearGradient.setColorAt (1.0, Qt.black);
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)

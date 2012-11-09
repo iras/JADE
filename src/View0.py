@@ -53,7 +53,7 @@ class View (QFrame):
         self.graphicsView.setRenderHint (QPainter.Antialiasing, True)
         self.graphicsView.setDragMode (QGraphicsView.RubberBandDrag)
         self.graphicsView.setViewportUpdateMode (QGraphicsView.SmartViewportUpdate)
-        self.graphicsView.setStyleSheet('background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(80, 100, 100, 255), stop:1 rgba(230, 230, 230, 255));\ncolor: rgb(255, 255, 255);')
+        self.graphicsView.setStyleSheet('background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(125, 125, 135, 255), stop:1 rgba(215, 215, 215, 255));\ncolor: rgb(255, 255, 255);')
         #self.graphicsView.setMouseTracking(True)
         
         # toolbox definition + group page definition
@@ -306,4 +306,16 @@ class View (QFrame):
         self.connect (self.loadNodesDescrpBtn,SIGNAL ("clicked()"), self.importNodesDescription)
         self.connect (self.graphSaveBtn,      SIGNAL ("clicked()"), self.exportGraph)
         self.connect (self.graphLoadBtn,      SIGNAL ("clicked()"), self.importGraph)
+    
+    def updateCurrentClusterNodeList (self, node):
         
+        # fetch the current cluster's id.
+        tmp_current_widget_id = None
+        curr_widget = self._toolBox.currentWidget()
+        for item in self._cluster_page:
+            if item[1] == curr_widget:
+                tmp_current_widget_id = item[0]
+                break
+        
+        # delegate cluster node list update.
+        self.graph_view.delegateClusterNodeListUpdate (tmp_current_widget_id, node)

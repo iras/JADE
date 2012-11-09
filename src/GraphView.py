@@ -48,6 +48,10 @@ class GraphView ():
         
         self.graph.removeCluster (cluster_index)
     
+    def delegateClusterNodeListUpdate (self, cluster_id, node):
+        
+        self.graph.updateCluster (cluster_id, node)
+    
     # - - -  Listeners from key pressing   - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def addNodeAndTagPressBtnListener (self): self.addNodeAndTag('test')    # IS THIS METHOD STILL NEEDED ????
@@ -78,10 +82,6 @@ class GraphView ():
         if s_out.isEmpty()==True: s_out.getNode().removeOut(s_out)
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-    def addNodeAndTag (self, name0):   # IS THIS METHOD STILL NEEDED ????
-        
-        self.graph.addNode (name0, 0.0, 0.0)
     
     def addTag (self, node_id, fx, fy):
         
