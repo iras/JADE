@@ -54,22 +54,16 @@ class MainWindow (QWidget):
         self.connect (comm, SIGNAL('addLink_MSignal(int,int)'), self.graph_view.addWire)
         self.connect (comm, SIGNAL('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
         
-        self.hSplit = QSplitter ()
-        
-        vSplit = QSplitter ()
-        vSplit.setOrientation (Qt.Vertical)
-        vSplit.addWidget (self.hSplit)
-        
         view = View0.View ('Main view', self.graph_view)
         view.wireViewItemsUp ()
         view.getGraphicsView().setScene (self.scene)
-        self.hSplit.addWidget (view)
         
         self.graphicsView = view.getGraphicsView ()
         self.node_coords = QPoint (0,0)
         
         layout = QHBoxLayout ()
-        layout.addWidget (vSplit)
+        layout.setContentsMargins(QMargins(0,0,0,0));
+        layout.addWidget (view)
         self.setLayout (layout)
         
         self.setWindowTitle("Just Another DEpendency mapping tool")

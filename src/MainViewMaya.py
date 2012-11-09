@@ -78,40 +78,23 @@ class MainMayaWindow (QObject):
         MainWindow.setTabShape(QtGui.QTabWidget.Rounded)
         MainWindow.setDockOptions(QtGui.QMainWindow.AllowTabbedDocks|QtGui.QMainWindow.AnimatedDocks)
         
-        self.verticalLayoutWidget = QtGui.QWidget(MainWindow)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 800, 1000))
-        self.verticalLayoutWidget.setObjectName(_fromUtf8("verticalLayoutWidget"))
-        self.verticalLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout.setMargin(0)
-        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.scrollArea = QtGui.QScrollArea(self.verticalLayoutWidget)
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
-        self.scrollAreaWidgetContents_3 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 350, 350))
+        self.scrollAreaWidgetContents_3 = QtGui.QWidget(MainWindow)
+        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(10, 10, 800, 1000))
         self.scrollAreaWidgetContents_3.setObjectName(_fromUtf8("scrollAreaWidgetContents_3"))
         view = View0.View ("JADEview", self.graph_view, self.scrollAreaWidgetContents_3)
         view.setObjectName(_fromUtf8("JADEview"))  # real ui name
         view.graphicsView.setObjectName(_fromUtf8("JADEInnerView"))
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents_3)
-        self.verticalLayout.addWidget(self.scrollArea)
-        
-        self.hSplit = QSplitter (self.scrollAreaWidgetContents_3)
-        
-        vSplit = QSplitter (self.scrollAreaWidgetContents_3)
-        vSplit.setOrientation (Qt.Vertical)
-        vSplit.addWidget (self.hSplit)
         
         view.wireViewItemsUp ()
         view.getGraphicsView().setScene (self.scene)
         view.setToolboxCSSColorScheme ('background-color: rgb(68,68,68);color: rgb(200,200,200)') # this needs to be done since the toolbox's background didn't have a uniform colour otherwise.
-        self.hSplit.addWidget (view)
         
         self.graphicsView = view.getGraphicsView ()
         self.node_coords = QPoint (0,0)
         
         layout = QHBoxLayout (self.scrollAreaWidgetContents_3)
-        layout.addWidget (vSplit)
+        layout.setContentsMargins(QMargins(0,0,0,0));
+        layout.addWidget (view)
         
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)

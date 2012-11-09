@@ -45,7 +45,7 @@ class Wire0 (QGraphicsLineItem):
         self.setAcceptHoverEvents (True)
         self.setActive(True)
         
-        self.wire_pen = QPen(Qt.gray, 2, Qt.DotLine) # Qt.SolidLine
+        self.wire_pen = QPen(Qt.white, 2, Qt.DotLine) # Qt.SolidLine
         
         self.const = 3
     
@@ -79,7 +79,7 @@ class Wire0 (QGraphicsLineItem):
     
     def hoverLeaveEvent(self, e):
         
-        self.wire_pen.setColor (Qt.gray)
+        self.wire_pen.setColor (Qt.white)
         self.update()
         
         QGraphicsItem.hoverLeaveEvent(self,e)

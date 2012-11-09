@@ -48,10 +48,12 @@ class View (QFrame):
         self.font = QtGui.QFont()
         self.font.setPointSize(10)
         
+        
         self.graphicsView = CustomGraphicsView ()
         self.graphicsView.setRenderHint (QPainter.Antialiasing, True)
         self.graphicsView.setDragMode (QGraphicsView.RubberBandDrag)
         self.graphicsView.setViewportUpdateMode (QGraphicsView.SmartViewportUpdate)
+        self.graphicsView.setStyleSheet('background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(80, 100, 100, 255), stop:1 rgba(230, 230, 230, 255));\ncolor: rgb(255, 255, 255);')
         #self.graphicsView.setMouseTracking(True)
         
         # toolbox definition + group page definition
@@ -67,7 +69,7 @@ class View (QFrame):
         self.groupCluster.setGeometry (QtCore.QRect(0, 0, 91, 241))
         self.groupCluster.setObjectName ('groupCluster')
         self.groupLineEdit = QtGui.QLineEdit (self.groupCluster)
-        self.groupLineEdit.setGeometry (QtCore.QRect (2, 20, 71, 16))
+        self.groupLineEdit.setGeometry (QtCore.QRect (2, 20, 60, 16))
         self.groupLineEdit.setObjectName ('groupLineEdit')
         self.label = QtGui.QLabel (self.groupCluster)
         self.label.setGeometry (QtCore.QRect (4, 6, 62, 16))
@@ -78,10 +80,10 @@ class View (QFrame):
         self.label_2.setFont (self.font)
         self.label_2.setObjectName ('label_2')
         self.groupLineEdit_2 = QtGui.QLineEdit (self.groupCluster)
-        self.groupLineEdit_2.setGeometry (QtCore.QRect(2, 54, 71, 16))
+        self.groupLineEdit_2.setGeometry (QtCore.QRect(2, 54, 60, 16))
         self.groupLineEdit_2.setObjectName ('groupLineEdit_2')
         self.pushButton = QtGui.QPushButton (self.groupCluster)
-        self.pushButton.setGeometry (QtCore.QRect (2, 90, 71, 16))
+        self.pushButton.setGeometry (QtCore.QRect (2, 90, 60, 16))
         self.pushButton.setFont (self.font)
         self.pushButton.setObjectName ('pushButton')
         self._toolBox.addItem (self.groupCluster, '')
@@ -167,6 +169,8 @@ class View (QFrame):
         
         # top layout
         topLayout = QGridLayout ()
+        topLayout.setHorizontalSpacing(0)
+        topLayout.setVerticalSpacing(0)
         topLayout.addLayout (labelLayout, 0, 1)
         topLayout.addWidget (self._toolBox, 1, 0)
         topLayout.addWidget (self.resetButton, 0, 2)
@@ -205,10 +209,10 @@ class View (QFrame):
         tmp_l.setFont (self.font)
         tmp_l.setObjectName ('label_'+str(new_cluster_id))
         
-        tmp_e.setGeometry (QtCore.QRect (2, 20, 71, 16))
+        tmp_e.setGeometry (QtCore.QRect (2, 20, 60, 16))
         tmp_e.setObjectName ('groupLineEdit_'+str(new_cluster_id))
         
-        tmp_b.setGeometry(QtCore.QRect (2, 50, 71, 16))
+        tmp_b.setGeometry(QtCore.QRect (2, 50, 60, 16))
         tmp_b.setFont (self.font)
         tmp_b.setObjectName ('pushButton_'+str(new_cluster_id))
         
