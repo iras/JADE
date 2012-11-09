@@ -54,6 +54,10 @@ class Cluster0 ():
         
         return self._name
     
+    def getNodeList (self):
+        
+        return self._cluster_node_list
+    
     
     
     def setId (self, id0): self._id = id0

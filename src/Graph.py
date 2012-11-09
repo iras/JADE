@@ -72,8 +72,21 @@ class Graph ():
         for cluster in self._cluster_list:
             if cluster.getId() == cluster_id:
                 cluster.addNodeToCluster (node)
+    
+    def removeNodeListItemFromItsCluster (self, node_id):
         
-        print ' ###### hello you, cluster '+str(cluster_id)+' now updated'
+        done = False # this flag will be used to exit from both loops once the inner condition is satisfied.
+        
+        for cluster in self._cluster_list:
+            node_list = cluster.getNodeList ()
+            qq = len(node_list)
+            for i in range (qq-1, -1, -1):
+                if node_list[i].getId() == node_id:
+                    del node_list[i]
+                    done = True
+                    break
+            if done:
+                break
     
     # - - -  node methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

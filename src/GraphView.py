@@ -29,14 +29,20 @@ class GraphView ():
     def removeSelectedItems (self):
         
         # remove wires
-        tmp_ls = self.getListSelectedWires()
-        print 'removeSelectedItems', tmp_ls
-        for wire in tmp_ls:
-            ls = wire.get2HooksIds ()
+        tmp_ls0 = self.getListSelectedWires()
+        print 'removeSelectedWires', tmp_ls0
+        qq = len(tmp_ls0)
+        for i in range (qq-1, -1, -1):
+            ls = tmp_ls0[i].get2HooksIds ()
             self.graph.removeLink (ls[0], ls[1])
         
         # remove tags
-        pass
+        tmp_ls1 = self.getListSelectedTags()
+        print 'removeSelectedTags', tmp_ls1
+        qq = len(tmp_ls1)
+        for i in range (qq-1, -1, -1):
+            self.graph.removeNodeListItemFromItsCluster (tmp_ls1[i].getId ())
+            self.graph.removeNode (tmp_ls1[i].getId ())
     
     # - - -  Cluster-page related methods  - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -53,9 +59,7 @@ class GraphView ():
         self.graph.updateCluster (cluster_id, node)
     
     # - - -  Listeners from key pressing   - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-    def addNodeAndTagPressBtnListener (self): self.addNodeAndTag('test')    # IS THIS METHOD STILL NEEDED ????
-    
+        
     def removeNodeAndTagPressBtnListener (self):
         
         for tag in self.getListSelectedTags ():
