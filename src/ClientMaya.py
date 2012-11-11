@@ -6,20 +6,17 @@ See the file license.txt for copying permission.
 JADE mapping tool - Maya client
 '''
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4 import QtCore
-from PyQt4 import QtGui
+import sip
+import maya.OpenMayaUI as mui
+from PyQt4.QtCore import QObject
+from PyQt4.QtGui import QMainWindow, qApp
 
 import maya.cmds as cmds
 
 import MainViewMaya as mv
 import Graph as gr
 
-import sip
-import maya.OpenMayaUI as mui
-from PyQt4.QtCore import QObject
-from PyQt4.QtGui import QMainWindow, qApp
+
 
 def getMayaWindow ():
     ptr = mui.MQtUtil.mainWindow ()
