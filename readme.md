@@ -27,7 +27,7 @@ A cluster can be imagined as a self-contained graph. More specifically, a cluste
 Any two clusters never share nodes/links.
 # Nodes and Links
 Nodes/Links are the basic elements that make up a graph. The Node can have a number of plugs (in-plugs, and out-plugs).
-Two nodes can be connected by a link. That means that the in-plug of the 1st node and the out-plug of the 2nd node reference each other.
+Two nodes can be connected by a link, that means that the in-plug of the 1st node and the out-plug of the 2nd node reference each other.
 
 
 
