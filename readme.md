@@ -5,7 +5,7 @@ JADE is a simple cross-platform data-driven dependency mapping tool written in P
 It is available both as a standalone app (through ClientStandAlone.py) and as Maya local dependency mapping tool
 (through ClientMaya.py)
 
-This tool allows handling of cluster of customisable graphs. That allows the user to have different tools by just changing
+JADE mapping tool allows handling of cluster of customisable graphs. That allows the user to have different tools by just changing
 the node definitions in the XML file available_nodes. A kismet©-like editor is already given as example by having a set of
 specific nodes. By changing the node definition, a dialogue mapping tool can be easily achieved too.
 
