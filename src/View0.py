@@ -95,11 +95,12 @@ class View (QFrame):
         self._toolBox.setSizePolicy (sizePolicy)
         
         # adding the first cluster - a cluster is always present.
-        self._cluster_page = []
+        self._cluster_page_list = []
         self.connect (self.pushButton, SIGNAL ("clicked()"), self.addCluster)  # connect the 'add-cluster' button to the method that taps into the model for cluster addition.
         self.connect (self.graph_view.getComm(), SIGNAL ("addCluster_MSignal(int)"), self.addClusterPage)
         self.connect (self.graph_view.getComm(), SIGNAL ("deleteCluster_MSignal(int)"), self.removeClusterPage)
         self.addCluster () # add the first cluster. At least one cluster needs to be always present.
+        self.disableAllClusterPagesDeleteButton() # since there's only one cluster page, the delete button is disabled.
         
         #size = self.style ().pixelMetric (QStyle.PM_ToolBarIconSize)
         iconSize = QSize (16, 16) #QSize (size, size)
@@ -190,17 +191,21 @@ class View (QFrame):
         
         self.printer = QPrinter (QPrinter.HighResolution)
     
+    # - - -    cluster-specific methods   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
     def addCluster (self):
         
         self.graph_view.delegateClusterAddition ()
     
     def addClusterPage (self, new_cluster_id):
         
+        self.enableAllClusterPagesDeleteButton () # enable all the cluster page's delete buttons (as I can be bothered to go look for the one that got previously disabled) 
+        
         tmp_w = QWidget ()
         tmp_l = QLabel (tmp_w)
         tmp_e = QLineEdit (tmp_w)
         tmp_b = QPushButton (tmp_w)
-        self._cluster_page.append ([new_cluster_id, tmp_w, tmp_l, tmp_e, tmp_b])
+        self._cluster_page_list.append ([new_cluster_id, tmp_w, tmp_l, tmp_e, tmp_b])
         
         tmp_w.setGeometry (QtCore.QRect (0, 0, 131, 241))
         tmp_w.setObjectName ('Cluster_'+str(new_cluster_id))
@@ -233,12 +238,30 @@ class View (QFrame):
     
     def removeClusterPage (self, cluster_id):
         
-        print 'signal caught : ' + str (cluster_id)
+        qq = len(self._cluster_page_list)
+        if qq > 1:
+            for i in range (qq-1, -1, -1):
+                if int(self._cluster_page_list[i][0]) == cluster_id:
+                    self._toolBox.removeItem (self._toolBox.currentIndex())
+                    del self._cluster_page_list[i]
+                    break
         
-        for item in self._cluster_page:
-            if int(item[0]) == cluster_id:
-                self._toolBox.removeItem (self._toolBox.currentIndex())
-                break
+        if len(self._cluster_page_list) == 1:
+            self.disableAllClusterPagesDeleteButton ()
+    
+    def disableAllClusterPagesDeleteButton (self):
+        
+        if len(self._cluster_page_list) > 0:
+            for item in self._cluster_page_list:
+                item[4].setEnabled (False)
+    
+    def enableAllClusterPagesDeleteButton (self):
+        
+        if len(self._cluster_page_list) > 0:
+            for item in self._cluster_page_list:
+                item[4].setEnabled (True)
+    
+    # - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def getGraphicsView (self): return self.graphicsView
     
@@ -312,7 +335,7 @@ class View (QFrame):
         # fetch the current cluster's id.
         tmp_current_widget_id = None
         curr_widget = self._toolBox.currentWidget()
-        for item in self._cluster_page:
+        for item in self._cluster_page_list:
             if item[1] == curr_widget:
                 tmp_current_widget_id = item[0]
                 break
