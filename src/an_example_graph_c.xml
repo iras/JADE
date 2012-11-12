@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clusterGroup id="" label="">
+	<cluster label="">
+		<nodes>
+			<Five_Adder id="1" x="-394.271240234" y="-266.631866455"/>
+			<IntegerMatcher id="2" x="-126.624511719" y="-212.643035889" value="0"/>
+		</nodes>
+		<links>
+			<link>
+				<out id="1" connector="check"/>
+				<in id="2" connector="input"/>
+			</link>
+			<link>
+				<out id="1" connector="sum"/>
+				<in id="2" connector="input"/>
+			</link>
+		</links>
+	</cluster>
+	<cluster label="">
+		<nodes>
+			<State01Closed id="3" x="-516.033248298" y="26.2862201484" value="value" value2="value 2"/>
+			<TempState id="5" x="-212.776864756" y="97.5055192652" view="''" text="''"/>
+			<Five_Adder id="7" x="-176.490662318" y="3.98882268287"/>
+		</nodes>
+		<links>
+			<link>
+				<out id="3" connector="triggered"/>
+				<in id="5" connector="input"/>
+			</link>
+			<link>
+				<out id="3" connector="triggered"/>
+				<in id="7" connector="input2"/>
+			</link>
+			<link>
+				<out id="3" connector="triggered"/>
+				<in id="7" connector="input1"/>
+			</link>
+			<link>
+				<out id="3" connector="triggered"/>
+				<in id="7" connector="input5"/>
+			</link>
+		</links>
+	</cluster>
+	<cluster label="">
+		<nodes>
+			<State01Closed id="6" x="-417.24520874" y="321.501678467" value="open" value2="111"/>
+		</nodes>
+		<links>
+		</links>
+	</cluster>
+</clusterGroup>

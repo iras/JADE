@@ -451,7 +451,6 @@ class Graph ():
         @return graph_XML_string string 
         '''
         
-        
         return self.graph_io.exportGraph (self._cluster_list, tag_position_dict)
     
     def importGraph (self, XML_content):
@@ -459,17 +458,26 @@ class Graph ():
         
         @param XML_content string 
         '''
-        tmp_list = self.graph_io.importGraphData (XML_content)
+        tmp_cluster_list = self.graph_io.importGraphData (XML_content)
         
-        node_list = tmp_list[0]
-        link_list = tmp_list[1]
+        print '\n\nImport Cluster'
         
-        print '\n\nImport Nodes'
-        for item in node_list:
-            print item[0], item[1], item[2], item[3]
-            self.importNode (int(item[1]), item[0], float(item[2]), float(item[3]), item[4])
-        
-        print '\n\nImport Links'
-        for item in link_list:
-            self.importLink (int(item[0]), item[1], int(item[2]), item[3])
-            print item[0], item[1], item[2], item[3]
+        if len (tmp_cluster_list) > 0:
+            for j in range (0, len(tmp_cluster_list)):
+                
+                new_cluster = self.addCluster() if j > 0 else self._cluster_list[0]
+                new_cluster.setName (tmp_cluster_list[j][0])
+                
+                node_list = tmp_cluster_list[j][1]
+                link_list = tmp_cluster_list[j][2]
+                
+                print '\n\t- Import Nodes'
+                for item in node_list:
+                    print item[0], item[1], item[2], item[3]
+                    imported_node = self.importNode (int(item[1]), item[0], float(item[2]), float(item[3]), item[4])
+                    new_cluster.addNodeToCluster (imported_node)
+                
+                print '\n\t- Import Links'
+                for item in link_list:
+                    self.importLink (int(item[0]), item[1], int(item[2]), item[3])
+                    print item[0], item[1], item[2], item[3]

@@ -93,40 +93,53 @@ class IO (object):
             return tmp_list
         
         
-        node_list = []
-        link_list = []
-        
         xml  = minidom.parseString (XML_content)
-        self.nodes_XMLList = []
-        self.link_XMLList  = []
+        cluster_list = []
+        self.clusters_XMLList = []
         
         if xml != None:
-            self.nodes_XMLList = xml.getElementsByTagName ('nodes')
-            self.links_XMLList = xml.getElementsByTagName ('link')
-        
-        # (1) list out the nodes by tapping into the XML data.
-        if len(self.nodes_XMLList) > 0:
-            for i in range (0, len(self.nodes_XMLList[0].childNodes)):
-                node = self.nodes_XMLList[0].childNodes[i]
-                if node.nodeType == 1:  # the if-statement skips over the TEXT_NODEs and accepts only ELEMENT_NODEs, in other words the for-statement is running into nodes containing whitespace between the tags.
-                    #print 'ATTR '+str(node.attributes.keys())+' ' + str(node.attributes.values())
-                    node_list.append ([node.nodeName, node.attributes["id"].value, node.attributes["x"].value, node.attributes["y"].value, extractProperProps (node)])
-        
-        # (2) list out the links off the XML data.
-        if len(self.links_XMLList) > 0:
-            for i in range (0, len(self.links_XMLList)):
-                
-                for link in self.links_XMLList[i].childNodes:
+            self.clusters_XMLList = xml.getElementsByTagName ('cluster')
+            
+            if len(self.clusters_XMLList) > 0:
+                for j in range (0, len(self.clusters_XMLList)):
                     
-                    if link.nodeType == 1:  # skip the TEXT_NODEs
-                        
-                        if link.nodeName == 'out':
-                            t = []
-                            t.append(link.attributes["id"].value)
-                            t.append(link.attributes["connector"].value)
-                        elif link.nodeName == 'in':
-                            t.append(link.attributes["id"].value)
-                            t.append(link.attributes["connector"].value)
-                            link_list.append (t)
+                    cluster_name = self.clusters_XMLList[j].attributes['label'].value
+                    
+                    node_list = []
+                    link_list = []
+                    
+                    self.nodes_XMLList = []
+                    self.link_XMLList  = []
+                    
+                    if self.clusters_XMLList[j] != None:
+                        self.nodes_XMLList = self.clusters_XMLList[j].getElementsByTagName ('nodes')
+                        self.links_XMLList = self.clusters_XMLList[j].getElementsByTagName ('link')
+                    
+                    # (1) list out the nodes by tapping into the XML data.
+                    if len(self.nodes_XMLList) > 0:
+                        for i in range (0, len(self.nodes_XMLList[0].childNodes)):
+                            node = self.nodes_XMLList[0].childNodes[i]
+                            if node.nodeType == 1:  # the if-statement skips over the TEXT_NODEs and accepts only ELEMENT_NODEs, in other words the for-statement is running into nodes containing whitespace between the tags.
+                                #print 'ATTR '+str(node.attributes.keys())+' ' + str(node.attributes.values())
+                                node_list.append ([node.nodeName, node.attributes["id"].value, node.attributes["x"].value, node.attributes["y"].value, extractProperProps (node)])
+                    
+                    # (2) list out the links off the XML data.
+                    if len(self.links_XMLList) > 0:
+                        for i in range (0, len(self.links_XMLList)):
+                            
+                            for link in self.links_XMLList[i].childNodes:
+                                
+                                if link.nodeType == 1:  # skip the TEXT_NODEs
+                                    
+                                    if link.nodeName == 'out':
+                                        t = []
+                                        t.append(link.attributes["id"].value)
+                                        t.append(link.attributes["connector"].value)
+                                    elif link.nodeName == 'in':
+                                        t.append(link.attributes["id"].value)
+                                        t.append(link.attributes["connector"].value)
+                                        link_list.append (t)
+                    
+                    cluster_list.append (['', node_list, link_list])
         
-        return [node_list, link_list]
+        return cluster_list

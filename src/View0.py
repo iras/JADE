@@ -133,7 +133,7 @@ class View (QFrame):
         zoomSliderLayout.addWidget (zoomOutIcon)
         
         self.printOutBtn = QPushButton()
-        self.printOutBtn.setText ("print graph")
+        self.printOutBtn.setText ("print")
         self.printOutBtn.setFont (self.font)
         self.printOutBtn.setEnabled (True)
         
@@ -143,12 +143,12 @@ class View (QFrame):
         self.loadNodesDescrpBtn.setEnabled (True)
         
         self.graphLoadBtn = QPushButton()
-        self.graphLoadBtn.setText ("load graph")
+        self.graphLoadBtn.setText ("load")
         self.graphLoadBtn.setFont (self.font)
         self.graphLoadBtn.setEnabled (True)
         
         self.graphSaveBtn = QPushButton()
-        self.graphSaveBtn.setText ("save graph")
+        self.graphSaveBtn.setText ("save")
         self.graphSaveBtn.setFont (self.font)
         self.graphSaveBtn.setEnabled (True)
         
