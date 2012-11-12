@@ -22,7 +22,7 @@ Maya client : this client needs calling from within Maya by means of the additio
 customising the physical path in it. Such script will reside in a Maya Script Editor's Python page and needs to be run from Maya.
 
 ## Some Definitions
-# Cluster
+### Cluster
 A cluster can be imagined as a self-contained graph. More specifically, a cluster (in JADE) is a collection of nodes and links.
 Any two clusters never share nodes/links.
 # Nodes and Links
