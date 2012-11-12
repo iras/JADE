@@ -10,15 +10,15 @@ class Cluster0 ():
     '''
     sub-model class.
     '''
-    def __init__(self, id0, name, parent, comm):
+    def __init__(self, id0, name0, parent, comm):
         '''constructor
         
         @param id0 int
-        @param name string
+        @param name0 string
         @param comm instance of class Comm0
         '''
         self._id   = id0  # id0 has been used instead of id since the latter is a built-in variable.
-        self._name = str(name)
+        self._name = str(name0)
         self.graph = parent
         self.comm  = comm
         

@@ -450,7 +450,9 @@ class Graph ():
         
         @return graph_XML_string string 
         '''
-        return self.graph_io.exportGraph (self._node_list, tag_position_dict)
+        
+        
+        return self.graph_io.exportGraph (self._cluster_list, tag_position_dict)
     
     def importGraph (self, XML_content):
         '''This method imports a graph given the string XML_content passed in.

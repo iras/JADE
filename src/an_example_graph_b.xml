@@ -1,129 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<macro label="">
-	<nodes>
-		<State01Closed id="1" x="-414.614379883" y="-45.5943908691" value="close" value2="exxxxxxx"/>
-		<State01Closed id="2" x="-101.431640625" y="-332.889282227" value="close" value2="EXTRA"/>
-		<IntegerMatcher id="3" x="-23.1458740234" y="458.1121521" value="7"/>
-		<Five_Adder id="4" x="23.319519043" y="642.863220215"/>
-		<State01Closed id="5" x="647.647601938" y="-202.41873159" value="close" value2="EXTRA"/>
-		<IntegerMatcher id="6" x="649.45515809" y="-299.256774803" value="0"/>
-		<Five_Adder id="7" x="298.17364502" y="564.78338623"/>
-		<Five_Adder id="8" x="-62.0" y="150.0"/>
-		<IntegerMatcher id="9" x="-302.0" y="632.0" value="5557"/>
-		<Five_Adder id="10" x="73.8549804688" y="24.3271074295"/>
-	</nodes>
-	<links>
-		<link>
-			<out id="1" connector="triggered"/>
-			<in id="2" connector="input2"/>
-		</link>
-		<link>
-			<out id="3" connector="isLessThan"/>
-			<in id="2" connector="input2"/>
-		</link>
-		<link>
-			<out id="1" connector="triggered"/>
-			<in id="3" connector="input"/>
-		</link>
-		<link>
-			<out id="3" connector="isLessThan"/>
-			<in id="4" connector="input2"/>
-		</link>
-		<link>
-			<out id="2" connector="triggered"/>
-			<in id="4" connector="input2"/>
-		</link>
-		<link>
-			<out id="1" connector="triggered"/>
-			<in id="4" connector="input2"/>
-		</link>
-		<link>
-			<out id="9" connector="isLessThan"/>
-			<in id="4" connector="input2"/>
-		</link>
-		<link>
-			<out id="4" connector="sum"/>
-			<in id="5" connector="input2"/>
-		</link>
-		<link>
-			<out id="3" connector="isLessThan"/>
-			<in id="5" connector="input2"/>
-		</link>
-		<link>
-			<out id="1" connector="triggered"/>
-			<in id="5" connector="input2"/>
-		</link>
-		<link>
-			<out id="2" connector="triggered"/>
-			<in id="5" connector="input2"/>
-		</link>
-		<link>
-			<out id="4" connector="sum"/>
-			<in id="6" connector="input"/>
-		</link>
-		<link>
-			<out id="3" connector="isLessThan"/>
-			<in id="6" connector="input"/>
-		</link>
-		<link>
-			<out id="1" connector="triggered"/>
-			<in id="6" connector="input"/>
-		</link>
-		<link>
-			<out id="2" connector="triggered"/>
-			<in id="6" connector="input"/>
-		</link>
-		<link>
-			<out id="4" connector="sum"/>
-			<in id="7" connector="input2"/>
-		</link>
-		<link>
-			<out id="3" connector="isLessThan"/>
-			<in id="7" connector="input2"/>
-		</link>
-		<link>
-			<out id="8" connector="sum"/>
-			<in id="7" connector="input2"/>
-		</link>
-		<link>
-			<out id="2" connector="triggered"/>
-			<in id="7" connector="input1"/>
-		</link>
-		<link>
-			<out id="3" connector="isLessThan"/>
-			<in id="7" connector="input1"/>
-		</link>
-		<link>
-			<out id="1" connector="triggered"/>
-			<in id="7" connector="input5"/>
-		</link>
-		<link>
-			<out id="3" connector="isLessThan"/>
-			<in id="7" connector="input5"/>
-		</link>
-		<link>
-			<out id="3" connector="isLessThan"/>
-			<in id="7" connector="input3"/>
-		</link>
-		<link>
-			<out id="1" connector="triggered"/>
-			<in id="8" connector="input2"/>
-		</link>
-		<link>
-			<out id="1" connector="triggered"/>
-			<in id="9" connector="input"/>
-		</link>
-		<link>
-			<out id="1" connector="triggered"/>
-			<in id="10" connector="input2"/>
-		</link>
-		<link>
-			<out id="1" connector="triggered"/>
-			<in id="10" connector="input3"/>
-		</link>
-		<link>
-			<out id="1" connector="triggered"/>
-			<in id="10" connector="input1"/>
-		</link>
-	</links>
-</macro>
+<clusterGroup id="101" label="demo clusters">
+	<cluster label="cluster_a">
+		<nodes>
+			<State01Closed id="1" x="-445.157107503" y="-26.7430892241" value="close" value2="exxxxxxx"/>
+			<State01Closed id="2" x="-81.431640625" y="-312.889282227" value="close" value2="EXTRA"/>
+			<IntegerMatcher id="3" x="-3.14587402344" y="478.1121521" value="7"/>
+			<Five_Adder id="4" x="43.319519043" y="662.863220215"/>
+			<State01Closed id="5" x="667.647583008" y="-182.418731689" value="close" value2="EXTRA"/>
+			<IntegerMatcher id="6" x="669.45513916" y="-279.256774902" value="0"/>
+			<Five_Adder id="7" x="318.17364502" y="584.78338623"/>
+			<Five_Adder id="8" x="-42.0" y="170.0"/>
+			<IntegerMatcher id="9" x="-282.0" y="652.0" value="5557"/>
+			<Five_Adder id="10" x="93.8549804688" y="44.3271064758"/>
+			<Five_Adder id="11" x="-436.096482779" y="-237.237823486"/>
+		</nodes>
+		<links>
+			<link>
+				<out id="1" connector="triggered"/>
+				<in id="2" connector="input2"/>
+			</link>
+			<link>
+				<out id="3" connector="isLessThan"/>
+				<in id="2" connector="input2"/>
+			</link>
+			<link>
+				<out id="11" connector="sum"/>
+				<in id="2" connector="input2"/>
+			</link>
+			<link>
+				<out id="1" connector="triggered"/>
+				<in id="3" connector="input"/>
+			</link>
+			<link>
+				<out id="3" connector="isLessThan"/>
+				<in id="4" connector="input2"/>
+			</link>
+			<link>
+				<out id="2" connector="triggered"/>
+				<in id="4" connector="input2"/>
+			</link>
+			<link>
+				<out id="1" connector="triggered"/>
+				<in id="4" connector="input2"/>
+			</link>
+			<link>
+				<out id="9" connector="isLessThan"/>
+				<in id="4" connector="input2"/>
+			</link>
+			<link>
+				<out id="4" connector="sum"/>
+				<in id="5" connector="input2"/>
+			</link>
+			<link>
+				<out id="3" connector="isLessThan"/>
+				<in id="5" connector="input2"/>
+			</link>
+			<link>
+				<out id="1" connector="triggered"/>
+				<in id="5" connector="input2"/>
+			</link>
+			<link>
+				<out id="2" connector="triggered"/>
+				<in id="5" connector="input2"/>
+			</link>
+			<link>
+				<out id="4" connector="sum"/>
+				<in id="6" connector="input"/>
+			</link>
+			<link>
+				<out id="3" connector="isLessThan"/>
+				<in id="6" connector="input"/>
+			</link>
+			<link>
+				<out id="1" connector="triggered"/>
+				<in id="6" connector="input"/>
+			</link>
+			<link>
+				<out id="2" connector="triggered"/>
+				<in id="6" connector="input"/>
+			</link>
+			<link>
+				<out id="4" connector="sum"/>
+				<in id="7" connector="input2"/>
+			</link>
+			<link>
+				<out id="3" connector="isLessThan"/>
+				<in id="7" connector="input2"/>
+			</link>
+			<link>
+				<out id="8" connector="sum"/>
+				<in id="7" connector="input2"/>
+			</link>
+			<link>
+				<out id="2" connector="triggered"/>
+				<in id="7" connector="input1"/>
+			</link>
+			<link>
+				<out id="3" connector="isLessThan"/>
+				<in id="7" connector="input1"/>
+			</link>
+			<link>
+				<out id="1" connector="triggered"/>
+				<in id="7" connector="input5"/>
+			</link>
+			<link>
+				<out id="3" connector="isLessThan"/>
+				<in id="7" connector="input5"/>
+			</link>
+			<link>
+				<out id="3" connector="isLessThan"/>
+				<in id="7" connector="input3"/>
+			</link>
+			<link>
+				<out id="1" connector="triggered"/>
+				<in id="8" connector="input2"/>
+			</link>
+			<link>
+				<out id="1" connector="triggered"/>
+				<in id="9" connector="input"/>
+			</link>
+			<link>
+				<out id="1" connector="triggered"/>
+				<in id="10" connector="input2"/>
+			</link>
+			<link>
+				<out id="1" connector="triggered"/>
+				<in id="10" connector="input3"/>
+			</link>
+			<link>
+				<out id="1" connector="triggered"/>
+				<in id="10" connector="input1"/>
+			</link>
+		</links>
+	</cluster>
+</clusterGroup>

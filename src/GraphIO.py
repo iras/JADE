@@ -14,46 +14,55 @@ class IO (object):
     This class manages graph importing and graph exporting to a file.
     '''
     
-    def exportGraph (self, node_list, tag_position_dict):
+    def exportGraph (self, cluster_list, tag_position_dict):
         '''
         this method exports the graph in a XML-format file, dividing the graph into 2 blocks : nodes and links.
         
-        @param node_list:
+        @param cluster_list:
         @param tag_position_dict:
         @return string:
         '''
-        macro_name = ''
+        cluster_group_name = ''
         
-        tmp = '<?xml version="1.0" encoding="UTF-8"?>\n<macro label="' + macro_name + '">\n'
-        if len (node_list) > 0:
-            
-            tmp += '\t<nodes>\n'
-            
-            # (1) list out all the nodes and append them to the temp string.
-            for node in node_list:
-                tmp += '\t\t<' + node.getName() + ' id="' + str(node.getId()) + '" x="' + str(tag_position_dict[str(node.getId())].x()) + '" y="' + str(tag_position_dict[str(node.getId())].y()) + '"'
-                # append props to the string if any.
-                if len (node.getProps()) > 0:
-                    for prop in node.getProps():
-                        tmp += ' ' + str(prop[0]) + '="' + str(prop[2]) + '"'
-                tmp += '/>\n'
-            
-            tmp += '\t</nodes>\n\t<links>\n'
-            
-            # (2) list out all the links and append them to the temp string. The InSockets will be only considered when
-            #     going through the node_list since for each of them a correspondent OutSocket will be always found.
-            if len (node_list) > 0:
-                for node in node_list:
-                    for socket in node.getIns():
-                        for link in socket.getPluggedIns():
-                            tmp += '\t\t<link>\n'
-                            tmp += '\t\t\t<out id="' +  str(link.getNode().getId()) + '" connector="' + link.getSType()   + '"/>\n'
-                            tmp += '\t\t\t<in id="' + str(socket.getNode().getId()) + '" connector="' + socket.getSType() + '"/>\n'
-                            tmp += '\t\t</link>\n'
-            
-            tmp += '\t</links>\n'
+        tmp = '<?xml version="1.0" encoding="UTF-8"?>\n<clusterGroup id="" label="' + cluster_group_name + '">\n'
+        if len (cluster_list) > 0:
+            for cluster in cluster_list:
+                
+                tmp += '\t<cluster label="' + cluster.getName () + '">\n'
+                
+                node_list = cluster.getNodeList ()
+                
+                if len (node_list) > 0:
+                    
+                    tmp += '\t\t<nodes>\n'
+                    
+                    # (1) list out all the nodes and append them to the temp string.
+                    for node in node_list:
+                        tmp += '\t\t\t<' + node.getName() + ' id="' + str(node.getId()) + '" x="' + str(tag_position_dict[str(node.getId())].x()) + '" y="' + str(tag_position_dict[str(node.getId())].y()) + '"'
+                        # append props to the string if any.
+                        if len (node.getProps()) > 0:
+                            for prop in node.getProps():
+                                tmp += ' ' + str(prop[0]) + '="' + str(prop[2]) + '"'
+                        tmp += '/>\n'
+                    
+                    tmp += '\t\t</nodes>\n\t\t<links>\n'
+                    
+                    # (2) list out all the links and append them to the temp string. The InSockets will be only considered when
+                    #     going through the node_list since for each of them a correspondent OutSocket will be always found.
+                    if len (node_list) > 0:
+                        for node in node_list:
+                            for socket in node.getIns():
+                                for link in socket.getPluggedIns():
+                                    tmp += '\t\t\t<link>\n'
+                                    tmp += '\t\t\t\t<out id="' +  str(link.getNode().getId()) + '" connector="' + link.getSType()   + '"/>\n'
+                                    tmp += '\t\t\t\t<in id="' + str(socket.getNode().getId()) + '" connector="' + socket.getSType() + '"/>\n'
+                                    tmp += '\t\t\t</link>\n'
+                    
+                    tmp += '\t\t</links>\n'
+                
+                tmp += '\t</cluster>\n'
         
-        tmp += '</macro>\n'  
+        tmp += '</clusterGroup>\n'  
         
         return str(tmp)
     
