@@ -140,6 +140,6 @@ class IO (object):
                                         t.append(link.attributes["connector"].value)
                                         link_list.append (t)
                     
-                    cluster_list.append (['', node_list, link_list])
+                    cluster_list.append ([cluster_name, node_list, link_list])
         
         return cluster_list

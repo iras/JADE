@@ -165,11 +165,11 @@ class CanvasProps (QGraphicsItem):
     def setTitle (self, title): self._nodename.setPlainText (title)
     
     def setCanvasHeightInUnits (self, ch): self._canvas_height = ch
-        
+    
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def moveDown (self, canvas_height_in_units):
-                
+        
         self.anim_active  = True
         self.upwards_flag = False
         

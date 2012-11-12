@@ -58,6 +58,10 @@ class GraphView ():
         
         self.graph.updateCluster (cluster_id, node)
     
+    def delegateUpdateClusterName (self, cluster_id, text):
+        
+        self.graph.updateClusterName (cluster_id, text)
+    
     # - - -  Listeners from key pressing   - - - - - - - - - - - - - - - - - - - - - - - - - -
         
     def removeNodeAndTagPressBtnListener (self):

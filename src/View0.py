@@ -99,6 +99,7 @@ class View (QFrame):
         self.connect (self.pushButton, SIGNAL ("clicked()"), self.addCluster)  # connect the 'add-cluster' button to the method that taps into the model for cluster addition.
         self.connect (self.graph_view.getComm(), SIGNAL ("addCluster_MSignal(int)"), self.addClusterPage)
         self.connect (self.graph_view.getComm(), SIGNAL ("deleteCluster_MSignal(int)"), self.removeClusterPage)
+        self.connect (self.graph_view.getComm(), SIGNAL ("updateClusterName_MSignal(int, QString)"), self.updateClusterViewName)
         self.addCluster () # add the first cluster. At least one cluster needs to be always present.
         self.disableAllClusterPagesDeleteButton() # since there's only one cluster page, the delete button is disabled.
         
@@ -208,18 +209,18 @@ class View (QFrame):
         self._cluster_page_list.append ([new_cluster_id, tmp_w, tmp_l, tmp_e, tmp_b])
         
         tmp_w.setGeometry (QtCore.QRect (0, 0, 131, 241))
-        tmp_w.setObjectName ('Cluster_'+str(new_cluster_id))
+        tmp_w.setObjectName ('Cluster_' + str (new_cluster_id))
         
         tmp_l.setGeometry (QtCore.QRect (4, 6, 62, 16))
         tmp_l.setFont (self.font)
-        tmp_l.setObjectName ('label_'+str(new_cluster_id))
+        tmp_l.setObjectName ('label_' + str (new_cluster_id))
         
         tmp_e.setGeometry (QtCore.QRect (2, 20, 60, 16))
-        tmp_e.setObjectName ('groupLineEdit_'+str(new_cluster_id))
+        tmp_e.setObjectName ('groupLineEdit_' + str (new_cluster_id))
         
         tmp_b.setGeometry(QtCore.QRect (2, 50, 60, 16))
         tmp_b.setFont (self.font)
-        tmp_b.setObjectName ('pushButton_'+str(new_cluster_id))
+        tmp_b.setObjectName ('pushButton_' + str (new_cluster_id))
         
         self._toolBox.addItem (tmp_w, 'cluster_page_'+str(new_cluster_id))
         self._toolBox.setItemText (self._toolBox.indexOf (tmp_w), QtGui.QApplication.translate ('Form', 'C_'+str(new_cluster_id), None, QtGui.QApplication.UnicodeUTF8))
@@ -231,6 +232,9 @@ class View (QFrame):
         # hook up the delete button (use a closure)
         receiver = lambda : self.removeCluster (new_cluster_id)
         self.connect (tmp_b, SIGNAL ("clicked()"), receiver)  # connect the 'add cluster' button to the method generating new cluster pages.
+        
+        receiver2 = lambda value : self.updateClusterModelName (new_cluster_id, value)
+        self.connect (tmp_e, SIGNAL ("textChanged(QString)"), receiver2)
     
     def removeCluster (self, cluster_id):
         
@@ -260,6 +264,17 @@ class View (QFrame):
         if len(self._cluster_page_list) > 0:
             for item in self._cluster_page_list:
                 item[4].setEnabled (True)
+    
+    def updateClusterModelName (self, cluster_id, text):
+        
+        self.graph_view.delegateUpdateClusterName (cluster_id, text)
+    
+    def updateClusterViewName (self, cluster_id, text):
+        
+        if len(self._cluster_page_list) > 0:
+            for item in self._cluster_page_list:
+                if int(item[0]) == cluster_id:
+                    item[3].setText (str(text))
     
     # - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
