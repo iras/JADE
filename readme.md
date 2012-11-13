@@ -36,9 +36,8 @@ customising the physical path in it. Such script will reside in a Maya Script Ed
 
 
 ## Version 0.4 wishlist:
-(0) sorting the known issues.
 (1) adding undo functionality.
-(2) merging two imported graphs in a unique file.
+(2) ability to merge two imported group of clusters in a unique file.
 (3) tube-like connections instead of straight dotted lines.
 (4) add unit tests for the props.
 
