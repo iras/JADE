@@ -27,6 +27,8 @@ class Cluster0 ():
     def addNodeToCluster (self, node):  # TODO : unit test
         
         self._cluster_node_list.append (node)
+        
+        self.comm.emitAddNodeToClusterMSignal (self._id, node.getId())
     
     def removeNodeFromCluster (self, node):  # TODO : unit test
         

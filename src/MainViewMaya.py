@@ -75,9 +75,10 @@ class MainMayaWindow (QObject):
         self.scrollAreaWidgetContents_3 = QtGui.QWidget(MainWindow)
         self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(10, 10, 900, 1000))
         self.scrollAreaWidgetContents_3.setObjectName ('scrollAreaWidgetContents_3')
-        self._view = View0.View ("JADEview", self.graph_view, self.scrollAreaWidgetContents_3)
+        self._view = View0.View ("JADEview", self.graph_view, self.scene, self.scrollAreaWidgetContents_3)
         self._view.setObjectName ('JADEview')  # real ui name
         self._view.graphicsView.setObjectName ('JADEInnerView')
+        self.connect (self.scene, SIGNAL("selectionChanged()"), self._view.selectionChanged)
         
         self._view.wireViewItemsUp ()
         self._view.getGraphicsView().setScene (self.scene)

@@ -68,6 +68,9 @@ class Comm0 (QObject):
     def emitUpdateClusterNameMSignal (self, cluster_id, text):
         self.emit (SIGNAL ('updateClusterName_MSignal(int, QString)'), cluster_id, QString(text))
     
+    def emitAddNodeToClusterMSignal (self, cluster_id, node_id):
+        self.emit (SIGNAL ('addNodeToCluster_MSignal(int, int)'), cluster_id, node_id)
+    
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
      
     def emitAddNodeMSignal (self, node_id, node_x, node_y):

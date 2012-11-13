@@ -44,6 +44,16 @@ class GraphView ():
             self.graph.removeNodeListItemFromItsCluster (tmp_ls1[i].getId ())
             self.graph.removeNode (tmp_ls1[i].getId ())
     
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    def isTag (self, obj):
+        
+        flag = False
+        if type(obj) == Tags0.Tag1:
+            flag = True
+        
+        return flag
+    
     # - - -  Cluster-page related methods  - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def delegateClusterAddition (self):
@@ -98,10 +108,11 @@ class GraphView ():
         tag.setPos (QPointF (fx+20, fy+20))
         self.utility.getScene().addItem (tag)
         
-        self.utility.connect (self.comm, SIGNAL('addInSocket_MSignal    (int,int)'), tag.appendInHook)
-        self.utility.connect (self.comm, SIGNAL('addOutSocket_MSignal   (int,int)'), tag.appendOutHook)
-        self.utility.connect (self.comm, SIGNAL('deleteInSocket_MSignal (int,int)'), tag.removeInHook)
-        self.utility.connect (self.comm, SIGNAL('deleteOutSocket_MSignal(int,int)'), tag.removeOutHook)
+        self.utility.connect (self.comm, SIGNAL('addInSocket_MSignal     (int,int)'), tag.appendInHook)
+        self.utility.connect (self.comm, SIGNAL('addOutSocket_MSignal    (int,int)'), tag.appendOutHook)
+        self.utility.connect (self.comm, SIGNAL('deleteInSocket_MSignal  (int,int)'), tag.removeInHook)
+        self.utility.connect (self.comm, SIGNAL('deleteOutSocket_MSignal (int,int)'), tag.removeOutHook)
+        self.utility.connect (self.comm, SIGNAL('addNodeToCluster_MSignal(int,int)'), tag.setCanvasColourBasedOnTheClusterId)
         
         self._tag_list.append (tag)
         

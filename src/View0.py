@@ -37,11 +37,12 @@ class CustomGraphicsView (QGraphicsView):
 
 class View (QFrame):
 
-    def __init__ (self, name, graph_view, parent=None):
+    def __init__ (self, name, graph_view, scene, parent=None):
         
         QFrame.__init__(self, parent)
         
         self.graph_view = graph_view
+        self.scene = scene
 
         self.setFrameStyle (QFrame.Sunken | QFrame.StyledPanel)
         
@@ -191,6 +192,25 @@ class View (QFrame):
         self.setupMatrix ()
         
         self.printer = QPrinter (QPrinter.HighResolution)
+        
+        self.prev_selection_list = []
+    
+    def selectionChanged (self):
+        
+        current_selection_list = self.scene.selectedItems ()
+        list_of_unselected_items = [item for item in self.prev_selection_list if item not in current_selection_list]
+        
+        # un-mark items in list_of_unselected_items
+        for item in list_of_unselected_items:
+            if self.graph_view.isTag (item) == True:
+                item.switchToUnSelectedStateColour ()
+        
+        # mark items in current_selection_list
+        for item in current_selection_list:
+            if self.graph_view.isTag (item) == True:
+                item.switchToSelectedStateColour ()
+        
+        self.prev_selection_list = current_selection_list
     
     # - - -    cluster-specific methods   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -276,6 +296,17 @@ class View (QFrame):
                 if int(item[0]) == cluster_id:
                     item[3].setText (str(text))
     
+    def updateCurrentClusterNodeList (self, node):
+        
+        # fetch the current cluster's id.
+        curr_widget = self._toolBox.currentWidget()
+        for item in self._cluster_page_list:
+            if item[1] == curr_widget:
+                
+                # delegate cluster node list update.
+                self.graph_view.delegateClusterNodeListUpdate (item[0], node)
+                break
+    
     # - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def getGraphicsView (self): return self.graphicsView
@@ -344,16 +375,3 @@ class View (QFrame):
         self.connect (self.loadNodesDescrpBtn,SIGNAL ("clicked()"), self.importNodesDescription)
         self.connect (self.graphSaveBtn,      SIGNAL ("clicked()"), self.exportGraph)
         self.connect (self.graphLoadBtn,      SIGNAL ("clicked()"), self.importGraph)
-    
-    def updateCurrentClusterNodeList (self, node):
-        
-        # fetch the current cluster's id.
-        tmp_current_widget_id = None
-        curr_widget = self._toolBox.currentWidget()
-        for item in self._cluster_page_list:
-            if item[1] == curr_widget:
-                tmp_current_widget_id = item[0]
-                break
-        
-        # delegate cluster node list update.
-        self.graph_view.delegateClusterNodeListUpdate (tmp_current_widget_id, node)

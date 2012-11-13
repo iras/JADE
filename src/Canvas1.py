@@ -92,7 +92,7 @@ class CanvasProps (QGraphicsItem):
     def paint (self, painter, option, unused_widget):
         
         if option.state & QStyle.State_Selected:
-            fillColor = self.color.dark (150)
+            fillColor = self.color.dark (100)
         else:
             fillColor = self.color
         

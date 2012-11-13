@@ -54,9 +54,10 @@ class MainWindow (QWidget):
         self.connect (self.comm, SIGNAL('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
         self.connect (self.comm, SIGNAL('addNode_MSignal(int, float, float)'), self.graph_view.addTag)
         
-        self._view = View0.View ('Main view', self.graph_view)
+        self._view = View0.View ('Main view', self.graph_view, self.scene)
         self._view.wireViewItemsUp ()
         self._view.getGraphicsView().setScene (self.scene)
+        self.connect (self.scene, SIGNAL("selectionChanged()"), self._view.selectionChanged)
         
         self.graphicsView = self._view.getGraphicsView ()
         self.node_coords = QPoint (0,0)

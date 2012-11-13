@@ -43,10 +43,33 @@ class Canvas (QGraphicsItem):
         
         self.SCALING = 0.25
         
-        self.linearGradient = QLinearGradient (0, 0, 150, 120);
-        self.linearGradient.setColorAt (0.0, Qt.white);
-        self.linearGradient.setColorAt (0.3, self.jade_colour);
-        self.linearGradient.setColorAt (1.0, Qt.black);
+        self.linearGradient = QLinearGradient (0, 0, 150, 120)
+        self.linearGradient.setColorAt (0.0, Qt.white)
+        self.linearGradient.setColorAt (0.3, self.jade_colour)
+        self.linearGradient.setColorAt (1.0, Qt.black)
+    
+    def changeColourToUnSelectedState (self):
+        
+        self.linearGradient.setColorAt (0.3, self.jade_colour)
+    
+    def changeColourToSelectedState (self):
+        
+        self.linearGradient.setColorAt (0.3, QColor (255,99,71,195))
+    
+    def setCanvasColourBasedOnTheClusterId (self, c_id):
+        
+        mult = 35
+        
+        r_col = 0   + (c_id-1)*mult
+        g_col = 235 - (c_id-1)*mult*.85
+        b_col = 120 + (c_id-1)*mult*.6
+        
+        if r_col > 255: r_col = 255
+        if g_col > 255: g_col = 255
+        if b_col > 255: b_col = 255
+        
+        self.jade_colour = QColor (r_col, g_col, b_col, 195)
+        self.linearGradient.setColorAt (0.3, self.jade_colour)
     
     def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
     

@@ -477,7 +477,6 @@ class Graph ():
                 
                 new_cluster = self.addCluster() if j > 0 else self._cluster_list[0]
                 new_cluster.setName (tmp_cluster_list[j][0])
-                print '**** -> '+str(new_cluster.getName())
                 self.dispatchClusterNameSignal (new_cluster)
                 
                 node_list = tmp_cluster_list[j][1]

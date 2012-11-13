@@ -83,7 +83,7 @@ class Helper (QObject):
         #self.connect (self.ctimer, SIGNAL("timeout()"), self.singleUpdate)
         
         #self.ctimer.singleShot (500, self.singleUpdate)
-        self.timer_flag = False
+        self.timer_flag = True
         
         # init harpoon and make it invisible
         self.harpoon = Harpoon0 (0, 0, 0, 0)
@@ -104,16 +104,18 @@ class Helper (QObject):
     
     def singleUpdate (self):
         
+        print 'time ended'
         self.timer_flag = True
     
     # - - - - - - - - - - - - - - - - - - - - 
+    
+    def isTimerEnded (self): return self.timer_flag
     
     def getScene (self): return self.scene
     def getGraph (self): return self.graph
     def getHarpoon (self): return self.harpoon
     def getMain  (self): return self.main
     def getTimer (self): return self.ctimer
-    def isTimerEnded (self): return self.timer_flag
     def getGraphView (self): return self.graph_view
     
     def setGraphView (self, gv): self.graph_view = gv

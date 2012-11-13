@@ -75,6 +75,23 @@ class Tag1 (QGraphicsItem):
     
     def remove (self): self.setVisible (False)
     
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    
+    def switchToUnSelectedStateColour (self):
+        
+        self.canvas.changeColourToUnSelectedState ()
+    
+    def switchToSelectedStateColour (self):
+        
+        self.canvas.changeColourToSelectedState ()
+    
+    def setCanvasColourBasedOnTheClusterId (self, c_id, node_id):
+        
+        if self.node_id == node_id:
+            self.canvas.setCanvasColourBasedOnTheClusterId (c_id)
+        
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+    
     def scrollRestOfHooksUp (self, rail):
         
         marker = False
