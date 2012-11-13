@@ -32,8 +32,7 @@ customising the physical path in it. Such script will reside in a Maya Script Ed
 
 
 ## Known Issues
-(1) two nodes can occasionally stay both selected after making a link. The workaround is to click on the background
-to reset the selection.
+(1)
 
 
 ## Version 0.4 wishlist:
