@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <available_nodes>
   <node>
-    <class>m:FloatMatcher</class>
+    <class>m_FloatMatcher</class>
     <props>
       <prop>
         <name>number</name>
@@ -35,7 +35,7 @@
     </outputs>
   </node>
   <node>
-    <class>m:MultiAdder</class>
+    <class>m_MultiAdder</class>
     <props>
       <prop>
         <name>inputs_no</name>
@@ -69,7 +69,7 @@
     </outputs>
   </node>
   <node>
-    <class>t:StateClosed</class>
+    <class>t_StateClosed</class>
     <props>
       <prop>
         <name>state</name>
@@ -91,7 +91,7 @@
     </outputs>
   </node>
   <node>
-    <class>t:StateOpened</class>
+    <class>t_StateOpened</class>
     <props>
       <prop>
         <name>state</name>
@@ -113,7 +113,7 @@
     </outputs>
   </node>
   <node>
-    <class>t:StateOpened</class>
+    <class>t_StateOpened</class>
     <props>
       <prop>
         <name>state</name>
@@ -140,7 +140,7 @@
     </outputs>
   </node>
   <node>
-    <class>t:AimCompleted</class>
+    <class>t_AimCompleted</class>
     <props>
       <prop>
         <name>aimId</name>
@@ -167,7 +167,7 @@
     </outputs>
   </node>
   <node>
-    <class>a:DisableMouse</class>
+    <class>a_DisableMouse</class>
     <props/>
     <inputs>
       <input>
@@ -183,7 +183,7 @@
     </outputs>
   </node>
   <node>
-    <class>a:EnableMouse</class>
+    <class>a_EnableMouse</class>
     <props/>
     <inputs>
       <input>
@@ -199,7 +199,7 @@
     </outputs>
   </node>
   <node>
-    <class>a:EnableUI</class>
+    <class>a_EnableUI</class>
     <props/>
     <inputs>
       <input>
@@ -215,7 +215,7 @@
     </outputs>
   </node>
   <node>
-    <class>a:DisableUI</class>
+    <class>a_DisableUI</class>
     <props/>
     <inputs>
       <input>
@@ -231,7 +231,7 @@
     </outputs>
   </node>
   <node>
-    <class>a:PlayJingle</class>
+    <class>a_PlayJingle</class>
     <props>
       <prop>
         <name>jingle_no</name>
@@ -253,7 +253,7 @@
     </outputs>
   </node>
   <node>
-    <class>a:FadeJingleOut</class>
+    <class>a_FadeJingleOut</class>
     <props>
       <prop>
         <name>jingle_no</name>
@@ -275,7 +275,7 @@
     </outputs>
   </node>
   <node>
-    <class>a:FadeJingleIn</class>
+    <class>a_FadeJingleIn</class>
     <props>
       <prop>
         <name>jingle_no</name>
@@ -297,7 +297,7 @@
     </outputs>
   </node>
   <node>
-    <class>a:PushInQueue</class>
+    <class>a_PushInQueue</class>
     <props>
       <prop>
         <name>jingle_no</name>
@@ -319,7 +319,7 @@
     </outputs>
   </node>
   <node>
-    <class>a:PopFromQueue</class>
+    <class>a_PopFromQueue</class>
     <props>
       <prop>
         <name>jingle_no</name>
