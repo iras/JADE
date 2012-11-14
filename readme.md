@@ -32,7 +32,12 @@ customising the physical path in it. Such script will reside in a Maya Script Ed
 
 
 ## Known Issues
-(1)
+(1) JADE doesn't warn the user when they incorrectly extend connections betwwen two nodes belonging each to different clusters.
+Saving the file is allowed but the loader breaks when attempting to load the exported file. One way to sort this is to manually
+move the links and nodes in the XML file. A future functionality will be to prevent the user from extending such inter-cluster
+connections.
+(2) newly extended connections may not show near the borders of the graphics pane, it's not a difficult thing to fix.
+In the meantime, changing the zoom level will make the connection appear.
 
 
 ## Version 0.4 wishlist:
