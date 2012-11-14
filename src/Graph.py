@@ -408,41 +408,49 @@ class Graph ():
         
         @param text_xml string
         '''
-        self.xml_rules_table = parseString(text_xml)
+        flag_parsing_ok = True
         
-        self.node_rules_XMLList = self.xml_rules_table.getElementsByTagName ('node')
-        
-        for item in self.node_rules_XMLList:
+        try:
+            self.xml_rules_table = parseString(text_xml)
+        except:
+            flag_parsing_ok = False
+            print '\n\nPROBLEM IN PARSING THE NODE DESCRIPTION : please double-check the XML file.\n'
             
-            node_name = item.getElementsByTagName ('class')[0].firstChild.data
-            tmp_ls = node_name.split('.')
-            node_name = str(tmp_ls[-1])
+        if flag_parsing_ok:
             
-            inputs_ls = []
-            self.inputs_XMLList  = item.getElementsByTagName ('input')
-            for item_input in self.inputs_XMLList:
-                if item_input.getElementsByTagName ('type')[0].firstChild.data == 'Connector':
-                    inputs_ls.append (str(item_input.getElementsByTagName ('name')[0].firstChild.data))
+            self.node_rules_XMLList = self.xml_rules_table.getElementsByTagName ('node')
             
-            outputs_ls = []
-            self.outputs_XMLList  = item.getElementsByTagName ('output')
-            for item_output in self.outputs_XMLList:
-                if item_output.getElementsByTagName ('type')[0].firstChild.data == 'Connector':
-                    outputs_ls.append (str(item_output.getElementsByTagName ('name')[0].firstChild.data))
+            for item in self.node_rules_XMLList:
+                
+                node_name = item.getElementsByTagName ('class')[0].firstChild.data
+                tmp_ls = node_name.split('.')
+                node_name = str(tmp_ls[-1])
+                
+                inputs_ls = []
+                self.inputs_XMLList  = item.getElementsByTagName ('input')
+                for item_input in self.inputs_XMLList:
+                    if item_input.getElementsByTagName ('type')[0].firstChild.data == 'Connector':
+                        inputs_ls.append (str(item_input.getElementsByTagName ('name')[0].firstChild.data))
+                
+                outputs_ls = []
+                self.outputs_XMLList  = item.getElementsByTagName ('output')
+                for item_output in self.outputs_XMLList:
+                    if item_output.getElementsByTagName ('type')[0].firstChild.data == 'Connector':
+                        outputs_ls.append (str(item_output.getElementsByTagName ('name')[0].firstChild.data))
+                
+                props_ls = []
+                self.props_XMLList  = item.getElementsByTagName ('prop')
+                for item_prop in self.props_XMLList:
+                    props_ls.append ([str(item_prop.getElementsByTagName ('name')[0].firstChild.data),
+                                      str(item_prop.getElementsByTagName ('type')[0].firstChild.data),
+                                      str(item_prop.getElementsByTagName ('default')[0].firstChild.data)])
+                
+                self.node_details_map [node_name] = [list(inputs_ls), list(outputs_ls), list(props_ls)]
             
-            props_ls = []
-            self.props_XMLList  = item.getElementsByTagName ('prop')
-            for item_prop in self.props_XMLList:
-                props_ls.append ([str(item_prop.getElementsByTagName ('name')[0].firstChild.data),
-                                  str(item_prop.getElementsByTagName ('type')[0].firstChild.data),
-                                  str(item_prop.getElementsByTagName ('default')[0].firstChild.data)])
-            
-            self.node_details_map [node_name] = [list(inputs_ls), list(outputs_ls), list(props_ls)]
-        
-        # print map
-        import pprint
-        pp = pprint.PrettyPrinter(indent=4)
-        pp.pprint (self.node_details_map)
+            # print map
+            import pprint
+            pp = pprint.PrettyPrinter(indent=4)
+            pp.pprint (self.node_details_map)
     
     def getNodesDecription (self):
         '''Getter.

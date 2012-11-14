@@ -85,7 +85,6 @@ class Comm0 (QObject):
         self.emit (SIGNAL ('addLink_MSignal(int, int)'), inSocket_id, outSocket_id)
         
     def emitDeleteLinkMSignal (self, inSocket_id, outSocket_id):
-        print '*** just shot delete ', inSocket_id, outSocket_id
         self.emit (SIGNAL ('deleteLink_MSignal(int, int)'), inSocket_id, outSocket_id)
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -116,13 +115,10 @@ class Comm0 (QObject):
     # misc
     
     def setHoveredSocketId (self, socket_id):
-        
-        print 'hovered socket : '+str(socket_id)
         self.hovered_socket_id = socket_id
     
     def setHoveredItemId (self, node_id):
-        
-        print 'hovered node : '+str(node_id)
         self.hovered_node_id = node_id
     
-    def getHoveredItemId (self): return self.hovered_node_id
+    def getHoveredItemId (self):
+        return self.hovered_node_id

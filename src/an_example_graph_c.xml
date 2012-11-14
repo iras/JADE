@@ -2,8 +2,8 @@
 <clusterGroup id="" label="">
 	<cluster label="aa">
 		<nodes>
-			<Five_Adder id="1" x="-941.910614014" y="-376.602157593"/>
-			<IntegerMatcher id="2" x="-576.624511719" y="-384.643035889" value="0"/>
+			<Five_Adder id="1" x="-921.910644531" y="-356.602172852"/>
+			<IntegerMatcher id="2" x="-556.624511719" y="-364.643035889" value="0"/>
 		</nodes>
 		<links>
 			<link>
@@ -18,9 +18,9 @@
 	</cluster>
 	<cluster label="bbee">
 		<nodes>
-			<State01Closed id="3" x="-946.505401611" y="-244.501842499" value="value" value2="value 2"/>
-			<TempState id="5" x="-627.167221069" y="-177.877334595" view="''" text="''"/>
-			<Five_Adder id="7" x="-605.814094543" y="-278.286220074"/>
+			<State01Closed id="3" x="-926.505371094" y="-224.501846313" value="value" value2="value 2"/>
+			<TempState id="5" x="-607.167236328" y="-157.877334595" view="''" text="''"/>
+			<Five_Adder id="7" x="-585.814086914" y="-258.286224365"/>
 		</nodes>
 		<links>
 			<link>
@@ -43,8 +43,8 @@
 	</cluster>
 	<cluster label="ccww">
 		<nodes>
-			<State01Closed id="6" x="-936.167114258" y="-63.0075073242" value="open" value2="111"/>
-			<IntegerMatcher id="8" x="-655.271362305" y="-57.7993774414" value="0"/>
+			<State01Closed id="6" x="-916.167114258" y="-43.0075073242" value="open" value2="111"/>
+			<IntegerMatcher id="8" x="-635.271362305" y="-37.7993774414" value="0"/>
 		</nodes>
 		<links>
 			<link>
@@ -55,8 +55,8 @@
 	</cluster>
 	<cluster label="fourth">
 		<nodes>
-			<TempState id="9" x="-932.659393311" y="71.3177185059" view="''" text="''"/>
-			<IntegerMatcher id="10" x="-674.631797791" y="58.7650146484" value="0"/>
+			<TempState id="9" x="-912.659423828" y="91.3177185059" view="''" text="''"/>
+			<IntegerMatcher id="10" x="-654.631774902" y="78.7650146484" value="0"/>
 		</nodes>
 		<links>
 			<link>
@@ -67,49 +67,25 @@
 	</cluster>
 	<cluster label="">
 		<nodes>
-			<IntegerMatcher id="11" x="-934.054138184" y="214.976318359" value="0"/>
-			<Five_Adder id="12" x="-664.868598938" y="194.055175781"/>
-			<State01Closed id="13" x="-659.289619446" y="262.397583008" value="close" value2="EXTRA"/>
+			<IntegerMatcher id="11" x="-914.054138184" y="234.976318359" value="0"/>
 		</nodes>
 		<links>
-			<link>
-				<out id="11" connector="isLessThan"/>
-				<in id="12" connector="input2"/>
-			</link>
-			<link>
-				<out id="11" connector="isLessThan"/>
-				<in id="13" connector="input2"/>
-			</link>
 		</links>
 	</cluster>
 	<cluster label="">
 		<nodes>
-			<Five_Adder id="14" x="-705.316162109" y="414.424682617"/>
-			<IntegerMatcher id="15" x="-921.501434326" y="397.687744141" value="0"/>
-			<Five_Adder id="16" x="-918.71194458" y="485.556640625"/>
+			<IntegerMatcher id="15" x="-901.501403809" y="417.687744141" value="0"/>
+			<Five_Adder id="16" x="-898.711914062" y="505.556640625"/>
 		</nodes>
 		<links>
-			<link>
-				<out id="16" connector="sum"/>
-				<in id="14" connector="input2"/>
-			</link>
 		</links>
 	</cluster>
 	<cluster label="">
-		<nodes>
-			<State01Closed id="17" x="-670.447563171" y="498.10925293" value="close" value2="EXTRA"/>
-		</nodes>
-		<links>
-			<link>
-				<out id="15" connector="isLessThan"/>
-				<in id="17" connector="input2"/>
-			</link>
-		</links>
 	</cluster>
 	<cluster label="">
 		<nodes>
-			<TempState id="18" x="-851.764251709" y="650.136352539" view="''" text="''"/>
-			<TempState id="19" x="-664.868591309" y="650.136352539" view="''" text="''"/>
+			<TempState id="18" x="-831.764282227" y="670.136352539" view="''" text="''"/>
+			<TempState id="19" x="-644.868591309" y="670.136352539" view="''" text="''"/>
 		</nodes>
 		<links>
 			<link>
@@ -120,8 +96,8 @@
 	</cluster>
 	<cluster label="">
 		<nodes>
-			<IntegerMatcher id="20" x="-291.077301025" y="26.6859130859" value="0"/>
-			<TempState id="21" x="-49.7866210938" y="55.9755554199" view="''" text="''"/>
+			<IntegerMatcher id="20" x="-271.077301025" y="46.6859130859" value="0"/>
+			<TempState id="21" x="-29.7866210938" y="75.9755554199" view="''" text="''"/>
 		</nodes>
 		<links>
 			<link>

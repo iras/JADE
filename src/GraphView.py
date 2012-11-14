@@ -30,7 +30,6 @@ class GraphView ():
         
         # remove wires
         tmp_ls0 = self.getListSelectedWires()
-        print 'removeSelectedWires', tmp_ls0
         qq = len(tmp_ls0)
         for i in range (qq-1, -1, -1):
             ls = tmp_ls0[i].get2HooksIds ()
@@ -38,7 +37,6 @@ class GraphView ():
         
         # remove tags
         tmp_ls1 = self.getListSelectedTags()
-        print 'removeSelectedTags', tmp_ls1
         qq = len(tmp_ls1)
         for i in range (qq-1, -1, -1):
             self.graph.removeNodeListItemFromItsCluster (tmp_ls1[i].getId ())
@@ -150,9 +148,7 @@ class GraphView ():
             print 'Sockets must be one of each kind. No connection will be made now.'
     
     def addWire (self, s_in_id, s_out_id):
-        
-        print 'will extend the wire between ',s_in_id,' and ',s_out_id
-        
+                
         hook_in  = self.getHook (s_in_id)
         hook_out = self.getHook (s_out_id)
         wire_sin_sout = Wires0.Wire0 (hook_in, hook_out)
@@ -234,7 +230,7 @@ class GraphView ():
     # - -   import / export   - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def delegateExport (self):
-        print 'delegateExport'
+        
         # create a dictionary which associates a node's id with its x,y position.
         tag_position_dict = {}
         for tag in self._tag_list:
@@ -243,5 +239,5 @@ class GraphView ():
         return self.graph.exportGraph (tag_position_dict)
     
     def delegateImport (self, XML_content):
-        print 'delegateImport'
+        
         self.graph.importGraph (XML_content)

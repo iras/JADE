@@ -133,9 +133,7 @@ class HookBox0 (QGraphicsItem):
     def switchOffHook (self, node_id, socket_id):
         
         if self.socket_id==socket_id:
-            
-            print 'switch off hook ',str(self.socket_id)
-            
+                        
             self.parent.scrollRestOfHooksUp (self.hookType)
             self.setVisible (False)
     

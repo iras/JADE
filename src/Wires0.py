@@ -98,7 +98,6 @@ class Wire0 (QGraphicsLineItem):
     def switchOffLink (self, s_in_id, s_out_id):
         
         if self.s_in.getSocketId()==s_in_id and self.s_out.getSocketId()==s_out_id:
-            print 'switchOffLink : ', self.s_in.getSocketId(), self.s_out.getSocketId()
             self.setVisible (False)
     
     # - - -  getters/setters  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

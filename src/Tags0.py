@@ -108,8 +108,6 @@ class Tag1 (QGraphicsItem):
             olen = len (self.outHooks)
             for i in range (0, olen):
                 self.outHooks[i].moveUp ()
-        else:
-            print 'ERROR : there''s no more than two rails per socket'
         
         return [marker, tmp_index]
     
@@ -142,7 +140,6 @@ class Tag1 (QGraphicsItem):
     def removeInHook  (self, node_id, inSocketId):
         
         if self.node_id==node_id:
-            print 'RemoveInHook', node_id, inSocketId
             
             l = len (self.inHooks)
             for i in range(0, l):
@@ -155,7 +152,6 @@ class Tag1 (QGraphicsItem):
     def removeOutHook (self, node_id, outSocketId):
         
         if self.node_id==node_id:
-            print 'RemoveOutHook', node_id, outSocketId
             
             l = len (self.outHooks)
             for i in range(0, l):
@@ -191,7 +187,6 @@ class Tag1 (QGraphicsItem):
     def appendInHook (self, node_id, inSocketId):
         
         if self.node_id==node_id:
-            print 'appendInHook', node_id, inSocketId
             
             no_ins  = len (self.node_model.getIns ())
             no_outs = len (self.node_model.getOuts())
@@ -213,7 +208,6 @@ class Tag1 (QGraphicsItem):
     def appendOutHook (self, node_id, outSocketId):
         
         if self.node_id==node_id:
-            print 'appendOutHook',node_id, outSocketId
             
             no_ins  = len (self.node_model.getIns ())
             no_outs = len (self.node_model.getOuts())
@@ -314,7 +308,6 @@ class Tag1 (QGraphicsItem):
         # deal with the harpoon.
         if not self.helper.isTimerEnded():
             self.setSelected (True)
-            print "Tag1.hoverLeaveEvent : open PICKER"
     
     # - - -  getters/setters  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     

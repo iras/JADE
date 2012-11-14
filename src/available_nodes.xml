@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <available_nodes>
   <node>
-    <class>IntegerMatcher</class>
+    <class>m:FloatMatcher</class>
     <props>
       <prop>
-        <name>value</name>
+        <name>number</name>
         <type>float</type>
-        <default>0</default>
+        <default>0.0</default>
       </prop>
     </props>
     <inputs>
       <input>
         <name>input</name>
+        <type>Connector</type>
+      </input>
+      <input>
+        <name>reference</name>
         <type>Connector</type>
       </input>
     </inputs>
@@ -28,18 +32,17 @@
         <name>isLessThan</name>
         <type>Connector</type>
       </output>
-      <output>
-      	<name>isUndefined</name>
-      	<type>Connector</type>
-      </output>
-      <output>
-      	<name>isUndefined2</name>
-      	<type>Connector</type>
-      </output>
     </outputs>
   </node>
   <node>
-    <class>Five_Adder</class>
+    <class>m:MultiAdder</class>
+    <props>
+      <prop>
+        <name>inputs_no</name>
+        <type>int</type>
+        <default>0</default>
+      </prop>
+    </props>
     <inputs>
       <input>
         <name>input1</name>
@@ -53,14 +56,6 @@
         <name>input3</name>
         <type>Connector</type>
       </input>
-	    <input>
-		    <name>input4</name>
-		    <type>Connector</type>
-	    </input>
-	    <input>
-		    <name>input5</name>
-		    <type>Connector</type>
-	    </input>
     </inputs>
     <outputs>
       <output>
@@ -74,28 +69,15 @@
     </outputs>
   </node>
   <node>
-    <class>State01Closed</class>
+    <class>t:StateClosed</class>
     <props>
       <prop>
-        <name>value</name>
-        <type>String</type>
-        <default>close</default>
-      </prop>
-      <prop>
-        <name>value2</name>
-        <type>String</type>
-        <default>EXTRA</default>
+        <name>state</name>
+        <type>int</type>
+        <default>None</default>
       </prop>
     </props>
     <inputs>
-      <input>
-        <name>input1</name>
-        <type>Connector</type>
-      </input>
-	    <input>
-        <name>input2</name>
-        <type>Connector</type>
-      </input>
 	    <input>
         <name>aux_input</name>
         <type>Connector</type>
@@ -109,17 +91,240 @@
     </outputs>
   </node>
   <node>
-    <class>TempState</class>
+    <class>t:StateOpened</class>
     <props>
       <prop>
-        <name>view</name>
-        <type>String</type>
-        <default>''</default>
+        <name>state</name>
+        <type>int</type>
+        <default>None</default>
+      </prop>
+    </props>
+    <inputs>
+      <input>
+        <name>aux_input</name>
+        <type>Connector</type>
+      </input>
+    </inputs>
+    <outputs>
+      <output>
+        <name>triggered</name>
+        <type>Connector</type>
+      </output>
+    </outputs>
+  </node>
+  <node>
+    <class>t:StateOpened</class>
+    <props>
+      <prop>
+        <name>state</name>
+        <type>int</type>
+        <default>None</default>
       </prop>
       <prop>
         <name>text</name>
         <type>String</type>
         <default>''</default>
+      </prop>
+    </props>
+    <inputs>
+      <input>
+        <name>input</name>
+        <type>Connector</type>
+      </input>
+    </inputs>
+    <outputs>
+      <output>
+        <name>triggered</name>
+        <type>Connector</type>
+      </output>
+    </outputs>
+  </node>
+  <node>
+    <class>t:AimCompleted</class>
+    <props>
+      <prop>
+        <name>aimId</name>
+        <type>int</type>
+        <default>None</default>
+      </prop>
+      <prop>
+        <name>text</name>
+        <type>String</type>
+        <default>''</default>
+      </prop>
+    </props>
+    <inputs>
+      <input>
+        <name>input</name>
+        <type>Connector</type>
+      </input>
+    </inputs>
+    <outputs>
+      <output>
+        <name>triggered</name>
+        <type>Connector</type>
+      </output>
+    </outputs>
+  </node>
+  <node>
+    <class>a:DisableMouse</class>
+    <props/>
+    <inputs>
+      <input>
+        <name>input</name>
+        <type>Connector</type>
+      </input>
+    </inputs>
+    <outputs>
+      <output>
+        <name>output</name>
+        <type>Connector</type>
+      </output>
+    </outputs>
+  </node>
+  <node>
+    <class>a:EnableMouse</class>
+    <props/>
+    <inputs>
+      <input>
+        <name>input</name>
+        <type>Connector</type>
+      </input>
+    </inputs>
+    <outputs>
+      <output>
+        <name>output</name>
+        <type>Connector</type>
+      </output>
+    </outputs>
+  </node>
+  <node>
+    <class>a:EnableUI</class>
+    <props/>
+    <inputs>
+      <input>
+        <name>input</name>
+        <type>Connector</type>
+      </input>
+    </inputs>
+    <outputs>
+      <output>
+        <name>output</name>
+        <type>Connector</type>
+      </output>
+    </outputs>
+  </node>
+  <node>
+    <class>a:DisableUI</class>
+    <props/>
+    <inputs>
+      <input>
+        <name>input</name>
+        <type>Connector</type>
+      </input>
+    </inputs>
+    <outputs>
+      <output>
+        <name>output</name>
+        <type>Connector</type>
+      </output>
+    </outputs>
+  </node>
+  <node>
+    <class>a:PlayJingle</class>
+    <props>
+      <prop>
+        <name>jingle_no</name>
+        <type>int</type>
+        <default>None</default>
+      </prop>
+    </props>
+    <inputs>
+      <input>
+        <name>input</name>
+        <type>Connector</type>
+      </input>
+    </inputs>
+    <outputs>
+      <output>
+        <name>output</name>
+        <type>Connector</type>
+      </output>
+    </outputs>
+  </node>
+  <node>
+    <class>a:FadeJingleOut</class>
+    <props>
+      <prop>
+        <name>jingle_no</name>
+        <type>int</type>
+        <default>None</default>
+      </prop>
+    </props>
+    <inputs>
+      <input>
+        <name>input</name>
+        <type>Connector</type>
+      </input>
+    </inputs>
+    <outputs>
+      <output>
+        <name>output</name>
+        <type>Connector</type>
+      </output>
+    </outputs>
+  </node>
+  <node>
+    <class>a:FadeJingleIn</class>
+    <props>
+      <prop>
+        <name>jingle_no</name>
+        <type>int</type>
+        <default>None</default>
+      </prop>
+    </props>
+    <inputs>
+      <input>
+        <name>input</name>
+        <type>Connector</type>
+      </input>
+    </inputs>
+    <outputs>
+      <output>
+        <name>output</name>
+        <type>Connector</type>
+      </output>
+    </outputs>
+  </node>
+  <node>
+    <class>a:PushInQueue</class>
+    <props>
+      <prop>
+        <name>jingle_no</name>
+        <type>int</type>
+        <default>None</default>
+      </prop>
+    </props>
+    <inputs>
+      <input>
+        <name>input</name>
+        <type>Connector</type>
+      </input>
+    </inputs>
+    <outputs>
+      <output>
+        <name>output</name>
+        <type>Connector</type>
+      </output>
+    </outputs>
+  </node>
+  <node>
+    <class>a:PopFromQueue</class>
+    <props>
+      <prop>
+        <name>jingle_no</name>
+        <type>int</type>
+        <default>None</default>
       </prop>
     </props>
     <inputs>
