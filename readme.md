@@ -10,7 +10,8 @@ the node definitions in the XML file available_nodes. A kismet©-like editor is 
 specific nodes. By changing the node definition, a dialogue mapping tool can be easily achieved too.
 
 The codebase encompasses both the standalone and the Maya client. And, except for two initial view classes, all the rest of the
-classes is shared between the clients. JADE is documented (EpyDoc, cfr. http://epydoc.sourceforge.net/) and the JADE model (graph.py, node.py, socket.py) is unit tested.
+classes is shared between the clients. JADE is documented (EpyDoc, cfr. http://epydoc.sourceforge.net/) and most of the JADE mapping
+tool's model (graph.py, node.py, socket.py) is unit tested.
 
 ![JADE mapping tool - overall approximated class structure](http://www.stc0.co.uk/JADE_classes_rough_structure.jpg)
 
@@ -43,9 +44,9 @@ In the meantime, changing the zoom level will make the connection appear.
 
 
 ## Version 0.4 wishlist:
-(1) adding undo functionality.
+(1) undo functionality.
 (2) ability to merge two imported group of clusters in a unique file.
 (3) tube-like connections instead of straight dotted lines.
-(4) add unit tests for the props.
+(4) complete unit tests for props and cluster in the model.
 
 
