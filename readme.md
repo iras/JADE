@@ -11,8 +11,8 @@ specific nodes. By changing the node definition, a dialogue mapping tool can be 
 
 The codebase encompasses both the standalone and the Maya client. And, except for two initial view classes, all the rest of the
 classes is shared between the clients. JADE is documented (EpyDoc, cfr. http://epydoc.sourceforge.net/) and most of the JADE mapping
-tool's model (graph.py, node.py, socket.py) is unit tested. An approximate class structure for the JADE mapping tool is
-shown right below.
+tool's model (graph.py, node.py, socket.py) is unit tested. An approximate class structure for the JADE mapping tool
+is shown right below.
 
 ![JADE mapping tool - overall approximated class structure](http://www.stc0.co.uk/JADE_classes_rough_structure.jpg)
 
