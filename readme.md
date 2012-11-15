@@ -12,6 +12,8 @@ specific nodes. By changing the node definition, a dialogue mapping tool can be 
 The codebase encompasses both the standalone and the Maya client. And, except for two initial view classes, all the rest of the
 classes is shared between the clients. JADE is documented (EpyDoc, cfr. http://epydoc.sourceforge.net/) and the JADE model (graph.py, node.py, socket.py) is unit tested.
 
+![JADE mapping tool - overall approximated class structure](http://www.stc0.co.uk/JADE_classes_rough_structure.jpg)
+
 ## How to use it
 On running the client, please load the XML file description (available nodes) first, then mouse right-click
 on the graphics view to create the tags, one by one. Right clicking on a tag (plus Ctrl or Alt pressed at once)
