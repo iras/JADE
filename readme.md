@@ -22,9 +22,9 @@ will allow hook creation and by click-and-dragging the dash line from a hook ove
 The buttons save and load are pretty self-explanatory.
 
 ## Installation
-*Maya scripted plugin : ClientMaya.py needs calling from within Maya by means of the additional Python script "MayaLauncherPythonScript" after
+ * Maya scripted plugin : ClientMaya.py needs calling from within Maya by means of the additional Python script "MayaLauncherPythonScript" after
 customising the physical path in it. Such script will reside in a Maya Script Editor's Python page and needs to be run from Maya.
-*Standalone app : Mac OS X uses py2app while Windows system use py2exe, in any way the python file to target is ClientStandAlone.py.
+ * Standalone app : Mac OS X uses py2app while Windows system use py2exe, in any way the python file to target is ClientStandAlone.py.
 On a Mac, some installation notes are also available here.
 ## Some Definitions
 > ### Cluster
