@@ -27,13 +27,18 @@ class Graph ():
         '''
         # signal global operator
         self.comm = Comm0.Comm0 ()
+        
         self.node_details_map = {}
+        
+        self.initGraph ()
+    
+    def initGraph (self):
         
         self._cluster_list = []
         self._node_list = []
         
-        self.graph_io = gio.IO()
-        
+        self.graph_io = gio.IO ()
+    
     def getComm (self):
         '''Getter.
                 

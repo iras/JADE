@@ -19,12 +19,24 @@ class GraphView ():
 
     def __init__(self, graph, utility, parent = None):
         
-        self._tag_list  = []
-        self._wire_list = []
-        
         self.graph   = graph
         self.comm    = self.graph.getComm()
         self.utility = utility
+        
+        self.initGraphViewLists ()
+    
+    def initGraphViewLists (self):
+        
+        self._tag_list  = []
+        self._wire_list = []
+    
+    def initComm (self):
+        
+        self.comm.initCounters ()
+    
+    def initModel (self):
+        
+        self.graph.initGraph ()
     
     def removeSelectedItems (self):
         
@@ -41,16 +53,6 @@ class GraphView ():
         for i in range (qq-1, -1, -1):
             self.graph.removeNodeListItemFromItsCluster (tmp_ls1[i].getId ())
             self.graph.removeNode (tmp_ls1[i].getId ())
-    
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-    def isTag (self, obj):
-        
-        flag = False
-        if type(obj) == Tags0.Tag1:
-            flag = True
-        
-        return flag
     
     # - - -  Cluster-page related methods  - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -206,6 +208,14 @@ class GraphView ():
         return self.comm
         
     # - -  misc  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    def isTag (self, obj):
+        
+        flag = False
+        if type(obj) == Tags0.Tag1:
+            flag = True
+        
+        return flag
     
     def getListSelectedTags (self):
         

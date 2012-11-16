@@ -95,7 +95,7 @@ class View (QFrame):
         self.pushButton.setText (QtGui.QApplication.translate ("Form", "add cluster", None, QtGui.QApplication.UnicodeUTF8))
         self._toolBox.setSizePolicy (sizePolicy)
         
-        # adding the first cluster - a cluster is always present.
+        # adding the first cluster to the toolbox - a cluster is always present!
         self._cluster_page_list = []
         self.connect (self.pushButton, SIGNAL ("clicked()"), self.addCluster)  # connect the 'add-cluster' button to the method that taps into the model for cluster addition.
         self.connect (self.graph_view.getComm(), SIGNAL ("addCluster_MSignal(int)"), self.addClusterPage)
@@ -139,6 +139,11 @@ class View (QFrame):
         self.printOutBtn.setFont (self.font)
         self.printOutBtn.setEnabled (True)
         
+        self.newJADESceneBtn = QPushButton()
+        self.newJADESceneBtn.setText ("new")
+        self.newJADESceneBtn.setFont (self.font)
+        self.newJADESceneBtn.setEnabled (True)
+        
         self.loadNodesDescrpBtn = QPushButton()
         self.loadNodesDescrpBtn.setText ("load Nodes Description")
         self.loadNodesDescrpBtn.setFont (self.font)
@@ -163,6 +168,7 @@ class View (QFrame):
         labelLayout = QHBoxLayout ()
         self.label = QLabel (name)
         self.label.setFont (self.font)
+        labelLayout.addWidget (self.newJADESceneBtn)
         labelLayout.addWidget (self.loadNodesDescrpBtn)
         labelLayout.addWidget (self.graphLoadBtn)
         labelLayout.addWidget (self.graphSaveBtn)
@@ -194,6 +200,8 @@ class View (QFrame):
         self.printer = QPrinter (QPrinter.HighResolution)
         
         self.prev_selection_list = []
+        
+        self.isClusterRemovalOverridden = False
     
     def selectionChanged (self):
         
@@ -256,17 +264,36 @@ class View (QFrame):
         receiver2 = lambda value : self.updateClusterModelName (new_cluster_id, value)
         self.connect (tmp_e, SIGNAL ("textChanged(QString)"), receiver2)
     
+    def removeAllClusters (self):
+        
+        copy_list = list (self._cluster_page_list)
+        
+        self.isClusterRemovalOverridden = True
+        for item in copy_list:
+                self.removeCluster (item[0])
+        
+        self.graph_view.initGraphViewLists ()
+        self.graph_view.initComm  ()
+        self.graph_view.initModel ()
+        
+        self._cluster_page_list = []
+        self.addCluster () # add the first cluster. At least one cluster needs to be always present.
+        
+        self.isClusterRemovalOverridden = False # remove override
+    
     def removeCluster (self, cluster_id):
         
         self.graph_view.delegateClusterRemoval (cluster_id)
     
     def removeClusterPage (self, cluster_id):
         
+        threshold = 1 if self.isClusterRemovalOverridden==False else 0
+        
         qq = len(self._cluster_page_list)
-        if qq > 1:
+        if qq > threshold:
             for i in range (qq-1, -1, -1):
                 if int(self._cluster_page_list[i][0]) == cluster_id:
-                    self._toolBox.removeItem (self._toolBox.currentIndex())
+                    self._toolBox.removeItem (self._toolBox.indexOf(self._cluster_page_list[i][1]))
                     del self._cluster_page_list[i]
                     break
         
@@ -342,6 +369,10 @@ class View (QFrame):
         if aa != QString (u''): # it can be equal to QString(u'') when the user presses the Escape key, so in that circumstance, nothing is returned.
             self.graph_view.setNodesDescription (open(aa).read())
     
+    def resetScene (self):
+        
+        self.removeAllClusters()
+    
     def exportGraph (self):
         
         aa = QFileDialog (self).getSaveFileName ()
@@ -371,7 +402,8 @@ class View (QFrame):
 
     def wireViewItemsUp (self):
                 
-        self.connect (self.printOutBtn,       SIGNAL ("clicked()"), self.printOutGraph)
+        self.connect (self.newJADESceneBtn,   SIGNAL ("clicked()"), self.resetScene)
         self.connect (self.loadNodesDescrpBtn,SIGNAL ("clicked()"), self.importNodesDescription)
         self.connect (self.graphSaveBtn,      SIGNAL ("clicked()"), self.exportGraph)
         self.connect (self.graphLoadBtn,      SIGNAL ("clicked()"), self.importGraph)
+        self.connect (self.printOutBtn,       SIGNAL ("clicked()"), self.printOutGraph)

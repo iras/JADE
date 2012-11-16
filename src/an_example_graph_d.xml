@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clusterGroup id="" label="">
+	<cluster label="cluster _example_1">
+		<nodes>
+			<a_EnableUI id="1" x="-483.234008789" y="-879.483154297"/>
+			<t_StateOpened id="2" x="-222.479476929" y="-943.810302734" state="101" text="''"/>
+			<a_PlayJingle id="3" x="-227.074281944" y="-823.196944487" jingle_no="12"/>
+			<t_AimCompleted id="4" x="6.11148638431" y="-890.970126202" aimId="None" text="''"/>
+			<t_StateClosed id="9" x="243.892048533" y="-907.051908242" state="12"/>
+		</nodes>
+		<links>
+			<link>
+				<out id="1" connector="output"/>
+				<in id="2" connector="input"/>
+			</link>
+			<link>
+				<out id="1" connector="output"/>
+				<in id="3" connector="input"/>
+			</link>
+			<link>
+				<out id="2" connector="triggered"/>
+				<in id="4" connector="input"/>
+			</link>
+			<link>
+				<out id="3" connector="output"/>
+				<in id="4" connector="input"/>
+			</link>
+			<link>
+				<out id="4" connector="triggered"/>
+				<in id="9" connector="aux_input"/>
+			</link>
+		</links>
+	</cluster>
+	<cluster label="example_2">
+		<nodes>
+			<a_EnableUI id="5" x="-460.260040283" y="-665.825256348"/>
+			<a_FadeJingleIn id="7" x="-294.847473145" y="-611.836425781" jingle_no="11"/>
+			<t_StateOpened id="8" x="-134.029708862" y="-666.973937988" state="102" text="''"/>
+			<a_FadeJingleOut id="10" x="31.3828516006" y="-669.271362305" jingle_no="None"/>
+			<t_StateClosed id="16" x="242.743347168" y="-687.650512695" state="102"/>
+			<a_DisableMouse id="17" x="417.345489502" y="-692.245361328"/>
+			<a_DisableUI id="18" x="274.906908386" y="-638.256483629"/>
+		</nodes>
+		<links>
+			<link>
+				<out id="5" connector="output"/>
+				<in id="7" connector="input"/>
+			</link>
+			<link>
+				<out id="5" connector="output"/>
+				<in id="8" connector="input"/>
+			</link>
+			<link>
+				<out id="7" connector="output"/>
+				<in id="8" connector="input"/>
+			</link>
+			<link>
+				<out id="8" connector="triggered"/>
+				<in id="10" connector="input"/>
+			</link>
+			<link>
+				<out id="10" connector="output"/>
+				<in id="16" connector="aux_input"/>
+			</link>
+			<link>
+				<out id="16" connector="triggered"/>
+				<in id="17" connector="input"/>
+			</link>
+			<link>
+				<out id="10" connector="output"/>
+				<in id="18" connector="input"/>
+			</link>
+		</links>
+	</cluster>
+	<cluster label="example_3">
+		<nodes>
+			<m_FloatMatcher id="12" x="-188.018539429" y="-463.65435791" number="0.0"/>
+			<t_StateOpened id="13" x="-519.992370605" y="-468.249145508" state="103" text="''"/>
+			<a_PushInQueue id="15" x="-358.025878906" y="-344.189746003" jingle_no="None"/>
+			<t_StateClosed id="22" x="215.174576658" y="-310.877488738" state="None"/>
+			<m_MultiAdder id="19" x="96.8586578369" y="-482.033538818" inputs_no="0"/>
+			<a_PopFromQueue id="20" x="292.137370511" y="-364.866311224" jingle_no="None"/>
+		</nodes>
+		<links>
+			<link>
+				<out id="13" connector="triggered"/>
+				<in id="12" connector="reference"/>
+			</link>
+			<link>
+				<out id="15" connector="output"/>
+				<in id="12" connector="input"/>
+			</link>
+			<link>
+				<out id="13" connector="triggered"/>
+				<in id="15" connector="input"/>
+			</link>
+			<link>
+				<out id="12" connector="isEqualTo"/>
+				<in id="22" connector="aux_input"/>
+			</link>
+			<link>
+				<out id="12" connector="isLessThan"/>
+				<in id="19" connector="input2"/>
+			</link>
+			<link>
+				<out id="12" connector="isGreaterThan"/>
+				<in id="19" connector="input3"/>
+			</link>
+			<link>
+				<out id="12" connector="isEqualTo"/>
+				<in id="19" connector="input1"/>
+			</link>
+			<link>
+				<out id="19" connector="sum"/>
+				<in id="20" connector="input"/>
+			</link>
+			<link>
+				<out id="12" connector="isEqualTo"/>
+				<in id="20" connector="input"/>
+			</link>
+		</links>
+	</cluster>
+	<cluster label="example_4">
+		<nodes>
+			<a_EnableUI id="23" x="-531.479370117" y="-119.044845581"/>
+			<a_FadeJingleIn id="24" x="-301.739685059" y="-107.557861328" jingle_no="None"/>
+			<t_StateOpened id="25" x="-78.8921868673" y="-100.665674862" state="None" text="''"/>
+			<t_AimCompleted id="26" x="-34.0929506213" y="-163.844069682" aimId="None" text="''"/>
+			<t_StateClosed id="27" x="193.349319458" y="-121.342254639" state="None"/>
+		</nodes>
+		<links>
+			<link>
+				<out id="23" connector="output"/>
+				<in id="24" connector="input"/>
+			</link>
+			<link>
+				<out id="24" connector="output"/>
+				<in id="25" connector="input"/>
+			</link>
+			<link>
+				<out id="24" connector="output"/>
+				<in id="26" connector="input"/>
+			</link>
+			<link>
+				<out id="26" connector="triggered"/>
+				<in id="27" connector="aux_input"/>
+			</link>
+		</links>
+	</cluster>
+	<cluster label="example_5">
+		<nodes>
+			<a_EnableUI id="28" x="-525.735839844" y="33.73204422"/>
+			<t_StateOpened id="29" x="-513.100186298" y="78.5312684221" state="104" text="104"/>
+			<a_FadeJingleIn id="31" x="-310.929260254" y="99.2078170776" jingle_no="None"/>
+			<a_EnableMouse id="32" x="-110.171966553" y="68.2917251587"/>
+			<t_AimCompleted id="33" x="135.035478492" y="95.4481251869" aimId="None" text="''"/>
+			<t_StateClosed id="34" x="362.0" y="34.0" state="None"/>
+		</nodes>
+		<links>
+			<link>
+				<out id="28" connector="output"/>
+				<in id="31" connector="input"/>
+			</link>
+			<link>
+				<out id="29" connector="triggered"/>
+				<in id="31" connector="input"/>
+			</link>
+			<link>
+				<out id="31" connector="output"/>
+				<in id="32" connector="input"/>
+			</link>
+			<link>
+				<out id="28" connector="output"/>
+				<in id="32" connector="input"/>
+			</link>
+			<link>
+				<out id="32" connector="output"/>
+				<in id="33" connector="input"/>
+			</link>
+			<link>
+				<out id="33" connector="triggered"/>
+				<in id="34" connector="aux_input"/>
+			</link>
+			<link>
+				<out id="32" connector="output"/>
+				<in id="34" connector="aux_input"/>
+			</link>
+		</links>
+	</cluster>
+	<cluster label="example_6">
+		<nodes>
+			<a_EnableUI id="35" x="-525.0" y="303.0"/>
+			<t_StateOpened id="36" x="-448.0" y="383.0" state="123" text="''"/>
+			<m_MultiAdder id="37" x="-226.0" y="311.0" inputs_no="0"/>
+			<a_PushInQueue id="38" x="6.0" y="306.0" jingle_no="None"/>
+			<a_DisableUI id="39" x="207.578979492" y="377.157958984"/>
+			<t_StateClosed id="40" x="271.0" y="327.0" state="123"/>
+		</nodes>
+		<links>
+			<link>
+				<out id="35" connector="output"/>
+				<in id="37" connector="input2"/>
+			</link>
+			<link>
+				<out id="36" connector="triggered"/>
+				<in id="37" connector="input3"/>
+			</link>
+			<link>
+				<out id="37" connector="check"/>
+				<in id="38" connector="input"/>
+			</link>
+			<link>
+				<out id="38" connector="output"/>
+				<in id="39" connector="input"/>
+			</link>
+			<link>
+				<out id="38" connector="output"/>
+				<in id="40" connector="aux_input"/>
+			</link>
+		</links>
+	</cluster>
+	<cluster label="example_7">
+		<nodes>
+			<t_StateOpened id="41" x="-530.0" y="554.0" state="126" text="''"/>
+			<a_PushInQueue id="42" x="-270.859605337" y="511.551228122" jingle_no="123"/>
+			<a_PlayJingle id="43" x="-227.951326621" y="562.629842809" jingle_no="None"/>
+			<a_FadeJingleIn id="44" x="-200.194314856" y="661.379488243" jingle_no="None"/>
+			<a_PopFromQueue id="45" x="139.169441223" y="602.450317383" jingle_no="None"/>
+			<a_DisableUI id="46" x="355.879652475" y="535.692333422"/>
+			<a_PopFromQueue id="47" x="389.928600512" y="575.807930997" jingle_no="None"/>
+		</nodes>
+		<links>
+			<link>
+				<out id="41" connector="triggered"/>
+				<in id="42" connector="input"/>
+			</link>
+			<link>
+				<out id="41" connector="triggered"/>
+				<in id="43" connector="input"/>
+			</link>
+			<link>
+				<out id="41" connector="triggered"/>
+				<in id="44" connector="input"/>
+			</link>
+			<link>
+				<out id="44" connector="output"/>
+				<in id="45" connector="input"/>
+			</link>
+			<link>
+				<out id="45" connector="output"/>
+				<in id="46" connector="input"/>
+			</link>
+			<link>
+				<out id="45" connector="output"/>
+				<in id="47" connector="input"/>
+			</link>
+		</links>
+	</cluster>
+	<cluster label="example_8">
+		<nodes>
+			<a_EnableUI id="48" x="-531.423339844" y="770.582885742"/>
+			<t_StateOpened id="50" x="-270.606292725" y="834.741088867" state="None" text="''"/>
+			<a_PushInQueue id="51" x="-70.9104457658" y="870.34929406" jingle_no="None"/>
+			<a_EnableMouse id="52" x="-269.211547852" y="765.00390625"/>
+			<a_FadeJingleIn id="53" x="-70.9992753565" y="764.511752179" jingle_no="None"/>
+			<t_AimCompleted id="54" x="140.428142599" y="760.2430957" aimId="None" text="''"/>
+			<a_FadeJingleOut id="55" x="347.669889753" y="759.670942758" jingle_no="None"/>
+		</nodes>
+		<links>
+			<link>
+				<out id="48" connector="output"/>
+				<in id="50" connector="input"/>
+			</link>
+			<link>
+				<out id="50" connector="triggered"/>
+				<in id="51" connector="input"/>
+			</link>
+			<link>
+				<out id="48" connector="output"/>
+				<in id="52" connector="input"/>
+			</link>
+			<link>
+				<out id="52" connector="output"/>
+				<in id="53" connector="input"/>
+			</link>
+			<link>
+				<out id="53" connector="output"/>
+				<in id="54" connector="input"/>
+			</link>
+			<link>
+				<out id="54" connector="triggered"/>
+				<in id="55" connector="input"/>
+			</link>
+		</links>
+	</cluster>
+	<cluster label="">
+		<nodes>
+			<a_EnableUI id="56" x="-632.523915187" y="-809.289608451"/>
+		</nodes>
+		<links>
+		</links>
+	</cluster>
+</clusterGroup>

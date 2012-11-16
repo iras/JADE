@@ -25,6 +25,10 @@ class Comm0 (QObject):
         super (Comm0, self).__init__ (parent)
         QObject.__init__ (self)
         
+        self.initCounters ()
+    
+    def initCounters (self):
+        
         self.id_cluster_counter= 0
         self.id_node_counter   = 0
         self.id_socket_counter = 0
