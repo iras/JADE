@@ -23,7 +23,7 @@ The buttons save and load are pretty self-explanatory.
 
 ## Installation
  * Maya scripted plugin : ClientMaya.py needs calling from within Maya by means of the additional Python script "MayaLauncherPythonScript" after
-customising the physical path in it. Such script will reside in a Maya Script Editor's Python page and needs to be run from Maya.
+customising the physical path in it. Such script needs to run from the Maya Script Editor.
  * Standalone app : py2app (Mac OS X), py2exe (Windows systems), in both cases the python file to target is ClientStandAlone.py.
 On a Mac, some installation notes are also available here at http://stc0.wordpress.com/2012/11/16/installing-py2app-for-python-2-6-8-macports-on-mac-os-lion/
 
