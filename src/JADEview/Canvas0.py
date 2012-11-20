@@ -107,10 +107,6 @@ class Canvas (QGraphicsItem):
             width += 2
         
         pen.setWidth (width)
-        if option.state & QStyle.State_Sunken:
-            level = 120
-        else:
-            level = 100
         
         painter.setBrush (QBrush (self.linearGradient))
         #painter.drawRoundRect (QRect (0, 0, 80, 34+self.height), 20)
