@@ -34,7 +34,7 @@ class Wire0 (QGraphicsLineItem):
         #self.setFlags (QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsMovable)
         #self.setAcceptsHoverEvents (True)
         
-        self.setZValue (-1.0)
+        self.setZValue (-1)
         
         self.arrowSize = 5
         self.arrowHead = QPolygonF()
@@ -43,10 +43,10 @@ class Wire0 (QGraphicsLineItem):
         self.setAcceptHoverEvents (True)
         self.setActive(True)
         
-        self.wire_pen = QPen (Qt.white, 2, Qt.DotLine) # Qt.SolidLine
+        self.wire_pen = QPen (Qt.white, 3, Qt.DotLine) # Qt.SolidLine
         
         self.const = 3
-    
+        
     def paint (self, painter, option, unused_widget):
         
         painter.setPen (self.wire_pen)
@@ -62,7 +62,7 @@ class Wire0 (QGraphicsLineItem):
         
         lines=[]
         if option.levelOfDetail>=0.4: lines=[QLine (self.xo, self.yo, self.xf, self.yf)]
-        painter.drawLines(lines)
+        painter.drawLines (lines)
     
     def remove (self):
         

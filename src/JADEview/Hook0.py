@@ -71,7 +71,7 @@ class HookBox0 (QGraphicsItem):
         self._text_item.setFont(QFont ("Geneva", 8, QFont.AllLowercase, False))
         self._text_item.setTextWidth (65)
     
-    def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
+    def boundingRect (self): return QRectF (0, 0, 12, 12)
     
     def shape (self):
         

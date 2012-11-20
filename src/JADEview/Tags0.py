@@ -36,7 +36,7 @@ class Tag1 (QGraphicsItem):
         
         self.comm = self.helper.getGraph().getComm()
         
-        self.setFlags (QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsMovable)
+        self.setFlags (QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsMovable)        
         self.setAcceptHoverEvents (True)
         self.previousMouseGrabberItem = None
         
@@ -58,7 +58,9 @@ class Tag1 (QGraphicsItem):
             for prop in self.node_model.getProps():
                 self.canvas_bottom.addProp (QString(prop[0]), QString(prop[2]))
     
-    def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
+    def boundingRect (self):
+        
+        return QRectF (0, 0, 122, 300)
     
     def shape (self):
         

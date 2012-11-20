@@ -67,7 +67,7 @@ class Canvas (QGraphicsItem):
         self.jade_colour = QColor (r_col, g_col, b_col, 195)
         self.linearGradient.setColorAt (0.3, self.jade_colour)
     
-    def boundingRect (self): return QRectF (-1000, -1000, 2000, 2000)
+    def boundingRect (self): return QRectF (0, 0, 122, 150)
     
     def shape (self):
         

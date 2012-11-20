@@ -35,8 +35,7 @@ class MainMayaWindow (QObject):
         
         # define scene and constrain its workspace
         self.scene = QGraphicsScene ()
-        qrect = QRectF (-1000, -1000, 2000, 2000)
-        self.scene.setSceneRect (qrect)
+        self.scene.setSceneRect (QRectF (-1000, -1000, 2000, 2000))
         
         self.graph_model = graph
         self.helper = utility.Helper (self, self.scene, self.graph_model)

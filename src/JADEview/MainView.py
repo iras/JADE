@@ -32,8 +32,7 @@ class MainWindow (QWidget):
         
         # define scene and constrain its workspace
         self.scene = QGraphicsScene()
-        qrect = QRectF(-1000, -1000, 2000, 2000)
-        self.scene.setSceneRect(qrect)
+        self.scene.setSceneRect (QRectF (-1000, -1000, 2000, 2000))
         
         self.graph_model = graph
         self.helper = utility.Helper (self, self.scene, self.graph_model)
@@ -68,11 +67,11 @@ class MainWindow (QWidget):
         self.setWindowTitle("Just Another DEpendency mapping tool")
         
         self.scene.addItem (self.helper.getHarpoon ())
+                
+        self.hovered_tag_id = None
         
         self.alt_pressed = False
         self.ctl_pressed = False
-                
-        self.hovered_tag_id = None
     
     def mousePressEvent (self, e):
         '''Callback function dealing with pressing a mouse button.

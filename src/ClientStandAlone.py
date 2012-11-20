@@ -25,7 +25,7 @@ def main (argv):
     app.setAttribute (Qt.AA_MacDontSwapCtrlAndMeta) # this one doesn't seem to work, at least on the MacBookPro (Lion)
     
     window = mv.MainWindow (gr.Graph())
-    window.setWindowFlags (Qt.WindowStaysOnTopHint)
+    #window.setWindowFlags (Qt.WindowStaysOnTopHint)
     window.show ()
     
     return app.exec_()

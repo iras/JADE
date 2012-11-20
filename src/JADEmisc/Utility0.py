@@ -12,10 +12,12 @@ from PyQt4.QtCore import QRectF, Qt, QObject, QTimer, QLine
 
 
 class Harpoon0 (QGraphicsLineItem):
+    """
+    This class represents the UI element harpoon which allows connecting two hooks together.
+    """
     
     def __init__(self, x0, y0, x1, y1):
-        '''
-        Constructor
+        '''constructor
         '''
         QGraphicsLineItem.__init__ (self)
         
@@ -48,14 +50,20 @@ class Harpoon0 (QGraphicsLineItem):
         painter.drawLines(lines)
     
     def setInitPos (self, pos):
+        '''this method allows setting the initial position the harpoon will be extended from.
         
+        @param pos QPoint
+        '''
         self.x0 = pos.x()+self.cx
         self.y0 = pos.y()+self.cy
         self.x1 = pos.x()
         self.y1 = pos.y()
     
     def setEndPos (self, pos):
+        '''this method allows setting the final position the harpoon will be extended to.
         
+        @param pos QPoint
+        '''
         self.x1 = pos.x()
         self.y1 = pos.y()
 
