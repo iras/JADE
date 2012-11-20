@@ -6,10 +6,9 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4 import QtCore
-from PyQt4 import QtGui
+
+from PyQt4.QtCore import Qt, QRect, QRectF, SIGNAL, QSize, QMetaObject, QString
+from PyQt4.QtGui import QGraphicsView, QFrame, QFont, QPainter, QSizePolicy, QToolBox, QWidget, QLabel, QLineEdit, QPushButton, QApplication, QToolButton, QSlider, QVBoxLayout, QHBoxLayout, QGridLayout, QPrinter, QMatrix, QFileDialog
 
 
 
@@ -46,7 +45,7 @@ class View (QFrame):
 
         self.setFrameStyle (QFrame.Sunken | QFrame.StyledPanel)
         
-        self.font = QtGui.QFont()
+        self.font = QFont()
         self.font.setPointSize(10)
         
         
@@ -58,41 +57,41 @@ class View (QFrame):
         #self.graphicsView.setMouseTracking(True)
         
         # toolbox definition + group page definition
-        sizePolicy = QtGui.QSizePolicy (QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Expanding)
+        sizePolicy = QSizePolicy (QSizePolicy.Fixed, QSizePolicy.Expanding)
         self.setObjectName ('Form')
         self.resize (900, 1000)
-        self._toolBox = QtGui.QToolBox (self)
-        self._toolBox.setGeometry(QtCore.QRect (0, 0, 131, 301))
+        self._toolBox = QToolBox (self)
+        self._toolBox.setGeometry (QRect (0, 0, 131, 301))
         self._toolBox.setFont (self.font)
         self._toolBox.setObjectName ('_toolBox')
         self._toolBox.setCursor (Qt.PointingHandCursor)
-        self.groupCluster = QtGui.QWidget ()
-        self.groupCluster.setGeometry (QtCore.QRect(0, 0, 91, 241))
+        self.groupCluster = QWidget ()
+        self.groupCluster.setGeometry (QRect(0, 0, 91, 241))
         self.groupCluster.setObjectName ('groupCluster')
-        self.groupLineEdit = QtGui.QLineEdit (self.groupCluster)
-        self.groupLineEdit.setGeometry (QtCore.QRect (2, 20, 60, 16))
+        self.groupLineEdit = QLineEdit (self.groupCluster)
+        self.groupLineEdit.setGeometry (QRect (2, 20, 60, 16))
         self.groupLineEdit.setObjectName ('groupLineEdit')
-        self.label = QtGui.QLabel (self.groupCluster)
-        self.label.setGeometry (QtCore.QRect (4, 6, 62, 16))
+        self.label = QLabel (self.groupCluster)
+        self.label.setGeometry (QRect (4, 6, 62, 16))
         self.label.setFont (self.font)
         self.label.setObjectName ('label')
-        self.label_2 = QtGui.QLabel (self.groupCluster)
-        self.label_2.setGeometry (QtCore.QRect (4, 40, 62, 16))
+        self.label_2 = QLabel (self.groupCluster)
+        self.label_2.setGeometry (QRect (4, 40, 62, 16))
         self.label_2.setFont (self.font)
         self.label_2.setObjectName ('label_2')
-        self.groupLineEdit_2 = QtGui.QLineEdit (self.groupCluster)
-        self.groupLineEdit_2.setGeometry (QtCore.QRect(2, 54, 60, 16))
+        self.groupLineEdit_2 = QLineEdit (self.groupCluster)
+        self.groupLineEdit_2.setGeometry (QRect(2, 54, 60, 16))
         self.groupLineEdit_2.setObjectName ('groupLineEdit_2')
-        self.pushButton = QtGui.QPushButton (self.groupCluster)
-        self.pushButton.setGeometry (QtCore.QRect (2, 90, 60, 16))
+        self.pushButton = QPushButton (self.groupCluster)
+        self.pushButton.setGeometry (QRect (2, 90, 60, 16))
         self.pushButton.setFont (self.font)
         self.pushButton.setObjectName ('pushButton')
         self._toolBox.addItem (self.groupCluster, '')
-        self._toolBox.setItemText (self._toolBox.indexOf (self.groupCluster), QtGui.QApplication.translate ("Form", "Group", None, QtGui.QApplication.UnicodeUTF8))
-        self.setWindowTitle (QtGui.QApplication.translate ("Form", "Form", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText (QtGui.QApplication.translate ("Form", "name group", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText (QtGui.QApplication.translate ("Form", "group id", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButton.setText (QtGui.QApplication.translate ("Form", "add cluster", None, QtGui.QApplication.UnicodeUTF8))
+        self._toolBox.setItemText (self._toolBox.indexOf (self.groupCluster), QApplication.translate ("Form", "Group", None, QApplication.UnicodeUTF8))
+        self.setWindowTitle (QApplication.translate ("Form", "Form", None, QApplication.UnicodeUTF8))
+        self.label.setText (QApplication.translate ("Form", "name group", None, QApplication.UnicodeUTF8))
+        self.label_2.setText (QApplication.translate ("Form", "group id", None, QApplication.UnicodeUTF8))
+        self.pushButton.setText (QApplication.translate ("Form", "add cluster", None, QApplication.UnicodeUTF8))
         self._toolBox.setSizePolicy (sizePolicy)
         
         # adding the first cluster to the toolbox - a cluster is always present!
@@ -236,26 +235,26 @@ class View (QFrame):
         tmp_b = QPushButton (tmp_w)
         self._cluster_page_list.append ([new_cluster_id, tmp_w, tmp_l, tmp_e, tmp_b])
         
-        tmp_w.setGeometry (QtCore.QRect (0, 0, 131, 241))
+        tmp_w.setGeometry (QRect (0, 0, 131, 241))
         tmp_w.setObjectName ('Cluster_' + str (new_cluster_id))
         
-        tmp_l.setGeometry (QtCore.QRect (4, 6, 62, 16))
+        tmp_l.setGeometry (QRect (4, 6, 62, 16))
         tmp_l.setFont (self.font)
         tmp_l.setObjectName ('label_' + str (new_cluster_id))
         
-        tmp_e.setGeometry (QtCore.QRect (2, 20, 60, 16))
+        tmp_e.setGeometry (QRect (2, 20, 60, 16))
         tmp_e.setObjectName ('groupLineEdit_' + str (new_cluster_id))
         
-        tmp_b.setGeometry(QtCore.QRect (2, 50, 60, 16))
+        tmp_b.setGeometry (QRect (2, 50, 60, 16))
         tmp_b.setFont (self.font)
         tmp_b.setObjectName ('pushButton_' + str (new_cluster_id))
         
         self._toolBox.addItem (tmp_w, 'cluster_page_'+str(new_cluster_id))
-        self._toolBox.setItemText (self._toolBox.indexOf (tmp_w), QtGui.QApplication.translate ('Form', 'C_'+str(new_cluster_id), None, QtGui.QApplication.UnicodeUTF8))
-        tmp_l.setText (QtGui.QApplication.translate ("Form", "name cluster", None, QtGui.QApplication.UnicodeUTF8))
-        tmp_b.setText (QtGui.QApplication.translate ("Form", "delete", None, QtGui.QApplication.UnicodeUTF8))
+        self._toolBox.setItemText (self._toolBox.indexOf (tmp_w), QApplication.translate ('Form', 'C_'+str(new_cluster_id), None, QApplication.UnicodeUTF8))
+        tmp_l.setText (QApplication.translate ("Form", "name cluster", None, QApplication.UnicodeUTF8))
+        tmp_b.setText (QApplication.translate ("Form", "delete", None, QApplication.UnicodeUTF8))
         self._toolBox.setCurrentIndex (new_cluster_id)
-        QtCore.QMetaObject.connectSlotsByName (self)
+        QMetaObject.connectSlotsByName (self)
         
         # hook up the delete button (use a closure)
         receiver = lambda : self.removeCluster (new_cluster_id)
@@ -402,8 +401,8 @@ class View (QFrame):
 
     def wireViewItemsUp (self):
                 
-        self.connect (self.newJADESceneBtn,   SIGNAL ("clicked()"), self.resetScene)
-        self.connect (self.loadNodesDescrpBtn,SIGNAL ("clicked()"), self.importNodesDescription)
-        self.connect (self.graphSaveBtn,      SIGNAL ("clicked()"), self.exportGraph)
-        self.connect (self.graphLoadBtn,      SIGNAL ("clicked()"), self.importGraph)
-        self.connect (self.printOutBtn,       SIGNAL ("clicked()"), self.printOutGraph)
+        self.connect (self.newJADESceneBtn,    SIGNAL ("clicked()"), self.resetScene)
+        self.connect (self.loadNodesDescrpBtn, SIGNAL ("clicked()"), self.importNodesDescription)
+        self.connect (self.graphSaveBtn,       SIGNAL ("clicked()"), self.exportGraph)
+        self.connect (self.graphLoadBtn,       SIGNAL ("clicked()"), self.importGraph)
+        self.connect (self.printOutBtn,        SIGNAL ("clicked()"), self.printOutGraph)

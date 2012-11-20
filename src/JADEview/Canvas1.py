@@ -6,11 +6,8 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui  import *
-from PyQt4 import QtCore
-from PyQt4 import QtGui
-
+from PyQt4.QtCore import Qt, SIGNAL, QString, QTimeLine, QPointF, QRectF, QRect
+from PyQt4.QtGui  import QGraphicsTextItem, QGraphicsItem, QPen, QColor, QGraphicsItemAnimation, QFont, QPainterPath, QStyle, QBrush
 
 
 class CustomFloatingText (QGraphicsTextItem):
@@ -57,12 +54,12 @@ class CanvasProps (QGraphicsItem):
         self.color = QColor (Qt.white).dark (150)
         
         # init Canvas Animation Tweening
-        self.timeline = QtCore.QTimeLine (200)
+        self.timeline = QTimeLine (200)
         self.timeline.setFrameRange (0, 100)
-        self.anim = QtGui.QGraphicsItemAnimation ()
+        self.anim = QGraphicsItemAnimation ()
         self.anim.setItem (self)
         self.anim.setTimeLine (self.timeline)
-        self.helper.connect (self.timeline, QtCore.SIGNAL("finished()"), self.moveFurtherUp)
+        self.helper.connect (self.timeline, SIGNAL("finished()"), self.moveFurtherUp)
         self.anim_active = False
         
         #self._nodename = QGraphicsTextItem ('text '+str(self.node_id), self)

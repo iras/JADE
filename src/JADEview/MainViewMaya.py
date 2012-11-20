@@ -6,15 +6,13 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4 import QtCore
-from PyQt4 import QtGui
+from PyQt4.QtCore import QObject, QRectF, SIGNAL, QRect, QPoint, QMargins, QMetaObject
+from PyQt4.QtGui import QGraphicsScene, QSizePolicy, QFont, QHBoxLayout, QCursor, QMainWindow, QTabWidget, QApplication, QWidget
 
 import maya.cmds as cmds
 
 import GraphView as grv
-import Utility0 as utility
+import JADEmisc.Utility0 as utility
 import View0
 
 
@@ -47,10 +45,10 @@ class MainMayaWindow (QObject):
         
         # wirings
         self.comm = self.graph_model.getComm ()
-        self.connect (self.comm, SIGNAL('deleteNode_MSignal(int)'), self.graph_view.removeTag)
-        self.connect (self.comm, SIGNAL('addLink_MSignal(int,int)'), self.graph_view.addWire)
-        self.connect (self.comm, SIGNAL('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
-        self.connect (self.comm, SIGNAL('addNode_MSignal(int, float, float)'), self.graph_view.addTag)
+        self.connect (self.comm, SIGNAL ('deleteNode_MSignal(int)'), self.graph_view.removeTag)
+        self.connect (self.comm, SIGNAL ('addLink_MSignal(int,int)'), self.graph_view.addWire)
+        self.connect (self.comm, SIGNAL ('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
+        self.connect (self.comm, SIGNAL ('addNode_MSignal(int, float, float)'), self.graph_view.addTag)
         
         self.scene.addItem (self.helper.getHarpoon ())
         
@@ -60,20 +58,20 @@ class MainMayaWindow (QObject):
         
         MainWindow.setObjectName ('MainWindow')
         MainWindow.resize (800, 1396)
-        sizePolicy = QtGui.QSizePolicy (QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy = QSizePolicy (QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch (0)
         sizePolicy.setVerticalStretch (0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        MainWindow.setFont(font)
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Location Tool", None, QtGui.QApplication.UnicodeUTF8))
-        MainWindow.setTabShape(QtGui.QTabWidget.Rounded)
-        MainWindow.setDockOptions(QtGui.QMainWindow.AllowTabbedDocks|QtGui.QMainWindow.AnimatedDocks)
+        font = QFont ()
+        font.setPointSize (11)
+        MainWindow.setFont (font)
+        MainWindow.setWindowTitle (QApplication.translate("MainWindow", "Location Tool", None, QApplication.UnicodeUTF8))
+        MainWindow.setTabShape (QTabWidget.Rounded)
+        MainWindow.setDockOptions (QMainWindow.AllowTabbedDocks|QMainWindow.AnimatedDocks)
         
-        self.scrollAreaWidgetContents_3 = QtGui.QWidget(MainWindow)
-        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(10, 10, 900, 1000))
+        self.scrollAreaWidgetContents_3 = QWidget (MainWindow)
+        self.scrollAreaWidgetContents_3.setGeometry (QRect(10, 10, 900, 1000))
         self.scrollAreaWidgetContents_3.setObjectName ('scrollAreaWidgetContents_3')
         self._view = View0.View ("JADEview", self.graph_view, self.scene, self.scrollAreaWidgetContents_3)
         self._view.setObjectName ('JADEview')  # real ui name
@@ -88,11 +86,11 @@ class MainMayaWindow (QObject):
         self.node_coords = QPoint (0,0)
         
         layout = QHBoxLayout (self.scrollAreaWidgetContents_3)
-        layout.setContentsMargins(QMargins(0,0,0,0));
+        layout.setContentsMargins (QMargins(0,0,0,0));
         layout.addWidget (self._view)
         
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi (MainWindow)
+        QMetaObject.connectSlotsByName (MainWindow)
         
         """
         cmds.control('JADEInnerView', edit=True, ebg=True, bgc=[.5,.5,.9])
@@ -100,12 +98,12 @@ class MainMayaWindow (QObject):
         """
         
         # wiring the Maya Contextual pop-up Menu
-        self.menu        = cmds.popupMenu ('JADEmenu',        parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenu()', aob=True)
+        self.menu        = cmds.popupMenu ('JADEmenu',        parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenu()',        aob=True)
         self.menuAddOuts = cmds.popupMenu ('JADEmenuAddOuts', parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenuAddOuts()', aob=True, alt=True)
         self.menuAddIns  = cmds.popupMenu ('JADEmenuAddIns',  parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenuAddIns()',  aob=True, ctl=True)
         
         # this class property is used to keep track of the mouse position.
-        self._mouse = QtGui.QCursor
+        self._mouse = QCursor
         
         # self._view's zoom slider (we need this to correct the bias added to sort the mouse position when the zoom changes - ONLY in Maya)
         self._zoom_slider = self._view.getZoomSlider()
@@ -186,7 +184,7 @@ class MainMayaWindow (QObject):
         for i in list0:
             cmds.menuItem (parent=self.menuAddIns, label=str(i), c='ClientMaya.ui.addInSocketAction ("'+str(i)+'")')
         
-        self.helper.setMenu(self.menuAddIns)
+        self.helper.setMenu (self.menuAddIns)
     
     def addOutSocketAction (self, value):
         

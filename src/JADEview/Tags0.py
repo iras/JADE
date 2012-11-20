@@ -6,12 +6,9 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui  import *
-from PyQt4 import QtCore
-from PyQt4 import QtGui
+from PyQt4.QtCore import QString, QRectF, SIGNAL, Qt, QPointF
+from PyQt4.QtGui  import QGraphicsItem, QPainterPath
 
-import Comm0
 import Hook0 as hk
 import Canvas0 as cs
 import Canvas1 as cs1
@@ -25,7 +22,7 @@ class Tag1 (QGraphicsItem):
         
         self.node_id = node_id
         self.helper  = helper
-        self.node_model = self.helper.getGraph().getNode(self.node_id)
+        self.node_model = self.helper.getGraph().getNode (self.node_id)
         
         self.inHooks  = []
         self.outHooks = []

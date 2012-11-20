@@ -6,6 +6,7 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
+
 class Socket ():
     '''
     sub-model abstract class.

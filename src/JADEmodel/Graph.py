@@ -6,10 +6,9 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
-from xml.dom import minidom
 from xml.dom.minidom import parseString
 
-import Comm0
+import JADEmisc.Comm0 as c0
 import Nodes0 as nd
 import GraphIO as gio
 import Cluster0 as cs
@@ -26,7 +25,7 @@ class Graph ():
         '''constructor
         '''
         # signal global operator
-        self.comm = Comm0.Comm0 ()
+        self.comm = c0.Comm0 ()
         
         self.node_details_map = {}
         

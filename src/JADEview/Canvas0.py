@@ -6,8 +6,8 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui  import *
+from PyQt4.QtCore import Qt, QRectF, QRect
+from PyQt4.QtGui  import QGraphicsItem, QColor, QLinearGradient, QPainterPath, QBrush, QPen, QStyle
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 

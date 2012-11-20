@@ -6,9 +6,9 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
-from PyQt4 import QtCore
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+
+from PyQt4.QtGui import QGraphicsLineItem, QPen
+from PyQt4.QtCore import QRectF, Qt, QObject, QTimer, QLine
 
 
 class Harpoon0 (QGraphicsLineItem):
@@ -31,7 +31,7 @@ class Harpoon0 (QGraphicsLineItem):
     
     def boundingRect (self):
         
-        return QtCore.QRectF (-1000, -1000, 2000, 2000)
+        return QRectF (-1000, -1000, 2000, 2000)
     
     def shape(self):
         

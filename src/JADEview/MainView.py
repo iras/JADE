@@ -6,15 +6,13 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4 import QtCore
-from PyQt4 import QtGui
+from PyQt4.QtCore import QRectF, Qt, SIGNAL, QPoint, QMargins
+from PyQt4.QtGui import QWidget, QGraphicsScene, QMenu, QHBoxLayout
 
 import View0
 
 import GraphView as grv
-import Utility0 as utility
+import JADEmisc.Utility0 as utility
 
 
 class MainWindow (QWidget):
@@ -45,14 +43,14 @@ class MainWindow (QWidget):
         # wiring Contextual Menu
         self.menu = QMenu ()
         self.setContextMenuPolicy (Qt.CustomContextMenu)
-        self.connect (self, SIGNAL('customContextMenuRequested(QPoint)'), self.ctxMenu)
+        self.connect (self, SIGNAL ('customContextMenuRequested(QPoint)'), self.ctxMenu)
         
         # wirings
         self.comm = self.graph_model.getComm ()
-        self.connect (self.comm, SIGNAL('deleteNode_MSignal(int)'), self.graph_view.removeTag)
-        self.connect (self.comm, SIGNAL('addLink_MSignal(int,int)'), self.graph_view.addWire)
-        self.connect (self.comm, SIGNAL('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
-        self.connect (self.comm, SIGNAL('addNode_MSignal(int, float, float)'), self.graph_view.addTag)
+        self.connect (self.comm, SIGNAL ('deleteNode_MSignal(int)'), self.graph_view.removeTag)
+        self.connect (self.comm, SIGNAL ('addLink_MSignal(int,int)'), self.graph_view.addWire)
+        self.connect (self.comm, SIGNAL ('deleteLink_MSignal(int,int)'), self.graph_view.checkIfEmpty)
+        self.connect (self.comm, SIGNAL ('addNode_MSignal(int, float, float)'), self.graph_view.addTag)
         
         self._view = View0.View ('Main view', self.graph_view, self.scene)
         self._view.wireViewItemsUp ()
@@ -63,7 +61,7 @@ class MainWindow (QWidget):
         self.node_coords = QPoint (0,0)
         
         layout = QHBoxLayout ()
-        layout.setContentsMargins(QMargins(0,0,0,0));
+        layout.setContentsMargins (QMargins(0,0,0,0));
         layout.addWidget (self._view)
         self.setLayout (layout)
         
@@ -144,7 +142,7 @@ class MainWindow (QWidget):
             
             tmp = self.menu.addAction(i)
             receiver = lambda value=i: self.addTag (value)
-            self.connect (tmp, QtCore.SIGNAL('triggered()'), receiver)
+            self.connect (tmp, SIGNAL ('triggered()'), receiver)
     
     def addTag (self, name0):
         '''adds a Tag0 instance by name. the constants added to the are needed to make the tag pop up near the mouse pointer.
@@ -162,7 +160,7 @@ class MainWindow (QWidget):
         for i in list0:
             tmp = self.menu.addAction(i)
             receiver = lambda value=i: self.addSocketAction (value)
-            self.connect (tmp, QtCore.SIGNAL('triggered()'), receiver)
+            self.connect (tmp, SIGNAL('triggered()'), receiver)
     
     def addSocketAction (self, value):
         '''adds a socket name based on the key modifier pressed.

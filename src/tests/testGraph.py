@@ -6,10 +6,7 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4 import QtCore
-from PyQt4 import QtGui
+from PyQt4.QtCore import QObject, SIGNAL
 
 import unittest
 
@@ -35,11 +32,11 @@ class TestGraph (unittest.TestCase):
         self.isAddLink_MSignalReceived    = False
         self.isRemoveLink_MSignalReceived = False
         
-        map = {'stateBegun'    :[['type0_s', 'type1_s', 'type2_s', 'type3_s'],['type1_s'],[],[]],
+        map0 = {'stateBegun'    :[['type0_s', 'type1_s', 'type2_s', 'type3_s'],['type1_s'],[],[]],
                'triggerFire'   :[['type0_s', 'type4_s'],['type1_s', 'type2_s', 'type3_s'],[],[]],
                'stopAction'    :[['type1_s', 'type2_s'],[],[],[]],
                'restoreAction' :[[],['type1_s', 'type2_s'],[],[]]}
-        self.test_graph.node_details_map = map
+        self.test_graph.node_details_map = map0
     
     def tearDown(self):
         pass
@@ -255,5 +252,4 @@ class TestGraph (unittest.TestCase):
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
     unittest.main()

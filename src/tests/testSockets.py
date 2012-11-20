@@ -6,16 +6,9 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4 import QtCore
-from PyQt4 import QtGui
-
 import unittest
 
 import Graph as gf
-import Nodes0 as nd
-import Sockets as sk
 
 
 class TestSocket (unittest.TestCase):

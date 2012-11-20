@@ -13,8 +13,8 @@ from PyQt4.QtGui import QMainWindow, qApp
 
 import maya.cmds as cmds
 
-import MainViewMaya as mv
-import Graph as gr
+import JADEview.MainViewMaya as mv
+import JADEmodel.Graph as gr
 
 
 

@@ -6,10 +6,9 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4 import QtCore
-from PyQt4 import QtGui
+from PyQt4.QtCore import Qt, QRectF, QTimeLine, SIGNAL, QPointF
+from PyQt4.QtGui import QGraphicsTextItem, QGraphicsItem, QPen, QGraphicsItemAnimation, QTextBlockFormat, QTextCursor, QFont, QPainterPath, QBrush
+
 
 
 class GText (QGraphicsTextItem):
@@ -22,6 +21,7 @@ class GText (QGraphicsTextItem):
         
         # this is needed as the QGraphicsTextItem couldn't catch its hook's signal otherwise.
         return QRectF (0, 0, 0, 0)
+
 
 
 class HookBox0 (QGraphicsItem):
@@ -44,12 +44,12 @@ class HookBox0 (QGraphicsItem):
         self.hookName  = ''
         
         # init Hook Animation Tweening
-        self.timeline = QtCore.QTimeLine (200)
+        self.timeline = QTimeLine (200)
         self.timeline.setFrameRange (0, 100)
-        self.anim = QtGui.QGraphicsItemAnimation ()
+        self.anim = QGraphicsItemAnimation ()
         self.anim.setItem (self)
         self.anim.setTimeLine (self.timeline)
-        self.parent.helper.connect (self.timeline, QtCore.SIGNAL("finished()"), self.moveFurtherUp)
+        self.parent.helper.connect (self.timeline, SIGNAL("finished()"), self.moveFurtherUp)
         self.anim_active = False
     
     def setTextfield (self):
@@ -95,9 +95,9 @@ class HookBox0 (QGraphicsItem):
         
         self.timeline.stop ()
         self.hook_height = (self.pos_in_list-2)*10
-        self.anim.setPosAt (0, QtCore.QPointF (self.x(), self.hook_height))
+        self.anim.setPosAt (0, QPointF (self.x(), self.hook_height))
         self.hook_height += 10
-        self.anim.setPosAt (1, QtCore.QPointF (self.x(), self.hook_height))
+        self.anim.setPosAt (1, QPointF (self.x(), self.hook_height))
         self.timeline.start ()
         self.update ()
     
@@ -113,9 +113,9 @@ class HookBox0 (QGraphicsItem):
                 self.timeline.stop ()
                 self.pos_in_list -= 1
                 self.hook_height = float(self.y())
-                self.anim.setPosAt (0, QtCore.QPointF (self.x(), self.hook_height))
+                self.anim.setPosAt (0, QPointF (self.x(), self.hook_height))
                 self.hook_height -= 10
-                self.anim.setPosAt (1, QtCore.QPointF (self.x(), self.hook_height))
+                self.anim.setPosAt (1, QPointF (self.x(), self.hook_height))
                 self.timeline.start ()
                 self.update ()
     

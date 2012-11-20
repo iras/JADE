@@ -6,13 +6,11 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4 import QtCore
-from PyQt4 import QtGui
-#import math
+from PyQt4.QtCore import Qt, QLineF, QLine
+from PyQt4.QtGui import QGraphicsLineItem, QColor, QPolygonF, QGraphicsItem, QPen
 
-import Comm0
+import JADEmisc.Comm0 as c0
+
 
 
 class Wire0 (QGraphicsLineItem):
@@ -24,14 +22,14 @@ class Wire0 (QGraphicsLineItem):
         self.s_in  = s_in
         self.s_out = s_out
         
-        self.comm = Comm0.Comm0 ()
+        self.comm = c0.Comm0 ()
         
         self.xo = self.s_in.getAbsPos().x()
         self.yo = self.s_in.getAbsPos().y()
         self.xf = self.s_out.getAbsPos().x()
         self.yf = self.s_out.getAbsPos().y()
         
-        self.color  = QColor(Qt.green).dark(120)
+        self.color  = QColor (Qt.green).dark(120)
         
         #self.setFlags (QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsMovable)
         #self.setAcceptsHoverEvents (True)
@@ -39,13 +37,13 @@ class Wire0 (QGraphicsLineItem):
         self.setZValue (-1.0)
         
         self.arrowSize = 5
-        self.arrowHead = QtGui.QPolygonF()
+        self.arrowHead = QPolygonF()
         
         self.setFlags (QGraphicsItem.ItemIsSelectable)
         self.setAcceptHoverEvents (True)
         self.setActive(True)
         
-        self.wire_pen = QPen(Qt.white, 2, Qt.DotLine) # Qt.SolidLine
+        self.wire_pen = QPen (Qt.white, 2, Qt.DotLine) # Qt.SolidLine
         
         self.const = 3
     
@@ -60,7 +58,7 @@ class Wire0 (QGraphicsLineItem):
         
         # QGraphicsLineItem uses the line and the pen width to provide a reasonable implementation of
         # QGraphicsLineItem.boundingRect(), QGraphicsLineItem.shape() and QGraphicsLineItem.contains()
-        self.setLine (QLineF(self.xo, self.yo, self.xf, self.yf))
+        self.setLine (QLineF (self.xo, self.yo, self.xf, self.yf))
         
         lines=[]
         if option.levelOfDetail>=0.4: lines=[QLine (self.xo, self.yo, self.xf, self.yf)]

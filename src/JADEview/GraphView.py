@@ -6,16 +6,16 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt4.QtCore import SIGNAL, Qt, QPointF
+from PyQt4.QtGui import QColor
 
 import Tags0
 import Wires0
-import Sockets
+import JADEmodel.Sockets as sk
+
 
 
 class GraphView ():
-
 
     def __init__(self, graph, utility, parent = None):
         
@@ -135,11 +135,11 @@ class GraphView ():
         s1 = self.graph.getSocket (s_in_id)
         s2 = self.graph.getSocket (s_out_id)
         
-        is1 = isinstance (s1, Sockets.InSocket)
-        os1 = isinstance (s1, Sockets.OutSocket)
+        is1 = isinstance (s1, sk.InSocket)
+        os1 = isinstance (s1, sk.OutSocket)
         
-        is2 = isinstance (s2, Sockets.InSocket)
-        os2 = isinstance (s2, Sockets.OutSocket)
+        is2 = isinstance (s2, sk.InSocket)
+        os2 = isinstance (s2, sk.OutSocket)
         
         if (is1 and os2) or (os1 and is2):
             if is1==True:

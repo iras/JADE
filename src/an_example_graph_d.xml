@@ -2,11 +2,11 @@
 <clusterGroup id="" label="">
 	<cluster label="cluster _example_1">
 		<nodes>
-			<a_EnableUI id="1" x="-483.234008789" y="-879.483154297"/>
-			<t_StateOpened id="2" x="-222.479476929" y="-943.810302734" state="101" text="''"/>
-			<a_PlayJingle id="3" x="-227.074281944" y="-823.196944487" jingle_no="12"/>
-			<t_AimCompleted id="4" x="6.11148638431" y="-890.970126202" aimId="None" text="''"/>
-			<t_StateClosed id="9" x="243.892048533" y="-907.051908242" state="12"/>
+			<a_EnableUI id="1" x="-463.234008789" y="-859.483154297"/>
+			<t_StateOpened id="2" x="-202.479476929" y="-923.810302734" state="101" text="''"/>
+			<a_PlayJingle id="3" x="-207.074279785" y="-803.196960449" jingle_no="12"/>
+			<t_AimCompleted id="4" x="26.1114864349" y="-870.970153809" aimId="None" text="''"/>
+			<t_StateClosed id="9" x="263.892044067" y="-887.051879883" state="12"/>
 		</nodes>
 		<links>
 			<link>
@@ -33,13 +33,13 @@
 	</cluster>
 	<cluster label="example_2">
 		<nodes>
-			<a_EnableUI id="5" x="-460.260040283" y="-665.825256348"/>
-			<a_FadeJingleIn id="7" x="-294.847473145" y="-611.836425781" jingle_no="11"/>
-			<t_StateOpened id="8" x="-134.029708862" y="-666.973937988" state="102" text="''"/>
-			<a_FadeJingleOut id="10" x="31.3828516006" y="-669.271362305" jingle_no="None"/>
-			<t_StateClosed id="16" x="242.743347168" y="-687.650512695" state="102"/>
-			<a_DisableMouse id="17" x="417.345489502" y="-692.245361328"/>
-			<a_DisableUI id="18" x="274.906908386" y="-638.256483629"/>
+			<a_EnableUI id="5" x="-440.260040283" y="-645.825256348"/>
+			<a_FadeJingleIn id="7" x="-274.847473145" y="-591.836425781" jingle_no="11"/>
+			<t_StateOpened id="8" x="-114.029708862" y="-646.973937988" state="102" text="''"/>
+			<a_FadeJingleOut id="10" x="51.382850647" y="-649.271362305" jingle_no="None"/>
+			<t_StateClosed id="16" x="262.743347168" y="-667.650512695" state="102"/>
+			<a_DisableMouse id="17" x="437.345489502" y="-672.245361328"/>
+			<a_DisableUI id="18" x="294.906921387" y="-618.256469727"/>
 		</nodes>
 		<links>
 			<link>
@@ -74,12 +74,12 @@
 	</cluster>
 	<cluster label="example_3">
 		<nodes>
-			<m_FloatMatcher id="12" x="-188.018539429" y="-463.65435791" number="0.0"/>
-			<t_StateOpened id="13" x="-519.992370605" y="-468.249145508" state="103" text="''"/>
-			<a_PushInQueue id="15" x="-358.025878906" y="-344.189746003" jingle_no="None"/>
-			<t_StateClosed id="22" x="215.174576658" y="-310.877488738" state="None"/>
-			<m_MultiAdder id="19" x="96.8586578369" y="-482.033538818" inputs_no="0"/>
-			<a_PopFromQueue id="20" x="292.137370511" y="-364.866311224" jingle_no="None"/>
+			<m_FloatMatcher id="12" x="-168.018539429" y="-443.65435791" number="0.0"/>
+			<t_StateOpened id="13" x="-499.992370605" y="-448.249145508" state="103" text="''"/>
+			<a_PushInQueue id="15" x="-338.025878906" y="-324.189758301" jingle_no="None"/>
+			<t_StateClosed id="22" x="235.174575806" y="-290.877502441" state="None"/>
+			<m_MultiAdder id="19" x="116.858657837" y="-462.033538818" inputs_no="0"/>
+			<a_PopFromQueue id="20" x="312.137359619" y="-344.86630249" jingle_no="None"/>
 		</nodes>
 		<links>
 			<link>
@@ -122,11 +122,11 @@
 	</cluster>
 	<cluster label="example_4">
 		<nodes>
-			<a_EnableUI id="23" x="-531.479370117" y="-119.044845581"/>
-			<a_FadeJingleIn id="24" x="-301.739685059" y="-107.557861328" jingle_no="None"/>
-			<t_StateOpened id="25" x="-78.8921868673" y="-100.665674862" state="None" text="''"/>
-			<t_AimCompleted id="26" x="-34.0929506213" y="-163.844069682" aimId="None" text="''"/>
-			<t_StateClosed id="27" x="193.349319458" y="-121.342254639" state="None"/>
+			<a_EnableUI id="23" x="-511.479370117" y="-99.0448455811"/>
+			<a_FadeJingleIn id="24" x="-281.739685059" y="-87.5578613281" jingle_no="None"/>
+			<t_StateOpened id="25" x="-58.8921890259" y="-80.6656723022" state="None" text="''"/>
+			<t_AimCompleted id="26" x="-14.0929489136" y="-143.844070435" aimId="None" text="''"/>
+			<t_StateClosed id="27" x="213.349319458" y="-101.342254639" state="None"/>
 		</nodes>
 		<links>
 			<link>
@@ -149,12 +149,12 @@
 	</cluster>
 	<cluster label="example_5">
 		<nodes>
-			<a_EnableUI id="28" x="-525.735839844" y="33.73204422"/>
-			<t_StateOpened id="29" x="-513.100186298" y="78.5312684221" state="104" text="104"/>
-			<a_FadeJingleIn id="31" x="-310.929260254" y="99.2078170776" jingle_no="None"/>
-			<a_EnableMouse id="32" x="-110.171966553" y="68.2917251587"/>
-			<t_AimCompleted id="33" x="135.035478492" y="95.4481251869" aimId="None" text="''"/>
-			<t_StateClosed id="34" x="362.0" y="34.0" state="None"/>
+			<a_EnableUI id="28" x="-505.735839844" y="53.73204422"/>
+			<t_StateOpened id="29" x="-493.100158691" y="98.5312652588" state="104" text="104"/>
+			<a_FadeJingleIn id="31" x="-290.929260254" y="119.207817078" jingle_no="None"/>
+			<a_EnableMouse id="32" x="-90.1719665527" y="88.2917251587"/>
+			<t_AimCompleted id="33" x="155.035476685" y="115.448127747" aimId="None" text="''"/>
+			<t_StateClosed id="34" x="382.0" y="54.0" state="None"/>
 		</nodes>
 		<links>
 			<link>
@@ -189,12 +189,12 @@
 	</cluster>
 	<cluster label="example_6">
 		<nodes>
-			<a_EnableUI id="35" x="-525.0" y="303.0"/>
-			<t_StateOpened id="36" x="-448.0" y="383.0" state="123" text="''"/>
-			<m_MultiAdder id="37" x="-226.0" y="311.0" inputs_no="0"/>
-			<a_PushInQueue id="38" x="6.0" y="306.0" jingle_no="None"/>
-			<a_DisableUI id="39" x="207.578979492" y="377.157958984"/>
-			<t_StateClosed id="40" x="271.0" y="327.0" state="123"/>
+			<a_EnableUI id="35" x="-505.0" y="323.0"/>
+			<t_StateOpened id="36" x="-428.0" y="403.0" state="123" text="''"/>
+			<m_MultiAdder id="37" x="-206.0" y="331.0" inputs_no="0"/>
+			<a_PushInQueue id="38" x="26.0" y="326.0" jingle_no="None"/>
+			<a_DisableUI id="39" x="227.578979492" y="397.157958984"/>
+			<t_StateClosed id="40" x="291.0" y="347.0" state="123"/>
 		</nodes>
 		<links>
 			<link>
@@ -221,13 +221,13 @@
 	</cluster>
 	<cluster label="example_7">
 		<nodes>
-			<t_StateOpened id="41" x="-530.0" y="554.0" state="126" text="''"/>
-			<a_PushInQueue id="42" x="-270.859605337" y="511.551228122" jingle_no="123"/>
-			<a_PlayJingle id="43" x="-227.951326621" y="562.629842809" jingle_no="None"/>
-			<a_FadeJingleIn id="44" x="-200.194314856" y="661.379488243" jingle_no="None"/>
-			<a_PopFromQueue id="45" x="139.169441223" y="602.450317383" jingle_no="None"/>
-			<a_DisableUI id="46" x="355.879652475" y="535.692333422"/>
-			<a_PopFromQueue id="47" x="389.928600512" y="575.807930997" jingle_no="None"/>
+			<t_StateOpened id="41" x="-510.0" y="574.0" state="126" text="''"/>
+			<a_PushInQueue id="42" x="-250.859619141" y="531.551239014" jingle_no="123"/>
+			<a_PlayJingle id="43" x="-207.951324463" y="582.629821777" jingle_no="None"/>
+			<a_FadeJingleIn id="44" x="-180.194320679" y="681.379516602" jingle_no="None"/>
+			<a_PopFromQueue id="45" x="159.169433594" y="622.450317383" jingle_no="None"/>
+			<a_DisableUI id="46" x="375.879638672" y="555.692321777"/>
+			<a_PopFromQueue id="47" x="409.928588867" y="595.807922363" jingle_no="None"/>
 		</nodes>
 		<links>
 			<link>
@@ -258,13 +258,13 @@
 	</cluster>
 	<cluster label="example_8">
 		<nodes>
-			<a_EnableUI id="48" x="-531.423339844" y="770.582885742"/>
-			<t_StateOpened id="50" x="-270.606292725" y="834.741088867" state="None" text="''"/>
-			<a_PushInQueue id="51" x="-70.9104457658" y="870.34929406" jingle_no="None"/>
-			<a_EnableMouse id="52" x="-269.211547852" y="765.00390625"/>
-			<a_FadeJingleIn id="53" x="-70.9992753565" y="764.511752179" jingle_no="None"/>
-			<t_AimCompleted id="54" x="140.428142599" y="760.2430957" aimId="None" text="''"/>
-			<a_FadeJingleOut id="55" x="347.669889753" y="759.670942758" jingle_no="None"/>
+			<a_EnableUI id="48" x="-511.423339844" y="790.582885742"/>
+			<t_StateOpened id="50" x="-250.606292725" y="854.741088867" state="None" text="''"/>
+			<a_PushInQueue id="51" x="-50.910446167" y="890.349304199" jingle_no="None"/>
+			<a_EnableMouse id="52" x="-249.211547852" y="785.00390625"/>
+			<a_FadeJingleIn id="53" x="-50.9992752075" y="784.511779785" jingle_no="None"/>
+			<t_AimCompleted id="54" x="160.428146362" y="780.243103027" aimId="None" text="''"/>
+			<a_FadeJingleOut id="55" x="367.669891357" y="779.670959473" jingle_no="None"/>
 		</nodes>
 		<links>
 			<link>
@@ -291,13 +291,6 @@
 				<out id="54" connector="triggered"/>
 				<in id="55" connector="input"/>
 			</link>
-		</links>
-	</cluster>
-	<cluster label="">
-		<nodes>
-			<a_EnableUI id="56" x="-632.523915187" y="-809.289608451"/>
-		</nodes>
-		<links>
 		</links>
 	</cluster>
 </clusterGroup>
