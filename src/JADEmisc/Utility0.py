@@ -40,7 +40,7 @@ class Harpoon0 (QGraphicsLineItem):
     
     def paint (self, painter, option, unused_widget):
         
-        grayPen = QPen(Qt.black, 4, Qt.DashLine, Qt.RoundCap, Qt.RoundJoin)
+        grayPen = QPen(Qt.white, 5, Qt.DashLine, Qt.RoundCap, Qt.RoundJoin)
         painter.setPen (grayPen)
         
         lines=[]

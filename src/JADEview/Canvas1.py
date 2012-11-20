@@ -10,6 +10,7 @@ from PyQt4.QtCore import Qt, SIGNAL, QString, QTimeLine, QPointF, QRectF, QRect
 from PyQt4.QtGui  import QGraphicsTextItem, QGraphicsItem, QPen, QColor, QGraphicsItemAnimation, QFont, QPainterPath, QStyle, QBrush
 
 
+
 class CustomFloatingText (QGraphicsTextItem):
     '''
     Re-implementation of the class QGraphicsTextItem in order to provide it with convenient the QLineEdit's textChanged Event.
@@ -32,6 +33,15 @@ class CustomFloatingText (QGraphicsTextItem):
         @param event event
         '''
         self.emit (SIGNAL ('textChanged(QString)'), QString(self.toPlainText()))
+        self.setDefaultTextColor (QColor (Qt.white).light (255))
+        QGraphicsTextItem.focusOutEvent(self, event)
+    
+    def focusInEvent (self, event):
+        '''Re-implementation of the QGraphicsTextItem's method focusOInEvent in order to change the text colour to red.
+        
+        @param event event
+        '''
+        self.setDefaultTextColor (Qt.red)
         QGraphicsTextItem.focusOutEvent(self, event)
 
 
