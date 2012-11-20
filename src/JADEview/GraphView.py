@@ -18,7 +18,8 @@ import JADEmodel.Sockets as sk
 class GraphView ():
 
     def __init__(self, graph, utility, parent = None):
-        
+        '''constructor
+        '''
         self.graph   = graph
         self.comm    = self.graph.getComm()
         self.utility = utility
@@ -26,16 +27,19 @@ class GraphView ():
         self.initGraphViewLists ()
     
     def initGraphViewLists (self):
-        
+        '''This init method is decoupled out from the constructor as it is reused to clean up the view from previous lists of data. 
+        '''
         self._tag_list  = []
         self._wire_list = []
     
     def initComm (self):
-        
+        '''This method initiates the comm's global data.
+        '''
         self.comm.initCounters ()
     
     def initModel (self):
-        
+        '''This method initiates the model's global data.
+        '''
         self.graph.initGraph ()
     
     def removeSelectedItems (self):

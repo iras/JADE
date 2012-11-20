@@ -32,7 +32,8 @@ class Graph ():
         self.initGraph ()
     
     def initGraph (self):
-        
+        '''This init method is decoupled out from the constructor as it is reused to clean up the model from previous lists of data.
+        '''
         self._cluster_list = []
         self._node_list = []
         
@@ -48,7 +49,8 @@ class Graph ():
     # - - -  cluster methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def addCluster (self):  # TODO : Unit Test this method
-        
+        '''This method adds a cluster and shoots a signal "addCluster_MSignal" when done with it.
+        '''
         cluster_index = self.comm.getNewClusterId ()
         new_cluster = cs.Cluster0 (cluster_index, '', self, self.comm)
         self._cluster_list.append (new_cluster)
@@ -58,7 +60,10 @@ class Graph ():
         return new_cluster
     
     def removeCluster (self, cluster_id):  # TODO : Unit Test this method
+        '''This method removes a cluster and its content and then shoots a signal "deleteCluster_MSignal" when done with it.
         
+        @param cluster_id int
+        '''
         qq = len (self._cluster_list)
         for i in range (qq-1, -1, -1):
             if self._cluster_list[i].getId() == cluster_id:
@@ -72,13 +77,20 @@ class Graph ():
         self.comm.emitDeleteClusterMSignal (cluster_id)
     
     def updateCluster (self, cluster_id, node):
+        '''This method adds a node to a specific cluster.
         
+        @param cluster_id int
+        @param node instance of class Node0
+        '''
         for cluster in self._cluster_list:
             if cluster.getId() == cluster_id:
                 cluster.addNodeToCluster (node)
     
     def removeNodeListItemFromItsCluster (self, node_id):
+        '''This method hunts down a specific node in a cluster's nodelist and removes it.
         
+        @param node_id int
+        '''
         done = False # this flag will be used to exit from both loops once the inner condition is satisfied.
         
         for cluster in self._cluster_list:
@@ -93,13 +105,20 @@ class Graph ():
                 break
     
     def updateClusterName (self, cluster_id, text):
+        '''This method updates the appropriate sub-model Cluster's instance's name.
         
+        @param cluster_id int
+        @param text string
+        '''
         for cluster in self._cluster_list:
             if cluster.getId() == cluster_id:
                 cluster.setName (text)
     
     def dispatchClusterNameSignal (self, cluster):
+        '''This method dispatches a signal carrying the cluster name for the UI to update the correspondent QlineEdit.
         
+        @param cluster Cluster0 instance
+        '''
         self.comm.emitUpdateClusterNameMSignal (cluster.getId(), cluster.getName())
     
     # - - -  node methods  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
