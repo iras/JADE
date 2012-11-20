@@ -225,19 +225,9 @@ class CanvasProps (QGraphicsItem):
         self._nodename.setToolTip (self._nodename.toPlainText ())
         QGraphicsItem.hoverEnterEvent (self, e)
     
-    def hoverLeaveEvent (self, e):
-        
-        QGraphicsItem.hoverLeaveEvent (self, e)
-    
-    def mousePressEvent (self, e):
-        
-        QGraphicsItem.mousePressEvent (self, e)
-        #self.update ()
-    
-    def mouseMoveEvent (self, e):
-        
-        QGraphicsItem.mouseMoveEvent (self, e)
-    
-    def mouseReleaseEvent (self, e):
-        
-        QGraphicsItem.mouseReleaseEvent (self, e)
+    '''
+    def hoverLeaveEvent   (self, e): QGraphicsItem.hoverLeaveEvent   (self, e)
+    def mousePressEvent   (self, e): QGraphicsItem.mousePressEvent   (self, e)
+    def mouseMoveEvent    (self, e): QGraphicsItem.mouseMoveEvent    (self, e)
+    def mouseReleaseEvent (self, e): QGraphicsItem.mouseReleaseEvent (self, e)
+    '''

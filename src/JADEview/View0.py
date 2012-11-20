@@ -177,8 +177,8 @@ class View (QFrame):
         
         # top layout
         topLayout = QGridLayout ()
-        topLayout.setHorizontalSpacing(0)
-        topLayout.setVerticalSpacing(0)
+        topLayout.setHorizontalSpacing (0)
+        topLayout.setVerticalSpacing (0)
         topLayout.addLayout (labelLayout, 0, 1)
         topLayout.addWidget (self._toolBox, 1, 0)
         topLayout.addWidget (self.resetButton, 0, 2)
@@ -188,9 +188,8 @@ class View (QFrame):
         
         self.connect (self.resetButton, SIGNAL ("clicked()"), self.resetView)
         self.connect (self.zoomSlider,  SIGNAL ("valueChanged(int)"), self.setupMatrix)
-        self.connect (self.graphicsView.verticalScrollBar (),   SIGNAL ("valueChanged(int)"), self.setResetButtonEnabled)
+        self.connect (self.graphicsView.verticalScrollBar   (), SIGNAL ("valueChanged(int)"), self.setResetButtonEnabled)
         self.connect (self.graphicsView.horizontalScrollBar (), SIGNAL ("valueChanged(int)"), self.setResetButtonEnabled)
-        
         self.connect (zoomInIcon,  SIGNAL ("clicked()"), self.zoomIn)
         self.connect (zoomOutIcon, SIGNAL ("clicked()"), self.zoomOut)
         
@@ -397,6 +396,7 @@ class View (QFrame):
     def getZoomSlider (self): return self.zoomSlider
     
     def setToolboxCSSColorScheme (self, css): self._toolBox.setStyleSheet (css)
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     def wireViewItemsUp (self):

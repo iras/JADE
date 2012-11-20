@@ -6,12 +6,8 @@ See the file license.txt for copying permission.
 JADE mapping tool
 '''
 
-from PyQt4.QtCore import Qt, QRectF, QRect
-from PyQt4.QtGui  import QGraphicsItem, QColor, QLinearGradient, QPainterPath, QBrush, QPen, QStyle
-from PyQt4 import QtCore
-from PyQt4 import QtGui
-
-#import GText as gt
+from PyQt4.QtCore import Qt, QRectF, QRect, SIGNAL, QTimeLine
+from PyQt4.QtGui  import QGraphicsItem, QColor, QLinearGradient, QPainterPath, QBrush, QPen, QStyle, QGraphicsItemAnimation
 
 
 class Canvas (QGraphicsItem):
@@ -33,12 +29,12 @@ class Canvas (QGraphicsItem):
         self.jade_colour = QColor (0, 235, 120, 195)
         
         # init Canvas Animation Tweening
-        self.timeline = QtCore.QTimeLine (200)
+        self.timeline = QTimeLine (200)
         self.timeline.setFrameRange (0, 100)
-        self.anim = QtGui.QGraphicsItemAnimation ()
+        self.anim = QGraphicsItemAnimation ()
         self.anim.setItem (self)
         self.anim.setTimeLine (self.timeline)
-        self.helper.connect (self.timeline, QtCore.SIGNAL("finished()"), self.makeFurtherThinner)
+        self.helper.connect (self.timeline, SIGNAL ("finished()"), self.makeFurtherThinner)
         self.anim_active = False
         
         self.SCALING = 0.25
@@ -159,27 +155,14 @@ class Canvas (QGraphicsItem):
     
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def hoverEnterEvent (self, e):
+    def setMaxPosInLists (self, pos):
         
-        QGraphicsItem.hoverEnterEvent (self, e)
+        self.max_pos_in_list=pos
     
-    def hoverLeaveEvent (self, e):
-        
-        QGraphicsItem.hoverLeaveEvent (self, e)
-    
-    def mousePressEvent (self, e):
-        
-        QGraphicsItem.mousePressEvent (self, e)
-        #self.update ()
-    
-    def mouseMoveEvent (self, e):
-        
-        QGraphicsItem.mouseMoveEvent (self, e)
-    
-    def mouseReleaseEvent (self, e):
-        
-        QGraphicsItem.mouseReleaseEvent (self, e)
-    
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-    def setMaxPosInLists (self, pos): self.max_pos_in_list=pos
+    '''
+    def hoverEnterEvent   (self, e): QGraphicsItem.hoverEnterEvent   (self, e)
+    def hoverLeaveEvent   (self, e): QGraphicsItem.hoverLeaveEvent   (self, e)
+    def mousePressEvent   (self, e): QGraphicsItem.mousePressEvent   (self, e)
+    def mouseMoveEvent    (self, e): QGraphicsItem.mouseMoveEvent    (self, e)
+    def mouseReleaseEvent (self, e): QGraphicsItem.mouseReleaseEvent (self, e)
+    '''

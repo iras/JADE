@@ -170,19 +170,23 @@ class HookBox0 (QGraphicsItem):
         
         self.harpoon.setInitPos (self.pos()+self.parent.pos())
         self.harpoon.setVisible (True)
-        self.harpoon.update ()
         
-        QGraphicsItem.mousePressEvent (self, e)
         self.update ()
+        self.harpoon.update ()
+        QGraphicsItem.mousePressEvent (self, e)
     
     def mouseMoveEvent (self, e):
         
         self.harpoon.setEndPos (self.pos()+e.pos()+self.parent.pos())
+        
+        self.update ()
         self.harpoon.update ()
+        QGraphicsItem.mouseMoveEvent (self, e)
     
     def mouseReleaseEvent (self, e):
         
         self.harpoon.setVisible (False)
+        
         self.update ()
         
         self.helper.initAndStartTimer ()

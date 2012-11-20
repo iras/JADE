@@ -64,7 +64,9 @@ class Wire0 (QGraphicsLineItem):
         if option.levelOfDetail>=0.4: lines=[QLine (self.xo, self.yo, self.xf, self.yf)]
         painter.drawLines(lines)
     
-    def remove (self): self.setVisible (False)
+    def remove (self):
+        
+        self.setVisible (False)
     
     # - - -  listeners  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -82,6 +84,7 @@ class Wire0 (QGraphicsLineItem):
         
         QGraphicsItem.hoverLeaveEvent(self,e)
     
+    '''
     def mousePressEvent (self, e):
         QGraphicsItem.mousePressEvent (self, e)
         self.update()
@@ -92,6 +95,7 @@ class Wire0 (QGraphicsLineItem):
     def mouseReleaseEvent (self, e):
         QGraphicsItem.mouseReleaseEvent (self, e)
         self.update ()
+    '''
     
     def switchOffLink (self, s_in_id, s_out_id):
         
