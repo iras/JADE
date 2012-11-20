@@ -8,7 +8,7 @@ JADE mapping tool
 
 import unittest
 
-import Graph as gf
+import JADEmodel.Graph as gf
 
 
 class TestSocket (unittest.TestCase):

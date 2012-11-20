@@ -10,8 +10,8 @@ from PyQt4.QtCore import QObject, SIGNAL
 
 import unittest
 
-import Graph as gf
-import Nodes0 as nd
+import JADEmodel.Graph as gf
+import JADEmodel.Nodes0 as nd
 
 
 class TestGraph (unittest.TestCase):

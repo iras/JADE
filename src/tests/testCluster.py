@@ -8,8 +8,8 @@ JADE mapping tool
 
 import unittest
 
-import Graph as gf
-import Nodes0 as nd
+import JADEmodel.Graph as gf
+import JADEmodel.Nodes0 as nd
 
 
 class TestCluster (unittest.TestCase):          # TODO

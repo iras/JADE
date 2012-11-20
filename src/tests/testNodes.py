@@ -10,7 +10,7 @@ from PyQt4.QtCore import QObject, SIGNAL
 
 import unittest
 
-import Graph as gf
+import JADEmodel.Graph as gf
 
 
 class TestNode (unittest.TestCase):
