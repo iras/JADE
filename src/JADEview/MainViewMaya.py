@@ -58,7 +58,10 @@ class MainMayaWindow (QObject):
         cmds.hotkey (k='d', name='delSelection')
     
     def setupUi (self, MainWindow):
+        '''sets up the Maya UI.
         
+        @param MainWindow
+        '''
         MainWindow.setObjectName ('MainWindow')
         MainWindow.resize (800, 1396)
         sizePolicy = QSizePolicy (QSizePolicy.Preferred, QSizePolicy.Preferred)
@@ -93,7 +96,6 @@ class MainMayaWindow (QObject):
         layout.setContentsMargins (QMargins(0,0,0,0));
         layout.addWidget (self._view)
         
-        self.retranslateUi (MainWindow)
         QMetaObject.connectSlotsByName (MainWindow)
         
         """
@@ -101,7 +103,7 @@ class MainMayaWindow (QObject):
         print cmds.control('JADEInnerView', query=True, p=True)
         """
         
-        # wiring the Maya Contextual pop-up Menu
+        # wiring the Maya Contextual pop-up Menus - yes, in Maya we've split the pop-up menu definition in three pop-up menus although only one will be present at any time.
         self.menu        = cmds.popupMenu ('JADEmenu',        parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenu()',        aob=True)
         self.menuAddOuts = cmds.popupMenu ('JADEmenuAddOuts', parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenuAddOuts()', aob=True, alt=True)
         self.menuAddIns  = cmds.popupMenu ('JADEmenuAddIns',  parent='JADEInnerView', button=3, pmc = 'ClientMaya.ui.ctxMenuAddIns()',  aob=True, ctl=True)
@@ -112,13 +114,11 @@ class MainMayaWindow (QObject):
         # self._view's zoom slider (we need this to correct the bias added to sort the mouse position when the zoom changes - ONLY in Maya)
         self._zoom_slider = self._view.getZoomSlider()
     
-    def retranslateUi (self, MainWindow):
-        pass
-    
     # - - -    context menus methods   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def ctxMenu (self):
-        
+        '''this method invokes the general Maya pop-up menu.
+        '''
         self.hovered_tag_id = self.comm.getHoveredItemId()
         
         cmds.popupMenu ('JADEmenu', edit=True, dai=True) # clear all the menu items out.
@@ -130,7 +130,10 @@ class MainMayaWindow (QObject):
             self.prepareGeneralCtxMenu (tmp_ls)
     
     def prepareGeneralCtxMenu (self, list0):
+        '''populates the self.menu dynamically with available node infos.
         
+        @param list0 list of menu items
+        '''
         self.node_coords = self.graphicsView.mapToScene (self._mouse.pos())
         
         # populate the QMenu dynamically and pass the menu string name to the receiver
@@ -138,8 +141,13 @@ class MainMayaWindow (QObject):
             cmds.menuItem (parent=self.menu, label=str(i), c='ClientMaya.ui.addTag ("'+str(i)+'")')
     
     def addTag (self, name0):
+        '''adds a Tag0 instance by name. the constants added to the are needed to make the tag pop up near the mouse pointer.
         
-        # the piece-wise linear interpolation below is a workaround only present in the Maya JADE mapping tool since the self.graphicsView.mapToScene() doesn't seem to work as the standalone's one.
+        @param name0 string
+        '''
+        
+        # the piece-wise linear interpolation below is a workaround only present in the Maya JADE mapping tool since
+        # the self.graphicsView.mapToScene() doesn't seem to work as the standalone's one.
         if self._zoom_slider.value() > 199 and self._zoom_slider.value() < 241:
             x_bias = -22.5*(self._zoom_slider.value()-200) + 2100
             y_bias = -3.75*(self._zoom_slider.value()-200) + 400
@@ -151,7 +159,8 @@ class MainMayaWindow (QObject):
         self._view.updateCurrentClusterNodeList (new_node)
     
     def ctxMenuAddOuts (self):
-        
+        '''this method invokes the Maya add-outs pop-up menu.
+        '''
         self.hovered_tag_id = self.comm.getHoveredItemId()
         
         cmds.popupMenu ('JADEmenuAddOuts', edit=True, dai=True) # clear all the menu items out.
@@ -163,7 +172,8 @@ class MainMayaWindow (QObject):
                 self.prepareNodeCtxMenuOnAddingOuts (right_list)
     
     def ctxMenuAddIns (self):
-        
+        '''this method invokes the Maya add-ins pop-up menu.
+        '''
         self.hovered_tag_id = self.comm.getHoveredItemId()
         
         cmds.popupMenu ('JADEmenuAddIns', edit=True, dai=True) # clear all the menu items out.
@@ -175,31 +185,41 @@ class MainMayaWindow (QObject):
                 self.prepareNodeCtxMenuOnAddingIns (left_list)
     
     def prepareNodeCtxMenuOnAddingOuts (self, list0):
+        '''populates the self.menuAddOuts dynamically with available node infos.
         
-        # populate the QMenu dynamically and pass the menu string name to the receiver
+        @param list0 list of menu items
+        '''
         for i in list0:
             cmds.menuItem (parent=self.menuAddOuts, label=str(i), c='ClientMaya.ui.addOutSocketAction ("'+str(i)+'")')
         
-        self.helper.setMenu(self.menuAddOuts)
+        self.helper.setMenu (self.menuAddOuts)
     
     def prepareNodeCtxMenuOnAddingIns (self, list0):
+        '''populates the self.menuAddIns dynamically with available node infos.
         
-        # populate the QMenu dynamically and pass the menu string name to the receiver
+        @param list0 list of menu items
+        '''
         for i in list0:
             cmds.menuItem (parent=self.menuAddIns, label=str(i), c='ClientMaya.ui.addInSocketAction ("'+str(i)+'")')
         
         self.helper.setMenu (self.menuAddIns)
     
     def addOutSocketAction (self, value):
+        '''adds an out-socket name based on the pressed key modifier.
         
-            self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
-            
-            # the event released by adding an InSocket signal will trigger the Tag0's method appendOutHook as a result.
-            self.graph_model.addOutSocket (self.hovered_tag_id, value)
+        @param value
+        '''
+        self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
+        
+        # the event released by adding an InSocket signal will trigger the Tag0's method appendOutHook as a result.
+        self.graph_model.addOutSocket (self.hovered_tag_id, value)
     
     def addInSocketAction (self, value):
+        '''adds an in-socket name based on the pressed key modifier.
         
+        @param value
+        '''
         self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
-            
+        
         # the event released by adding an InSocket signal will trigger the Tag0's method appendInHook() as a result.
         self.graph_model.addInSocket (self.hovered_tag_id, value)

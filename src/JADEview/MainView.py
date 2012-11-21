@@ -163,18 +163,18 @@ class MainWindow (QWidget):
             self.connect (tmp, SIGNAL('triggered()'), receiver)
     
     def addSocketAction (self, value):
-        '''adds a socket name based on the key modifier pressed.
+        '''adds a socket name based on the pressed key modifier.
         
         @param value
         '''
         if self.ctl_pressed == True:
             
-            tag = self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
+            self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
             # the event released by adding an InSocket signal will trigger the Tag0's method appendInHook() as a result.
             self.graph_model.addInSocket (self.hovered_tag_id, value)
         
         elif self.alt_pressed == True:
             
-            tag = self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
+            self.graph_view.getTag (self.hovered_tag_id) # retrieve the tag the ctx menu was open above.
             # the event released by adding an InSocket signal will trigger the Tag0's method appendOutHook as a result.
             self.graph_model.addOutSocket (self.hovered_tag_id, value)
