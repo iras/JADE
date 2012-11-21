@@ -160,7 +160,7 @@ class Canvas (QGraphicsItem):
         self.max_pos_in_list=pos
     
     '''
-    def hoverEnterEvent   (self, e): QGraphicsItem.hoverEnterEvent   (self, e)
+    def hoverEnterEvent   (self, e): QGraphicsItem.hoverEnterEvent (self, e)
     def hoverLeaveEvent   (self, e): QGraphicsItem.hoverLeaveEvent   (self, e)
     def mousePressEvent   (self, e): QGraphicsItem.mousePressEvent   (self, e)
     def mouseMoveEvent    (self, e): QGraphicsItem.mouseMoveEvent    (self, e)

@@ -16,11 +16,12 @@ class GText (QGraphicsTextItem):
     def __init__(self, str0='', parent=None, scene=None):
         
         QGraphicsTextItem.__init__ (self, str0, parent, scene)
+        self.setAcceptsHoverEvents   (False)
+        self.setAcceptedMouseButtons (Qt.NoButton)
     
     def boundingRect (self):
         
-        # this is needed as the QGraphicsTextItem couldn't catch its hook's signal otherwise.
-        return QRectF (0, 0, 0, 0)
+        return QRectF (0, 0, 50, 20)
 
 
 
@@ -57,6 +58,7 @@ class HookBox0 (QGraphicsItem):
         tx = 8
         
         self._text_item = GText (self.hookName, self)
+        self._text_item.setDefaultTextColor (Qt.black)
         self._text_item.setEnabled (False)
         
         if self.hookType=='out' :
@@ -64,11 +66,11 @@ class HookBox0 (QGraphicsItem):
             tmp0 = QTextBlockFormat ()
             tmp0.setAlignment (Qt.AlignRight)
             tmp = QTextCursor ()
-            tmp.setBlockFormat(tmp0)
+            tmp.setBlockFormat (tmp0)
             self._text_item.setTextCursor (tmp)
         
         self._text_item.setPos (QPointF (tx, -5))
-        self._text_item.setFont(QFont ("Geneva", 8, QFont.AllLowercase, False))
+        self._text_item.setFont (QFont ("Geneva", 8, QFont.AllLowercase, False))
         self._text_item.setTextWidth (65)
     
     def boundingRect (self): return QRectF (0, 0, 12, 12)
@@ -142,8 +144,9 @@ class HookBox0 (QGraphicsItem):
     def hoverEnterEvent (self, e):
         
         self.pen_color = QPen (Qt.red, 2)
-        self.update ()
-        
+        self._text_item.setDefaultTextColor (Qt.red)
+        self._text_item.update ()
+                
         # records the node_id in the helper's attribute.
         self.comm.setHoveredSocketId (self.socket_id)
         
@@ -153,25 +156,24 @@ class HookBox0 (QGraphicsItem):
             self.helper.getGraphView().addLinkAndWirePressBtnListener ()
         
         #self._text_item.setToolTip (self._text_item.toPlainText ())
-        
         QGraphicsItem.hoverEnterEvent (self, e)
     
     def hoverLeaveEvent (self, e):
         
         self.pen_color = QPen (Qt.black, 2)
-        self.update ()
+        self._text_item.setDefaultTextColor (Qt.black)
+        self._text_item.update ()
         
         # records the node_id in the helper's attribute.
         self.comm.setHoveredSocketId (None)
         
-        #QGraphicsItem.hoverLeaveEvent (self, e)
+        QGraphicsItem.hoverLeaveEvent (self, e)
     
     def mousePressEvent (self, e):
         
         self.harpoon.setInitPos (self.pos()+self.parent.pos())
         self.harpoon.setVisible (True)
         
-        self.update ()
         self.harpoon.update ()
         QGraphicsItem.mousePressEvent (self, e)
     
@@ -179,16 +181,13 @@ class HookBox0 (QGraphicsItem):
         
         self.harpoon.setEndPos (self.pos()+e.pos()+self.parent.pos())
         
-        self.update ()
         self.harpoon.update ()
         QGraphicsItem.mouseMoveEvent (self, e)
     
     def mouseReleaseEvent (self, e):
         
         self.harpoon.setVisible (False)
-        
-        self.update ()
-        
+                
         self.helper.initAndStartTimer ()
         
         QGraphicsItem.mouseReleaseEvent (self, e)
@@ -214,4 +213,6 @@ class HookBox0 (QGraphicsItem):
         self.hookName = name0
         self.setTextfield()
     
-    def setPosInList (self, pos): self.pos_in_list=pos
+    def setPosInList (self, pos):
+        
+        self.pos_in_list=pos

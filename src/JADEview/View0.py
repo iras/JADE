@@ -51,10 +51,8 @@ class View (QFrame):
         
         self.graphicsView = CustomGraphicsView ()
         self.graphicsView.setRenderHint (QPainter.Antialiasing, True)
-        #self.graphicsView.setRenderHint (QPainter.TextAntialiasing, True)
         self.graphicsView.setDragMode (QGraphicsView.RubberBandDrag)
         self.graphicsView.setViewportUpdateMode (QGraphicsView.SmartViewportUpdate)
-        self.graphicsView.setStyleSheet('background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(125, 125, 135, 255), stop:1 rgba(215, 215, 215, 255));\ncolor: rgb(255, 255, 255);')
         #self.graphicsView.setMouseTracking(True)
         
         # toolbox definition + group page definition
@@ -201,6 +199,10 @@ class View (QFrame):
         self.prev_selection_list = []
         
         self.isClusterRemovalOverridden = False
+    
+    def setGraphicsViewCSSBackground (self):
+        
+        self.graphicsView.setStyleSheet('background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(125, 125, 135, 255), stop:1 rgba(215, 215, 215, 255));\ncolor: rgb(255, 255, 255);')
     
     def selectionChanged (self):
         

@@ -57,6 +57,7 @@ class MainWindow (QWidget):
         self.connect (self.scene, SIGNAL("selectionChanged()"), self._view.selectionChanged)
         
         self.graphicsView = self._view.getGraphicsView ()
+        self._view.setGraphicsViewCSSBackground ()
         self.node_coords = QPoint (0,0)
         
         layout = QHBoxLayout ()

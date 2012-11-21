@@ -88,7 +88,7 @@ class Tag1 (QGraphicsItem):
         
         if self.node_id == node_id:
             self.canvas.setCanvasColourBasedOnTheClusterId (c_id)
-        
+    
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     
     def scrollRestOfHooksUp (self, rail):
@@ -285,18 +285,15 @@ class Tag1 (QGraphicsItem):
             self.comm.emitCtxMenuSignal (pos)
         
         QGraphicsItem.mousePressEvent (self, e)
-        self.update ()
     
     def mouseReleaseEvent (self, e):
         
-        self.update ()
         QGraphicsItem.mouseReleaseEvent (self, e)
     
     def hoverEnterEvent (self, e):
         
         # records the node_id in the helper's attribute.
         self.comm.setHoveredItemId (self.node_id)
-        
         QGraphicsItem.hoverEnterEvent (self, e)
     
     def hoverLeaveEvent (self, e):
@@ -307,6 +304,8 @@ class Tag1 (QGraphicsItem):
         # deal with the harpoon.
         if not self.helper.isTimerEnded():
             self.setSelected (True)
+        
+        QGraphicsItem.hoverLeaveEvent (self, e)
     
     # - - -  getters/setters  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     

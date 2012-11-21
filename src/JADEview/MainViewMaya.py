@@ -80,7 +80,8 @@ class MainMayaWindow (QObject):
         self._view.wireViewItemsUp ()
         self._view.getGraphicsView().setScene (self.scene)
         self._view.setToolboxCSSColorScheme ('background-color: rgb(68,68,68);color: rgb(200,200,200)') # this needs to be done since the toolbox's background didn't have a uniform colour otherwise.
-        
+        #self._view.setGraphicsViewCSSBackground () # the CSS background doesn't seem to work in Maya as there seems to be a problem with cleaning QGraphicsLineItems when they move, that doesn't happen when there's no CSS applied to the background.
+
         self.graphicsView = self._view.getGraphicsView ()
         self.node_coords = QPoint (0,0)
         

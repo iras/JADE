@@ -39,17 +39,14 @@ On a Mac, some more installation notes are available here http://stc0.wordpress.
 ## Known Issues
 (1) JADE doesn't warn the user when they incorrectly extend connections betwwen two nodes belonging each to different clusters.
 Saving the file is allowed but the loader breaks when attempting to load the exported file. One way to sort this is to manually
-move the links and nodes in the XML file. A future functionality will be to prevent the user from extending such inter-cluster
+move the links and nodes in the XML file. A future functionality will prevent the user from extending such inter-cluster
 connections.
-(2) newly extended connections may not show near the borders of the graphics pane, it's not a difficult thing to fix.
-In the meantime, changing the zoom level will make the connection appear.
-
+(2) the FPS rate goes down sharply with the number tags dragged at once.
 
 ## Version 0.4 wishlist:
 (1) undo functionality.
 (2) ability to merge two imported group of clusters in a unique file.
 (3) tube-like connections instead of straight dotted lines.
 (4) complete unit tests for props and cluster in the model.
-(5) the graphics interface FPS needs improvements.
 
 
