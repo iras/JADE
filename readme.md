@@ -41,7 +41,7 @@ On a Mac, some more installation notes are available here http://stc0.wordpress.
 Saving the file is allowed but the loader breaks when attempting to load the exported file. One way to sort this is to manually
 move the links and nodes in the XML file. A future functionality will prevent the user from extending such inter-cluster
 connections.
-(2) the FPS rate goes down sharply with the number tags dragged at once.
+(2) the FPS rate goes down sharply with the number of tags dragged at once.
 
 ## Version 0.4 wishlist:
 (1) undo functionality.
