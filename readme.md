@@ -42,6 +42,8 @@ Saving the file is allowed but the loader breaks when attempting to load the exp
 move the links and nodes in the XML file. A future functionality will prevent the user from extending such inter-cluster
 connections.
 (2) the FPS rate goes down sharply with the number tags dragged at once.
+(3) newly extended connections may not show near the borders of the graphics pane, it's not a difficult thing to fix. In the meantime, changing the zoom level will make the connection appear.
+(4) the instance of the class GText grabs the mouse when using the macbook's touchpad (2-finger scroll)
 
 ## Version 0.4 wishlist:
 (1) undo functionality.

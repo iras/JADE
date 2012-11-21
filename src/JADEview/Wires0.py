@@ -73,14 +73,12 @@ class Wire0 (QGraphicsLineItem):
     def hoverEnterEvent (self, e):
         
         self.wire_pen.setColor (Qt.red)
-        self.update()
         
         QGraphicsItem.hoverEnterEvent (self, e)
     
     def hoverLeaveEvent(self, e):
         
         self.wire_pen.setColor (Qt.white)
-        self.update()
         
         QGraphicsItem.hoverLeaveEvent(self,e)
     

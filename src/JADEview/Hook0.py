@@ -16,12 +16,17 @@ class GText (QGraphicsTextItem):
     def __init__(self, str0='', parent=None, scene=None):
         
         QGraphicsTextItem.__init__ (self, str0, parent, scene)
-        self.setAcceptsHoverEvents   (False)
+        
+        self.setAcceptHoverEvents (False)
         self.setAcceptedMouseButtons (Qt.NoButton)
+        self.setAcceptDrops (False)
+        self.setAcceptTouchEvents (False)
     
     def boundingRect (self):
         
         return QRectF (0, 0, 50, 20)
+
+
 
 
 
@@ -145,7 +150,6 @@ class HookBox0 (QGraphicsItem):
         
         self.pen_color = QPen (Qt.red, 2)
         self._text_item.setDefaultTextColor (Qt.red)
-        self._text_item.update ()
                 
         # records the node_id in the helper's attribute.
         self.comm.setHoveredSocketId (self.socket_id)
@@ -162,7 +166,6 @@ class HookBox0 (QGraphicsItem):
         
         self.pen_color = QPen (Qt.black, 2)
         self._text_item.setDefaultTextColor (Qt.black)
-        self._text_item.update ()
         
         # records the node_id in the helper's attribute.
         self.comm.setHoveredSocketId (None)
