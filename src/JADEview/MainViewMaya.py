@@ -52,6 +52,10 @@ class MainMayaWindow (QObject):
         self.scene.addItem (self.helper.getHarpoon ())
         
         self.hovered_tag_id = None
+        
+        # register a new command that takes care of deleting selected items and bind it to the key 'd'.
+        cmds.nameCommand ('delSelection', ann='deleteSelectedItems', c='python (\"ClientMaya.ui.graph_view.removeSelectedItems ()\");')
+        cmds.hotkey (k='d', name='delSelection')
     
     def setupUi (self, MainWindow):
         
