@@ -427,7 +427,7 @@ class Graph ():
     def setNodesDescription (self, text_xml):
         '''This method configures the types of nodes the user is able to handle in the JADE editor.
         That means that modifying the node types is possible. The nodes description can be found in
-        the XML file "node_definition.xml"
+        the XML file "node_description.xml"
         
         @param text_xml string
         '''
