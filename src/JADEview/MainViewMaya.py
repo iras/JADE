@@ -137,7 +137,7 @@ class MainMayaWindow (QObject):
         self.node_coords = self.graphicsView.mapToScene (self._mouse.pos())
         
         # populate the QMenu dynamically and pass the menu string name to the receiver
-        for i in list0:
+        for i in sorted (list0):
             cmds.menuItem (parent=self.menu, label=str(i), c='ClientMaya.ui.addTag ("'+str(i)+'")')
     
     def addTag (self, name0):
@@ -189,7 +189,7 @@ class MainMayaWindow (QObject):
         
         @param list0 list of menu items
         '''
-        for i in list0:
+        for i in sorted(list0):
             cmds.menuItem (parent=self.menuAddOuts, label=str(i), c='ClientMaya.ui.addOutSocketAction ("'+str(i)+'")')
         
         self.helper.setMenu (self.menuAddOuts)
@@ -199,7 +199,7 @@ class MainMayaWindow (QObject):
         
         @param list0 list of menu items
         '''
-        for i in list0:
+        for i in sorted (list0):
             cmds.menuItem (parent=self.menuAddIns, label=str(i), c='ClientMaya.ui.addInSocketAction ("'+str(i)+'")')
         
         self.helper.setMenu (self.menuAddIns)

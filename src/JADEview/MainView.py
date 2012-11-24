@@ -138,7 +138,7 @@ class MainWindow (QWidget):
         
         @param list0 list of menu items
         '''
-        for i in list0:
+        for i in sorted (list0):
             
             tmp = self.menu.addAction(i)
             receiver = lambda value=i: self.addTag (value)
@@ -157,7 +157,7 @@ class MainWindow (QWidget):
         
         @param list0 list of menu items.
         '''
-        for i in list0:
+        for i in sorted (list0):
             tmp = self.menu.addAction(i)
             receiver = lambda value=i: self.addSocketAction (value)
             self.connect (tmp, SIGNAL('triggered()'), receiver)
