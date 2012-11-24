@@ -6,7 +6,7 @@ It is available both as a standalone app and as Maya scripted-plugin (tested on 
 depending on the number of connections, the reason for that is to avoid big tags with many unused hooks to clutter the working space.
 
 JADE mapping tool allows handling clusters of customisable nodes which means that the user can have different tools by simply changing
-the node definitions in the XML file available_nodes. A mock-up version of a graphics scripting tool is given as example.
+the node definitions in the XML file node_description. A mock-up version of a graphics scripting tool is given as example.
 By changing the XML nodes definition, a dialogue mapping tool can be easily achieved with no additional code.
 
 The codebase encompasses both the standalone and the Maya client. And, except for two initial view classes, all the rest of the
@@ -17,7 +17,7 @@ is shown right below.
 ![JADE mapping tool - overall approximated class structure](http://www.stc0.co.uk/JADE_classes_rough_structure.jpg)
 
 ## How to use it
-After running the client, please load the XML file relative to the node description (available nodes), then to start adding tags (nodes), 
+After running the client, please load the XML file relative to the node description, then to start adding tags (nodes), 
 mouse right-click on the graphics view and then choose what node-type from the contextual menu. Right clicking on a tag (plus Ctrl or Alt
 pressed at once) will allow hook creation and by click-and-dragging the dash line from a hook over to another one will allow link creation.
 The functionalities for the buttons new, save and load are pretty self-explanatory.
