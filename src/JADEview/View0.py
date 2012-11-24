@@ -374,7 +374,8 @@ class View (QFrame):
     
     def resetScene (self):
         
-        self.removeAllClusters()
+        self.removeAllClusters ()
+        self.resetView ()
     
     def exportGraph (self):
         
