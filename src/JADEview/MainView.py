@@ -61,7 +61,7 @@ class MainWindow (QWidget):
         self.node_coords = QPoint (0,0)
         
         layout = QHBoxLayout ()
-        layout.setContentsMargins (QMargins(0,0,0,0));
+        layout.setContentsMargins (QMargins (0,0,0,0));
         layout.addWidget (self._view)
         self.setLayout (layout)
         
@@ -149,8 +149,15 @@ class MainWindow (QWidget):
         
         @param name0 string
         '''
-        new_node = self.graph_model.addNode (name0, self.node_coords.x() - 100, self.node_coords.y() - 70)
-        self._view.updateCurrentClusterNodeList (new_node)
+        if self._view.getCurrentClusterIndex () != 0:
+        
+            new_node = self.graph_model.addNode (name0, self.node_coords.x() - 100, self.node_coords.y() - 70)
+            self._view.updateCurrentClusterNodeList (new_node)
+            
+            self._view.setMessageBarText ('')
+        else:
+            self._view.setMessageBarText ('** Choose or create a cluster first. Node not created.')
+            
     
     def prepareNodeCtxMenu (self, list0):
         '''populates the QMenu dynamically with available socket names and pass the menu string name to the receiver. Also, it generates closures as callbacks for each item.

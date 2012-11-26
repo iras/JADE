@@ -430,14 +430,17 @@ class Graph ():
         the XML file "node_description.xml"
         
         @param text_xml string
+        @return 2-list (boolean, string)
         '''
         flag_parsing_ok = True
+        flag_success = False
+        response = ''
         
         try:
             self.xml_rules_table = parseString(text_xml)
         except:
             flag_parsing_ok = False
-            print '\n\nPROBLEM IN PARSING THE NODE DESCRIPTION : please double-check the XML file.\n'
+            response = '* Encountered a XML file validation issue. Node description file not loaded.'
             
         if flag_parsing_ok:
             
@@ -474,6 +477,15 @@ class Graph ():
             import pprint
             pp = pprint.PrettyPrinter(indent=4)
             pp.pprint (self.node_details_map)
+        
+        if flag_parsing_ok:
+            if len (self.node_details_map) != 0:
+                flag_success = True
+                response = 'Ok. Node editing/loading can now begin.'
+            else:
+                response = "* The chosen XML file wasn't a node description file or it was an empty one."
+        
+        return [flag_success, response]
     
     def getNodesDecription (self):
         '''Getter.

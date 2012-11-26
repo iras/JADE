@@ -77,7 +77,7 @@ class MainMayaWindow (QObject):
         MainWindow.setDockOptions (QMainWindow.AllowTabbedDocks|QMainWindow.AnimatedDocks)
         
         self.scrollAreaWidgetContents_3 = QWidget (MainWindow)
-        self.scrollAreaWidgetContents_3.setGeometry (QRect(10, 10, 900, 1000))
+        self.scrollAreaWidgetContents_3.setGeometry (QRect(10, 10, 900, 940))
         self.scrollAreaWidgetContents_3.setObjectName ('scrollAreaWidgetContents_3')
         self._view = View0.View ("JADEview", self.graph_view, self.scene, self.scrollAreaWidgetContents_3)
         self._view.setObjectName ('JADEview')  # real ui name
@@ -145,18 +145,23 @@ class MainMayaWindow (QObject):
         
         @param name0 string
         '''
-        
-        # the piece-wise linear interpolation below is a workaround only present in the Maya JADE mapping tool since
-        # the self.graphicsView.mapToScene() doesn't seem to work as the standalone's one.
-        if self._zoom_slider.value() > 199 and self._zoom_slider.value() < 241:
-            x_bias = -22.5*(self._zoom_slider.value()-200) + 2100
-            y_bias = -3.75*(self._zoom_slider.value()-200) + 400
-        elif self._zoom_slider.value() > 240 and self._zoom_slider.value() < 281:
-            x_bias = -12.5*(self._zoom_slider.value()-240) + 1200
-            y_bias = -2.5* (self._zoom_slider.value()-240) + 250
-        
-        new_node = self.graph_model.addNode (name0, self.node_coords.x() - x_bias, self.node_coords.y() - y_bias)
-        self._view.updateCurrentClusterNodeList (new_node)
+        if self._view.getCurrentClusterIndex () != 0:
+            
+            # the piece-wise linear interpolation below is a workaround only present in the Maya JADE mapping tool since
+            # the self.graphicsView.mapToScene() doesn't seem to work as the standalone's one.
+            if self._zoom_slider.value() > 199 and self._zoom_slider.value() < 241:
+                x_bias = -22.5*(self._zoom_slider.value()-200) + 2100
+                y_bias = -3.75*(self._zoom_slider.value()-200) + 400
+            elif self._zoom_slider.value() > 240 and self._zoom_slider.value() < 281:
+                x_bias = -12.5*(self._zoom_slider.value()-240) + 1200
+                y_bias = -2.5* (self._zoom_slider.value()-240) + 250
+            
+            new_node = self.graph_model.addNode (name0, self.node_coords.x() - x_bias, self.node_coords.y() - y_bias)
+            self._view.updateCurrentClusterNodeList (new_node)
+            
+            self._view.setMessageBarText ('')
+        else:
+            self._view.setMessageBarText ('** Choose or create a cluster first. Node not created.')
     
     def ctxMenuAddOuts (self):
         '''this method invokes the Maya add-outs pop-up menu.

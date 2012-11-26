@@ -23,6 +23,7 @@ class GraphView ():
         self.graph   = graph
         self.comm    = self.graph.getComm()
         self.utility = utility
+        self.view0   = None
         
         self.initGraphViewLists ()
     
@@ -41,6 +42,10 @@ class GraphView ():
         '''This method initiates the model's global data.
         '''
         self.graph.initGraph ()
+    
+    def setView0 (self, view0):
+        
+        self.view0 = view0
     
     def removeSelectedItems (self):
         
@@ -150,8 +155,10 @@ class GraphView ():
                 self.graph.addLink (s1, s2)
             else:
                 self.graph.addLink (s2, s1)
+            
+            self.view0.setMessageBarText ('')
         else:
-            print 'Sockets must be one of each kind. No connection will be made now.'
+            self.view0.setMessageBarText ('** Sockets must be one of each kind (in, out). No connection is made now.')
     
     def addWire (self, s_in_id, s_out_id):
                 
@@ -173,8 +180,17 @@ class GraphView ():
     
     # - - Getters / Setters- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    def setNodesDescription (self, textfile) : self.graph.setNodesDescription (textfile)
+    def setNodesDescription (self, textfile):
         
+        result = self.graph.setNodesDescription (textfile)
+        
+        self.view0.setMessageBarText (result[1])
+        
+        if result[0] == True:
+            self.view0.enableControls ()
+        else:
+            self.view0.disableControls ()
+    
     def getTag (self, node_id):
         
         seeked_tag = None

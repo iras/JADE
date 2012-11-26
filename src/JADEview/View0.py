@@ -8,7 +8,7 @@ JADE mapping tool
 
 
 from PyQt4.QtCore import Qt, QRect, QRectF, SIGNAL, QSize, QMetaObject, QString
-from PyQt4.QtGui import QGraphicsView, QFrame, QFont, QPainter, QSizePolicy, QToolBox, QWidget, QLabel, QLineEdit, QPushButton, QApplication, QToolButton, QSlider, QVBoxLayout, QHBoxLayout, QGridLayout, QPrinter, QMatrix, QFileDialog
+from PyQt4.QtGui import QGraphicsView, QFrame, QFont, QPainter, QSizePolicy, QToolBox, QWidget, QLabel, QLineEdit, QPushButton, QApplication, QToolButton, QSlider, QVBoxLayout, QHBoxLayout, QGridLayout, QPrinter, QMatrix, QFileDialog, QSpacerItem
 
 
 
@@ -41,6 +41,7 @@ class View (QFrame):
         QFrame.__init__(self, parent)
         
         self.graph_view = graph_view
+        self.graph_view.setView0 (self)
         self.scene = scene
 
         self.setFrameStyle (QFrame.Sunken | QFrame.StyledPanel)
@@ -92,6 +93,7 @@ class View (QFrame):
         self.label_2.setText (QApplication.translate ("Form", "group id", None, QApplication.UnicodeUTF8))
         self.pushButton.setText (QApplication.translate ("Form", "add cluster", None, QApplication.UnicodeUTF8))
         self._toolBox.setSizePolicy (sizePolicy)
+        self._toolBox.setEnabled (False)
         
         # adding the first cluster to the toolbox - a cluster is always present!
         self._cluster_page_list = []
@@ -135,12 +137,12 @@ class View (QFrame):
         self.printOutBtn = QPushButton()
         self.printOutBtn.setText ("print")
         self.printOutBtn.setFont (self.font)
-        self.printOutBtn.setEnabled (True)
+        self.printOutBtn.setEnabled (False)
         
         self.newJADESceneBtn = QPushButton()
         self.newJADESceneBtn.setText ("new")
         self.newJADESceneBtn.setFont (self.font)
-        self.newJADESceneBtn.setEnabled (True)
+        self.newJADESceneBtn.setEnabled (False)
         
         self.loadNodesDescrpBtn = QPushButton()
         self.loadNodesDescrpBtn.setText ("load Nodes Description")
@@ -150,27 +152,39 @@ class View (QFrame):
         self.graphLoadBtn = QPushButton()
         self.graphLoadBtn.setText ("load")
         self.graphLoadBtn.setFont (self.font)
-        self.graphLoadBtn.setEnabled (True)
+        self.graphLoadBtn.setEnabled (False)
         
         self.graphSaveBtn = QPushButton()
         self.graphSaveBtn.setText ("save")
         self.graphSaveBtn.setFont (self.font)
-        self.graphSaveBtn.setEnabled (True)
+        self.graphSaveBtn.setEnabled (False)
         
         self.resetButton = QToolButton ()
         self.resetButton.setText ("r")
         self.resetButton.setFont (self.font)
         self.resetButton.setEnabled (False)
         
+        self.message_bar = QLineEdit ()
+        self.message_bar.setGeometry (QRect (0, 0, 190, 12))
+        self.message_bar.setObjectName ('message_bar')
+        self.message_bar.setText ('Node description file, please.')
+        self.message_bar.setFont (self.font)
+        self.message_bar.setEnabled  (True)
+        self.message_bar.setReadOnly (True)
+        
+        self.spacer = QSpacerItem (30, 20, QSizePolicy.Fixed, QSizePolicy.Fixed );
+        
         # Label layout
         labelLayout = QHBoxLayout ()
         self.label = QLabel (name)
         self.label.setFont (self.font)
-        labelLayout.addWidget (self.newJADESceneBtn)
         labelLayout.addWidget (self.loadNodesDescrpBtn)
+        labelLayout.addWidget (self.newJADESceneBtn)
         labelLayout.addWidget (self.graphLoadBtn)
         labelLayout.addWidget (self.graphSaveBtn)
         labelLayout.addWidget (self.printOutBtn)
+        labelLayout.addItem   (self.spacer)
+        labelLayout.addWidget (self.message_bar)
         #labelLayout.addWidget (self.label)
         labelLayout.addStretch ()
         
@@ -199,6 +213,26 @@ class View (QFrame):
         self.prev_selection_list = []
         
         self.isClusterRemovalOverridden = False
+    
+    def setMessageBarText (self, text):
+        
+        self.message_bar.setText (text)
+    
+    def enableControls (self):
+        
+        self.printOutBtn.setEnabled (True)
+        self.newJADESceneBtn.setEnabled (True)
+        self.graphLoadBtn.setEnabled (True)
+        self.graphSaveBtn.setEnabled (True)
+        self._toolBox.setEnabled (True)
+    
+    def disableControls (self):
+        
+        self.printOutBtn.setEnabled (False)
+        self.newJADESceneBtn.setEnabled (False)
+        self.graphLoadBtn.setEnabled (False)
+        self.graphSaveBtn.setEnabled (False)
+        self._toolBox.setEnabled (False)
     
     def setGraphicsViewCSSBackground (self):
         
@@ -335,6 +369,10 @@ class View (QFrame):
                 self.graph_view.delegateClusterNodeListUpdate (item[0], node)
                 break
     
+    def getCurrentClusterIndex (self):
+        
+        return self._toolBox.currentIndex ()
+    
     # - - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     def getGraphicsView (self):
@@ -349,7 +387,9 @@ class View (QFrame):
         
         self.resetButton.setEnabled (False)
     
-    def setResetButtonEnabled (self) : self.resetButton.setEnabled (True)
+    def setResetButtonEnabled (self):
+        
+        self.resetButton.setEnabled (True)
     
     def setupMatrix (self):
         
@@ -367,7 +407,7 @@ class View (QFrame):
         self.graphicsView.render(qqq)
     
     def importNodesDescription (self):
-                
+        
         aa = QFileDialog (self).getOpenFileName()
         if aa != QString (u''): # it can be equal to QString(u'') when the user presses the Escape key, so in that circumstance, nothing is returned.
             self.graph_view.setNodesDescription (open(aa).read())
@@ -387,7 +427,7 @@ class View (QFrame):
             print '\n*** file exported.\n'
     
     def importGraph (self):
-                
+        
         aa = QFileDialog (self).getOpenFileName ()
         if aa != QString (u''): # it can be equal to QString(u'') when the user presses the Escape key, so in that circumstance, nothing is returned.
             file0 = open (aa, 'r')
@@ -406,7 +446,7 @@ class View (QFrame):
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     def wireViewItemsUp (self):
-                
+        
         self.connect (self.newJADESceneBtn,    SIGNAL ("clicked()"), self.resetScene)
         self.connect (self.loadNodesDescrpBtn, SIGNAL ("clicked()"), self.importNodesDescription)
         self.connect (self.graphSaveBtn,       SIGNAL ("clicked()"), self.exportGraph)
