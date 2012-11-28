@@ -1,3 +1,5 @@
+Intro Video http://vimeo.com/54445956
+
 # JADE Mapping Tool
 ### ver 0.3
 
