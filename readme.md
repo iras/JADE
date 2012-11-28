@@ -1,7 +1,7 @@
-Intro Video http://vimeo.com/54445956
-
 # JADE Mapping Tool
 ### ver 0.3
+
+A brief Introductory Video can be found at http://vimeo.com/54445956
 
 JADE is a simple cross-platform data-driven dependency mapping tool written in Python 2.6 and using the library PyQt.
 It is available both as a standalone app and as Maya scripted-plugin (tested on Maya 2012 and 2013). The JADE floating tags are self-resizing
