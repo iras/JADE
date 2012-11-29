@@ -11,8 +11,7 @@ from PyQt4.QtGui  import QGraphicsItem, QColor, QLinearGradient, QPainterPath, Q
 
 
 class Canvas (QGraphicsItem):
-
-
+    
     def __init__(self, parent=None, scene=None):
         
         QGraphicsItem.__init__ (self)
@@ -142,10 +141,10 @@ class Canvas (QGraphicsItem):
             self.timeline.start ()
             self.update ()
     
-    # this method double-checks whether the canvas needs to be further thinner as a
-    # result of receiving other asynchronous "delete link" SIGNALs while moving up.
     def makeFurtherThinner (self):
-        
+        '''this method double-checks whether the canvas needs to be further thinner as a
+        result of receiving other asynchronous "delete link" SIGNALs while moving up.
+        '''
         self.anim_active = False
         
         if self.thinning_flag==True:
@@ -161,8 +160,8 @@ class Canvas (QGraphicsItem):
     
     '''
     def hoverEnterEvent   (self, e): QGraphicsItem.hoverEnterEvent (self, e)
-    def hoverLeaveEvent   (self, e): QGraphicsItem.hoverLeaveEvent   (self, e)
-    def mousePressEvent   (self, e): QGraphicsItem.mousePressEvent   (self, e)
-    def mouseMoveEvent    (self, e): QGraphicsItem.mouseMoveEvent    (self, e)
+    def hoverLeaveEvent   (self, e): QGraphicsItem.hoverLeaveEvent (self, e)
+    def mousePressEvent   (self, e): QGraphicsItem.mousePressEvent (self, e)
+    def mouseMoveEvent    (self, e): QGraphicsItem.mouseMoveEvent  (self, e)
     def mouseReleaseEvent (self, e): QGraphicsItem.mouseReleaseEvent (self, e)
     '''
