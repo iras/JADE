@@ -48,9 +48,11 @@ connections.
 (4) the instance of the class GText grabs the mouse when using the macbook's touchpad (2-finger scroll)
 
 ## Version 0.4 wishlist:
+(0) sort known issues and esp. the overall graphics performance.
 (1) undo functionality.
 (2) ability to merge two imported group of clusters in a unique file.
 (3) tube-like connections instead of straight dotted lines.
 (4) complete unit tests for props and cluster in the model.
+(5) add sliders on canvas_bottom when the prop-value is a integer.
 
 
