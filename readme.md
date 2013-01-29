@@ -38,14 +38,8 @@ On a Mac, some more installation notes are available here http://stc0.wordpress.
 > Nodes/Links are the basic elements that make up a graph. The Node can have a number of plugs (in-plugs, and out-plugs).
 > Two nodes can be connected by a link, that means that the in-plug of the 1st node and the out-plug of the 2nd node reference each other.
 
-## Known Issues
-(1) JADE doesn't warn the user when they incorrectly extend connections betwwen two nodes belonging each to different clusters.
-Saving the file is allowed but the loader breaks when attempting to load the exported file. One way to sort this is to manually
-move the links and nodes in the XML file. A future functionality will prevent the user from extending such inter-cluster
-connections.
-(2) the FPS rate goes down sharply with the number of tags dragged at once.
-(3) newly extended connections may not show near the borders of the graphics pane, it's not a difficult thing to fix. In the meantime, changing the zoom level will make the connection appear.
-(4) the instance of the class GText grabs the mouse when using the macbook's touchpad (2-finger scroll)
+## Issues + Bug Fixes
+https://github.com/iras/JADE/issues?sort=created&state=open
 
 ## Version 0.4 wishlist:
 (0) sort known issues and esp. the overall graphics performance.
