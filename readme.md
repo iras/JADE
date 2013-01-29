@@ -38,15 +38,7 @@ On a Mac, some more installation notes are available here http://stc0.wordpress.
 > Nodes/Links are the basic elements that make up a graph. The Node can have a number of plugs (in-plugs, and out-plugs).
 > Two nodes can be connected by a link, that means that the in-plug of the 1st node and the out-plug of the 2nd node reference each other.
 
-## Issues + Bug Fixes
+## Issues + Bug Fixes + Feature Requests
 https://github.com/iras/JADE/issues?sort=created&state=open
-
-## Version 0.4 wishlist:
-(0) sort known issues and esp. the overall graphics performance.
-(1) undo functionality.
-(2) ability to merge two imported group of clusters in a unique file.
-(3) tube-like connections instead of straight dotted lines.
-(4) complete unit tests for props and cluster in the model.
-(5) add sliders on canvas_bottom when the prop-value is a integer.
 
 
