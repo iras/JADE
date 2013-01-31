@@ -1,7 +1,7 @@
 # JADE Mapping Tool
 ### ver 0.3
 
-A brief Introductory Video can be found at http://vimeo.com/54445956
+A brief Introductory Video can be found [here](http://vimeo.com/54445956)
 
 JADE is a simple cross-platform data-driven dependency mapping tool written in Python 2.6 and using the library PyQt.
 It is available both as a standalone app and as Maya scripted-plugin (tested on Maya 2012 and 2013). The JADE floating tags are self-resizing
@@ -12,7 +12,7 @@ the nodes description in the XML file node_description. A mock-up version of a g
 By changing the XML nodes description, a dialogue mapping tool can be easily achieved with no additional code.
 
 The codebase encompasses both the standalone and the Maya client. And, except for two initial view classes, all the rest of the
-classes is shared between the two clients. JADE is mostly documented (EpyDoc, cfr. http://epydoc.sourceforge.net/) and most of the JADE mapping
+classes is shared between the two clients. JADE is mostly documented ([EpyDoc](http://epydoc.sourceforge.net/)) and most of the JADE mapping
 tool's model (graph.py, node.py, socket.py) is unit tested. An approximated class structure for the JADE mapping tool
 is shown right below.
 
@@ -28,7 +28,7 @@ The functionalities for the buttons new, save and load are pretty self-explanato
  * Maya scripted-plugin : ClientMaya.py needs calling from within Maya by means of the additional Python script "MayaLauncherPythonScript" after
 customising the physical path in it. Such script needs to run from the Maya Script Editor.
  * Standalone app : use py2app on Mac OS X, py2exe on Windows or PyInstaller on Linux, the python file to target is always ClientStandAlone.py.
-On a Mac, some more installation notes are available here http://stc0.wordpress.com/2012/11/16/installing-py2app-for-python-2-6-8-macports-on-mac-os-lion/
+On a Mac, some more installation notes are available [here](http://stc0.wordpress.com/2012/11/16/installing-py2app-for-python-2-6-8-macports-on-mac-os-lion/)
 
 ## Some Definitions
 > ### Cluster
@@ -39,6 +39,6 @@ On a Mac, some more installation notes are available here http://stc0.wordpress.
 > Two nodes can be connected by a link, that means that the in-plug of the 1st node and the out-plug of the 2nd node reference each other.
 
 ## Issues + Bug Fixes + Feature Requests
-https://github.com/iras/JADE/issues?sort=created&state=open
+[here](https://github.com/iras/JADE/issues?sort=created&state=open)
 
 
