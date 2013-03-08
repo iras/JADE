@@ -8,7 +8,7 @@ It is available both as a standalone app and as Maya scripted-plugin (tested on 
 depending on the number of connections, the reason for that is to avoid big tags with many unused hooks to clutter the working space.
 
 JADE mapping tool allows handling clusters of customisable nodes which means that the user can have different tools by simply changing
-the nodes description in the XML file node_description. A mock-up version of a graphics scripting tool is given as example.
+the nodes description in the XML file node_description. A mock-up version of a graphics scripting tool, useful for linking components in an entity system, is given as example.
 By changing the XML nodes description, a dialogue mapping tool can be easily achieved with no additional code.
 
 The codebase encompasses both the standalone and the Maya client. And, except for two initial view classes, all the rest of the
