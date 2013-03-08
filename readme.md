@@ -3,20 +3,21 @@
 
 A brief Introductory Video can be found [here](http://vimeo.com/54445956)
 
-JADE is a simple cross-platform data-driven dependency mapping tool written in Python 2.6 and using the library PyQt.
-It is available both as a standalone app and as Maya scripted-plugin (tested on Maya 2012 and 2013). The JADE floating tags are self-resizing
-depending on the number of connections, the reason for that is to avoid big tags with many unused hooks to clutter the working space.
+JADE is a simple cross-platform data-driven dependency mapping tool written in Python 2.6 and using the PyQt framework.
+It is both available as a standalone app and as Maya scripted-plugin (tested on Maya 2012 and 2013).
 
-JADE mapping tool allows handling clusters of customisable nodes which means that the user can have different tools by simply changing
-the nodes description in the XML file node_description. A mock-up version of a graphics scripting tool, useful for linking components in an entity system, is given as example.
-By changing the XML nodes description, a dialogue mapping tool can be easily achieved with no additional code.
+JADE mapping tool allows handling clusters of customisable nodes which means that the user can set up different tools by simply changing
+the nodes description in the XML file node_description. A mock-up version of a graphics scripting tool - useful for linking components in an component-based entity system - is given as example.
+By changing the XML nodes description, any other specific mapping tool can be easily achieved from JADE with no additional code, e.g. dialogue mapping tool, mind mapping tool, etc.
 
-The codebase encompasses both the standalone and the Maya client. And, except for two initial view classes, all the rest of the
-classes is shared between the two clients. JADE is mostly documented ([EpyDoc](http://epydoc.sourceforge.net/)) and most of the JADE mapping
+The code base encompasses both the standalone and the Maya client. And, except for two initial view classes, all the rest of the
+classes is shared between the two clients. JADE is (mostly) documented ([EpyDoc](http://epydoc.sourceforge.net/)) and the JADE mapping
 tool's model (graph.py, node.py, socket.py) is unit tested. An approximated class structure for the JADE mapping tool
 is shown right below.
 
 ![JADE mapping tool - overall approximated class structure](http://www.stc0.co.uk/JADE_classes_rough_structure.jpg)
+
+The JADE floating tags are self-resizing depending on the number of connections, the reason for that is to avoid big tags with many unused hooks to clutter the working space.
 
 ## How to use it
 After running the client, please load the XML file relative to the node description, then to start adding tags (nodes), 
