@@ -7,7 +7,7 @@ JADE is a simple cross-platform data-driven dependency mapping tool written in P
 It is both available as a standalone app and as Maya scripted-plugin (tested on Maya 2012 and 2013).
 
 JADE mapping tool allows handling clusters of customisable nodes which means that the user can set up different tools by simply changing
-the nodes description in the XML file node_description. A mock-up version of a graphics scripting tool - useful for linking components in an component-based entity system - is given as example.
+the nodes description in the XML file node_description. A mock-up version of a graphics scripting tool - useful for wiring game logic in an component-based entity system - is given as example.
 By changing the XML nodes description, any other specific mapping tool can be easily achieved from JADE with no additional code, e.g. dialogue mapping tool, mind mapping tool, etc.
 
 The code base encompasses both the standalone and the Maya client. And, except for two initial view classes, all the rest of the
